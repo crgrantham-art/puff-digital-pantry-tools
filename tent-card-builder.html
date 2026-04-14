@@ -1,0 +1,748 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puff 'n Stuff — Tent Card Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,300;0,400;0,700;0,900;1,300&display=swap" rel="stylesheet">
+<style>
+/* ── Reset ─────────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --font: 'Lato', Arial, Helvetica, sans-serif;
+  --bg: #f0efed;
+  --panel: #fff;
+  --border: #ddd;
+  --muted: #999;
+  --accent: #111;
+  --sidebar: 310px;
+  --hdr: 54px;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font);
+  background: var(--bg);
+  color: var(--accent);
+  overflow: hidden;
+}
+
+/* ── Header ─────────────────────────────────────────────────── */
+#hdr {
+  height: var(--hdr);
+  background: #111;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 22px;
+  flex-shrink: 0;
+}
+#hdr h1 { font-size: 12px; font-weight: 300; letter-spacing: 0.22em; text-transform: uppercase; }
+#hdr h1 b { font-weight: 900; }
+
+#print-btn {
+  background: #fff; color: #111; border: none;
+  padding: 8px 22px; font-family: var(--font);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.18em;
+  text-transform: uppercase; cursor: pointer;
+}
+#print-btn:hover { background: #e2e2e2; }
+
+/* ── Shell ──────────────────────────────────────────────────── */
+#shell { display: flex; height: calc(100vh - var(--hdr)); overflow: hidden; }
+
+/* ── Sidebar ─────────────────────────────────────────────────── */
+#sidebar {
+  width: var(--sidebar); background: var(--panel);
+  border-right: 1px solid var(--border);
+  display: flex; flex-direction: column;
+  overflow-y: auto; flex-shrink: 0;
+}
+.slab { padding: 15px 17px; border-bottom: 1px solid var(--border); }
+.slab-title {
+  font-size: 8.5px; font-weight: 700; letter-spacing: 0.22em;
+  text-transform: uppercase; color: var(--muted); margin-bottom: 10px;
+}
+
+/* Logo zone */
+#logo-zone {
+  border: 1.5px dashed var(--border); border-radius: 4px;
+  padding: 12px 10px; text-align: center; cursor: pointer;
+  position: relative; transition: border-color .15s, background .15s;
+}
+#logo-zone:hover, #logo-zone.over { border-color: #888; background: #fafafa; }
+#logo-zone input { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+#logo-thumb { max-height: 34px; max-width: 160px; object-fit: contain; display: none; margin: 0 auto; }
+#logo-hint { font-size: 11px; color: var(--muted); line-height: 1.5; }
+#logo-hint span { font-size: 9px; }
+#logo-rm {
+  display: none; margin-top: 6px; background: none; border: none;
+  font-size: 10px; color: var(--muted); cursor: pointer;
+  text-decoration: underline; font-family: var(--font);
+}
+
+/* Card list */
+#card-list { display: flex; flex-direction: column; gap: 5px; }
+.cl-item {
+  display: flex; align-items: center; gap: 8px;
+  padding: 9px 11px; border: 1.5px solid var(--border);
+  border-radius: 4px; cursor: pointer; transition: all .1s;
+}
+.cl-item:hover { border-color: #aaa; background: #fafafa; }
+.cl-item.sel { border-color: #111; background: #f6f5f3; }
+.cl-num { font-size: 9px; font-weight: 700; color: var(--muted); letter-spacing: .1em; flex-shrink: 0; }
+.cl-name { flex: 1; font-size: 12.5px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cl-name.empty { color: var(--muted); font-style: italic; }
+.cl-del {
+  background: none; border: none; color: #ccc; cursor: pointer;
+  font-size: 18px; line-height: 1; padding: 0 1px; flex-shrink: 0;
+  font-family: var(--font); transition: color .1s;
+}
+.cl-del:hover { color: #d00; }
+
+.card-btns { display: flex; gap: 6px; margin-top: 6px; }
+.card-btns button {
+  flex: 1; padding: 9px 6px; border: 1.5px dashed var(--border);
+  background: none; font-family: var(--font); font-size: 10.5px;
+  letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+  cursor: pointer; border-radius: 4px; transition: all .15s;
+}
+.card-btns button:hover { border-color: #888; color: #555; background: #fafafa; }
+
+/* Form */
+.fg { margin-bottom: 13px; }
+.fg:last-child { margin-bottom: 0; }
+label.fl {
+  display: block; font-size: 8.5px; font-weight: 700;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--muted); margin-bottom: 5px;
+}
+input.fi, textarea.fi {
+  width: 100%; padding: 8px 10px;
+  border: 1.5px solid var(--border); border-radius: 3px;
+  font-family: var(--font); font-size: 12.5px; color: #111;
+  background: #fafafa; resize: none; transition: border-color .15s;
+}
+input.fi:focus, textarea.fi:focus { outline: none; border-color: #888; background: #fff; }
+textarea.fi { min-height: 66px; line-height: 1.5; }
+.fhint { font-size: 10px; color: #bbb; margin-top: 4px; }
+#form-empty { font-size: 12px; color: var(--muted); text-align: center; padding: 12px 0; font-style: italic; }
+
+/* ── Bulk Import Modal ────────────────────────────────────── */
+#modal-overlay {
+  display: none; position: fixed; inset: 0;
+  background: rgba(0,0,0,.55); z-index: 100;
+  align-items: center; justify-content: center;
+}
+#modal-overlay.open { display: flex; }
+
+#modal {
+  background: #fff; width: 580px; max-width: 94vw;
+  border-radius: 6px; overflow: hidden;
+  box-shadow: 0 16px 48px rgba(0,0,0,.22);
+  display: flex; flex-direction: column;
+}
+#modal-hdr {
+  background: #111; color: #fff;
+  padding: 14px 20px; display: flex; align-items: center; justify-content: space-between;
+}
+#modal-hdr h2 { font-size: 12px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; }
+#modal-close {
+  background: none; border: none; color: #fff; font-size: 20px;
+  cursor: pointer; line-height: 1; padding: 0 2px; font-family: var(--font);
+}
+#modal-body { padding: 18px 20px; display: flex; flex-direction: column; gap: 12px; }
+#modal-body p { font-size: 12px; color: #555; line-height: 1.6; }
+#modal-body code {
+  display: block; background: #f5f4f2; border: 1px solid var(--border);
+  border-radius: 3px; padding: 10px 12px; font-size: 11px;
+  color: #444; line-height: 1.8; font-family: 'Courier New', monospace;
+  white-space: pre;
+}
+#bulk-input {
+  width: 100%; height: 220px; padding: 10px 12px;
+  border: 1.5px solid var(--border); border-radius: 4px;
+  font-family: 'Courier New', monospace; font-size: 12px;
+  line-height: 1.7; resize: vertical; color: #111;
+  background: #fafafa;
+}
+#bulk-input:focus { outline: none; border-color: #888; background: #fff; }
+#modal-ftr {
+  padding: 14px 20px; border-top: 1px solid var(--border);
+  display: flex; align-items: center; justify-content: space-between; gap: 10px;
+}
+#modal-ftr label { font-size: 11px; color: #555; display: flex; align-items: center; gap: 6px; cursor: pointer; }
+.modal-btns { display: flex; gap: 8px; }
+.modal-btns button {
+  padding: 9px 20px; font-family: var(--font);
+  font-size: 11px; font-weight: 700; letter-spacing: .12em;
+  text-transform: uppercase; cursor: pointer; border-radius: 3px;
+}
+#modal-cancel { background: none; border: 1.5px solid var(--border); color: #666; }
+#modal-cancel:hover { border-color: #aaa; background: #fafafa; }
+#modal-import { background: #111; border: 1.5px solid #111; color: #fff; }
+#modal-import:hover { background: #333; border-color: #333; }
+
+/* ── Preview pane ─────────────────────────────────────────────── */
+#pane {
+  flex: 1; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  overflow: auto; padding: 30px 24px; gap: 12px;
+}
+#pane-lbl { font-size: 9px; font-weight: 700; letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+
+/* Preview card — 96px/in = 384 × 576px */
+#pc-wrap { position: relative; flex-shrink: 0; }
+.pc {
+  width: 384px; height: 576px; background: #fff;
+  box-shadow: 0 6px 28px rgba(0,0,0,.13), 0 1px 4px rgba(0,0,0,.07);
+  overflow: hidden; font-family: var(--font);
+}
+
+/* back */
+.pc-back {
+  width: 384px; height: 288px;
+  display: flex; align-items: center; justify-content: center;
+}
+.pc-back img { max-height: 46px; max-width: 200px; object-fit: contain; opacity: .45; }
+.pc-back-text { font-size: 10.5px; letter-spacing: .18em; font-weight: 300; text-transform: uppercase; opacity: .35; text-align: center; }
+
+/* fold */
+.pc-fold {
+  width: 100%; height: 1px;
+  background: repeating-linear-gradient(to right, #bbb 0, #bbb 5px, transparent 5px, transparent 10px);
+  position: relative;
+}
+.pc-fold span {
+  position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  background: #fff; padding: 0 7px;
+  font-size: 6.5px; letter-spacing: .2em; color: #bbb; font-family: var(--font);
+}
+
+/* front — name+desc float centered between top rule and allergen block */
+.pc-front {
+  width: 384px; height: 288px;
+  display: flex; flex-direction: column;
+  align-items: center; padding: 14px 32px 12px;
+}
+.pc-rule { width: 100%; height: 1px; background: #000; flex-shrink: 0; }
+
+/* equal spacers above and below the text cluster */
+.pc-sp { flex: 1; min-height: 4px; }
+
+.pc-name {
+  font-size: 27px; font-weight: 700; text-align: center;
+  line-height: 1.2; padding: 0 0 6px; flex-shrink: 0; color: #000;
+}
+.pc-name.placeholder { color: #ccc; font-style: italic; font-weight: 400; font-size: 20px; }
+
+.pc-desc {
+  font-size: 11px; font-weight: 400; text-align: center;
+  line-height: 1.55; letter-spacing: .05em; text-transform: uppercase;
+  padding: 0 4px; flex-shrink: 0; color: #000; white-space: pre-wrap;
+}
+.pc-desc.placeholder { color: #ccc; font-style: italic; text-transform: none; letter-spacing: 0; font-size: 11px; }
+
+.pc-alg-block { width: 100%; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+.pc-alg {
+  font-size: 8px; letter-spacing: .2em; text-transform: uppercase;
+  text-align: center; padding: 7px 0; color: #000;
+}
+.pc-alg.placeholder { color: #ccc; font-style: italic; text-transform: none; letter-spacing: 0; font-size: 8.5px; }
+
+.pc-logo {
+  display: flex; align-items: center; justify-content: center;
+  padding: 8px 0 0; width: 100%; flex-shrink: 0;
+}
+.pc-logo img { max-height: 40px; max-width: 175px; object-fit: contain; display: block; }
+.pc-logo-text { display: flex; flex-direction: column; align-items: center; gap: 3px; line-height: 1; }
+.pc-logo-text .wm  { font-size: 12px; font-weight: 300; font-style: italic; letter-spacing: .04em; }
+.pc-logo-text .sub { font-size: 5.5px; letter-spacing: .32em; font-weight: 400; text-transform: uppercase; }
+
+/* dimension callouts */
+.dim { position: absolute; font-size: 10px; color: #bbb; font-family: var(--font); letter-spacing: .05em; }
+.dim.right { right: -58px; top: 50%; transform: translateY(-50%) rotate(90deg); }
+.dim.bot   { bottom: -22px; left: 50%; transform: translateX(-50%); }
+
+/* ─────────────────────────────────────────────────────────────
+   PRINT  —  Oxford 4 × 6 in index card (one card per page)
+───────────────────────────────────────────────────────────── */
+#print-area { display: none; }
+
+@media print {
+  @page { size: 4in 6in; margin: 0; }
+
+  html, body { height: auto; overflow: visible; background: #fff; }
+  #hdr, #shell, #modal-overlay { display: none !important; }
+  #print-area { display: block !important; }
+
+  .pcard {
+    width: 4in; height: 6in;
+    position: relative; overflow: hidden;
+    background: #fff;
+    page-break-after: always; break-after: page;
+    font-family: 'Lato', Arial, Helvetica, sans-serif;
+    -webkit-print-color-adjust: exact; print-color-adjust: exact;
+  }
+  .pcard:last-child { page-break-after: avoid; break-after: avoid; }
+
+  .p-back {
+    width: 4in; height: 3in;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .p-back img      { max-height: .5in; max-width: 2in; object-fit: contain; opacity: .45; }
+  .p-back-text     { font-size: 9pt; letter-spacing: .18em; font-weight: 300; text-transform: uppercase; opacity: .35; text-align: center; }
+
+  .p-fold { width: 100%; height: 0; border: none; border-top: 1px dashed #ccc; position: relative; }
+  .p-fold::after {
+    content: 'FOLD'; position: absolute; left: 50%; top: 50%;
+    transform: translate(-50%, -50%);
+    background: #fff; padding: 0 .07in;
+    font-size: 6pt; letter-spacing: .18em; color: #bbb; font-family: 'Lato', Arial, sans-serif;
+  }
+
+  .p-front {
+    width: 4in; height: 3in; display: flex; flex-direction: column;
+    align-items: center; padding: .18in .36in .15in;
+  }
+  .p-rule { width: 100%; border: none; border-top: 1px solid #000; flex-shrink: 0; }
+  .p-sp   { flex: 1; min-height: .05in; }
+
+  .p-name {
+    font-size: 28pt; font-weight: 700; text-align: center;
+    line-height: 1.2; padding: 0 0 .06in; flex-shrink: 0; color: #000;
+  }
+  .p-desc {
+    font-size: 11pt; font-weight: 400; text-align: center;
+    line-height: 1.5; letter-spacing: .05em; text-transform: uppercase;
+    padding: 0 .04in; flex-shrink: 0; color: #000; white-space: pre-wrap;
+  }
+
+  .p-alg-block { width: 100%; display: flex; flex-direction: column; align-items: center; flex-shrink: 0; }
+  .p-alg { font-size: 8pt; letter-spacing: .2em; text-transform: uppercase; text-align: center; padding: .08in 0; color: #000; }
+
+  .p-logo { display: flex; align-items: center; justify-content: center; padding: .09in 0 0; width: 100%; flex-shrink: 0; }
+  .p-logo img { height: .46in; max-width: 2.1in; object-fit: contain; display: block; }
+  .p-logo-text { display: flex; flex-direction: column; align-items: center; gap: .04in; line-height: 1; }
+  .p-logo-text .wm  { font-size: 13pt; font-weight: 300; font-style: italic; letter-spacing: .04em; }
+  .p-logo-text .sub { font-size: 6pt; letter-spacing: .3em; text-transform: uppercase; }
+}
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════ APP UI ═══════════════════════════════ -->
+<div id="hdr">
+  <h1><b>Puff 'n Stuff</b>&nbsp; — &nbsp;Tent Card Builder</h1>
+  <button id="print-btn" onclick="doPrint()">&#9113; Print All  <span id="sheet-count" style="opacity:.6;font-weight:400;"></span></button>
+</div>
+
+<div id="shell">
+
+  <!-- ── Sidebar ─────────────────────────────────────────── -->
+  <aside id="sidebar">
+
+    <!-- Logo upload -->
+    <div class="slab">
+      <div class="slab-title">Logo</div>
+      <div id="logo-zone">
+        <input type="file" id="logo-input" accept="image/*">
+        <img id="logo-thumb" alt="Logo preview">
+        <div id="logo-hint">
+          Click or drag your logo here<br>
+          <span>PNG or SVG — used on all cards</span>
+        </div>
+        <button id="logo-rm" onclick="removeLogo(event)">Remove</button>
+      </div>
+    </div>
+
+    <!-- Card list -->
+    <div class="slab">
+      <div class="slab-title">Cards</div>
+      <div id="card-list"></div>
+      <div class="card-btns">
+        <button onclick="addCard()">+ Add Card</button>
+        <button onclick="openBulk()">&#8801; Bulk Import</button>
+      </div>
+    </div>
+
+    <!-- Edit form -->
+    <div class="slab" style="flex:1;">
+      <div class="slab-title">Edit Selected Card</div>
+      <div id="form-empty">Select a card to edit</div>
+      <div id="form-fields" style="display:none;">
+        <div class="fg">
+          <label class="fl" for="f-name">Menu Item Name</label>
+          <input class="fi" type="text" id="f-name" placeholder="e.g. Seasonal Bruschetta"
+                 oninput="setField('name', this.value)">
+        </div>
+        <div class="fg">
+          <label class="fl" for="f-desc">Description</label>
+          <textarea class="fi" id="f-desc" placeholder="1–3 lines&#10;Press Enter for line breaks"
+                    oninput="setField('description', this.value)"></textarea>
+          <div class="fhint">Enter = new line on the card</div>
+        </div>
+        <div class="fg">
+          <label class="fl" for="f-alg">Allergen / Dietary Codes</label>
+          <input class="fi" type="text" id="f-alg" placeholder="VEG  or  GF | DF | NF"
+                 oninput="setField('allergens', this.value)">
+          <div class="fhint">GF · VEG · V · DF · NF · Contains Nuts · etc.</div>
+        </div>
+      </div>
+    </div>
+
+  </aside>
+
+  <!-- ── Preview pane ──────────────────────────────────────── -->
+  <div id="pane">
+    <div id="pane-lbl">Live Preview — 4 × 6 in  ·  Oxford index card  ·  one card per page</div>
+
+    <div id="pc-wrap">
+      <div class="pc" id="pc">
+
+        <!-- Back panel -->
+        <div class="pc-back" id="pc-back">
+          <div class="pc-back-text">
+            Puff 'n Stuff<br><span style="font-size:7px;letter-spacing:.28em;">DELIVERY</span>
+          </div>
+        </div>
+
+        <!-- Fold line -->
+        <div class="pc-fold"><span>FOLD</span></div>
+
+        <!-- Front panel -->
+        <div class="pc-front">
+          <div class="pc-rule"></div>
+          <div class="pc-sp"></div><!-- top spacer — centers text cluster -->
+          <div class="pc-name placeholder" id="pc-name">Item Name</div>
+          <div class="pc-desc placeholder" id="pc-desc">Description</div>
+          <div class="pc-sp"></div><!-- bottom spacer -->
+          <div class="pc-alg-block">
+            <div class="pc-rule"></div>
+            <div class="pc-alg placeholder" id="pc-alg">Allergens</div>
+            <div class="pc-rule"></div>
+          </div>
+          <div class="pc-logo" id="pc-logo">
+            <div class="pc-logo-text">
+              <span class="wm">Puff 'n Stuff</span>
+              <span class="sub">Delivery</span>
+            </div>
+          </div>
+        </div>
+
+      </div><!-- .pc -->
+
+      <div class="dim right">4 in</div>
+      <div class="dim bot">6 in</div>
+    </div>
+  </div>
+
+</div><!-- #shell -->
+
+<!-- ═══════════════ BULK IMPORT MODAL ══════════════════════ -->
+<div id="modal-overlay">
+  <div id="modal">
+    <div id="modal-hdr">
+      <h2>Bulk Import Menu Items</h2>
+      <button id="modal-close" onclick="closeBulk()">&times;</button>
+    </div>
+    <div id="modal-body">
+      <p>Paste all your menu items below — one item per block, separated by a blank line.<br>
+         <strong>Line 1</strong> = item name &nbsp;·&nbsp; <strong>Line 2</strong> = description &nbsp;·&nbsp; <strong>Line 3</strong> = allergen codes (optional)</p>
+      <code>Seasonal Bruschetta
+Spring/Summer: Local Tomatoes, Basil, Red Onion, Fresh Mozzarella
+VEG
+
+Grilled Salmon
+Pan-seared with lemon butter, capers, roasted vegetables
+GF | DF
+
+Caesar Salad
+Romaine, house dressing, parmesan, housemade croutons
+VEG</code>
+      <textarea id="bulk-input" placeholder="Paste your menu items here…&#10;&#10;Separate each item with a blank line."></textarea>
+    </div>
+    <div id="modal-ftr">
+      <label>
+        <input type="checkbox" id="bulk-replace" checked>
+        Replace all existing cards
+      </label>
+      <div class="modal-btns">
+        <button id="modal-cancel" onclick="closeBulk()">Cancel</button>
+        <button id="modal-import" onclick="importBulk()">Import Cards</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════ PRINT AREA (hidden on screen) ══════════ -->
+<div id="print-area"></div>
+
+<!-- ═══════════════════════ JS ═══════════════════════════════ -->
+<script>
+/* ── State ────────────────────────────────────────────────── */
+let cards = [
+  { id: 1, name: 'Seasonal Bruschetta',
+    description: 'Spring/Summer: Local Tomatoes, Basil,\nRed Onion, Fresh Garlic,\nFresh Mozzarella, Housemade Crostini',
+    allergens: 'VEG' }
+];
+let sel   = 1;
+let nxtId = 2;
+let logo  = null;
+
+/* ── Logo ─────────────────────────────────────────────────── */
+const logoInput = document.getElementById('logo-input');
+const logoZone  = document.getElementById('logo-zone');
+const logoThumb = document.getElementById('logo-thumb');
+const logoHint  = document.getElementById('logo-hint');
+const logoRm    = document.getElementById('logo-rm');
+
+logoInput.addEventListener('change', e => { if (e.target.files[0]) readLogo(e.target.files[0]); });
+logoZone.addEventListener('dragover',  e => { e.preventDefault(); logoZone.classList.add('over'); });
+logoZone.addEventListener('dragleave', () => logoZone.classList.remove('over'));
+logoZone.addEventListener('drop', e => {
+  e.preventDefault(); logoZone.classList.remove('over');
+  const f = e.dataTransfer.files[0];
+  if (f && f.type.startsWith('image/')) readLogo(f);
+});
+
+function readLogo(file) {
+  const r = new FileReader();
+  r.onload = e => {
+    logo = e.target.result;
+    logoThumb.src = logo; logoThumb.style.display = 'block';
+    logoHint.style.display = 'none'; logoRm.style.display = 'block';
+    renderPreview();
+  };
+  r.readAsDataURL(file);
+}
+
+function removeLogo(e) {
+  e.stopPropagation();
+  logo = null;
+  logoThumb.src = ''; logoThumb.style.display = 'none';
+  logoHint.style.display = 'block'; logoRm.style.display = 'none';
+  logoInput.value = '';
+  renderPreview();
+}
+
+/* ── Bulk Import ──────────────────────────────────────────── */
+function openBulk() {
+  document.getElementById('modal-overlay').classList.add('open');
+  document.getElementById('bulk-input').focus();
+}
+
+function closeBulk() {
+  document.getElementById('modal-overlay').classList.remove('open');
+}
+
+// Close on overlay click
+document.getElementById('modal-overlay').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeBulk();
+});
+
+// Detect allergen-style last line: short, mostly caps/symbols
+function looksLikeAllergen(line) {
+  if (!line || line.length > 50) return false;
+  const uppers = (line.match(/[A-Z\s|\/·\-]/g) || []).length;
+  return uppers / line.length > 0.75;
+}
+
+function parseBulk(text) {
+  const blocks = text.trim().split(/\n{2,}/);
+  const parsed = [];
+  blocks.forEach(block => {
+    const lines = block.split('\n').map(l => l.trim()).filter(Boolean);
+    if (!lines.length) return;
+    const name = lines[0];
+    let description = '';
+    let allergens   = '';
+    if (lines.length === 1) {
+      // name only
+    } else if (lines.length === 2) {
+      // name + (description or allergen)
+      if (looksLikeAllergen(lines[1])) {
+        allergens = lines[1];
+      } else {
+        description = lines[1];
+      }
+    } else {
+      // name + description + optional allergen on last line
+      const last = lines[lines.length - 1];
+      if (looksLikeAllergen(last)) {
+        allergens   = last;
+        description = lines.slice(1, -1).join('\n');
+      } else {
+        description = lines.slice(1).join('\n');
+      }
+    }
+    parsed.push({ id: nxtId++, name, description, allergens });
+  });
+  return parsed;
+}
+
+function importBulk() {
+  const text = document.getElementById('bulk-input').value.trim();
+  if (!text) return closeBulk();
+
+  const parsed = parseBulk(text);
+  if (!parsed.length) { alert('No items found. Check the format and try again.'); return; }
+
+  const replace = document.getElementById('bulk-replace').checked;
+  if (replace) {
+    cards = parsed;
+  } else {
+    cards = cards.concat(parsed);
+  }
+  sel = cards[0].id;
+  document.getElementById('bulk-input').value = '';
+  closeBulk();
+  render();
+}
+
+/* ── Cards CRUD ───────────────────────────────────────────── */
+function addCard() {
+  const c = { id: nxtId++, name: '', description: '', allergens: '' };
+  cards.push(c);
+  selectCard(c.id);
+}
+
+function deleteCard(id, e) {
+  e.stopPropagation();
+  if (cards.length === 1) return alert('At least one card is required.');
+  cards = cards.filter(c => c.id !== id);
+  if (sel === id) sel = cards[cards.length - 1].id;
+  render();
+}
+
+function selectCard(id) {
+  sel = id;
+  render();
+  setTimeout(() => document.getElementById('f-name').focus(), 50);
+}
+
+function setField(field, val) {
+  const c = cards.find(c => c.id === sel);
+  if (c) { c[field] = val; renderCardList(); renderPreview(); }
+}
+
+/* ── Render ───────────────────────────────────────────────── */
+function render() { renderCardList(); renderForm(); renderPreview(); updateSheetCount(); }
+
+function renderCardList() {
+  const list = document.getElementById('card-list');
+  list.innerHTML = '';
+  cards.forEach((c, i) => {
+    const d = document.createElement('div');
+    d.className = 'cl-item' + (c.id === sel ? ' sel' : '');
+    d.onclick = () => selectCard(c.id);
+
+    const num  = document.createElement('span'); num.className = 'cl-num';
+    num.textContent = String(i + 1).padStart(2, '0');
+
+    const name = document.createElement('span');
+    name.className = 'cl-name' + (c.name ? '' : ' empty');
+    name.textContent = c.name || 'Untitled';
+
+    const del  = document.createElement('button'); del.className = 'cl-del';
+    del.innerHTML = '&times;'; del.title = 'Remove';
+    del.onclick = ev => deleteCard(c.id, ev);
+
+    d.append(num, name, del);
+    list.appendChild(d);
+  });
+}
+
+function renderForm() {
+  const c = cards.find(c => c.id === sel);
+  document.getElementById('form-empty').style.display  = c ? 'none'  : 'block';
+  document.getElementById('form-fields').style.display = c ? 'block' : 'none';
+  if (!c) return;
+  document.getElementById('f-name').value = c.name;
+  document.getElementById('f-desc').value = c.description;
+  document.getElementById('f-alg').value  = c.allergens;
+}
+
+function renderPreview() {
+  const c = cards.find(c => c.id === sel);
+
+  // back-panel logo
+  document.getElementById('pc-back').innerHTML = logo
+    ? `<img src="${logo}" alt="Logo" style="max-height:46px;max-width:200px;object-fit:contain;opacity:.45;">`
+    : `<div class="pc-back-text">Puff 'n Stuff<br><span style="font-size:7px;letter-spacing:.28em;">DELIVERY</span></div>`;
+
+  // front-panel logo
+  document.getElementById('pc-logo').innerHTML = logo
+    ? `<img src="${logo}" alt="Logo" style="max-height:40px;max-width:175px;object-fit:contain;">`
+    : `<div class="pc-logo-text"><span class="wm">Puff 'n Stuff</span><span class="sub">Delivery</span></div>`;
+
+  if (!c) return;
+
+  const nameEl = document.getElementById('pc-name');
+  nameEl.textContent = c.name || 'Item Name';
+  nameEl.className   = 'pc-name' + (c.name ? '' : ' placeholder');
+
+  const descEl = document.getElementById('pc-desc');
+  descEl.textContent = c.description || 'Description';
+  descEl.className   = 'pc-desc' + (c.description ? '' : ' placeholder');
+
+  const algEl = document.getElementById('pc-alg');
+  algEl.textContent = c.allergens || 'Allergens';
+  algEl.className   = 'pc-alg' + (c.allergens ? '' : ' placeholder');
+}
+
+/* ── Print ────────────────────────────────────────────────── */
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function updateSheetCount() {
+  const el = document.getElementById('sheet-count');
+  if (el) el.textContent = cards.length ? `— ${cards.length} card${cards.length!==1?'s':''}` : '';
+}
+
+function doPrint() {
+  if (!cards.length) return alert('Add at least one card before printing.');
+  const area = document.getElementById('print-area');
+  area.innerHTML = '';
+
+  cards.forEach(c => {
+    const backLogo = logo
+      ? `<img src="${logo}" alt="Logo">`
+      : `<div class="p-back-text">Puff 'n Stuff<br><span style="font-size:6pt;letter-spacing:.28em;">DELIVERY</span></div>`;
+    const frontLogo = logo
+      ? `<img src="${logo}" alt="Logo">`
+      : `<div class="p-logo-text"><span class="wm">Puff 'n Stuff</span><span class="sub">Delivery</span></div>`;
+
+    area.innerHTML += `
+<div class="pcard">
+  <div class="p-back"><div class="p-back-logo">${backLogo}</div></div>
+  <div class="p-fold"></div>
+  <div class="p-front">
+    <div class="p-rule"></div>
+    <div class="p-sp"></div>
+    <div class="p-name">${esc(c.name)||'Item Name'}</div>
+    <div class="p-desc">${esc(c.description).replace(/\n/g,'<br>')}</div>
+    <div class="p-sp"></div>
+    <div class="p-alg-block">
+      <div class="p-rule"></div>
+      <div class="p-alg">${esc(c.allergens)||'—'}</div>
+      <div class="p-rule"></div>
+    </div>
+    <div class="p-logo">${frontLogo}</div>
+  </div>
+</div>`;
+  });
+
+  window.print();
+}
+
+/* ── Init ─────────────────────────────────────────────────── */
+render();
+</script>
+</body>
+</html>
