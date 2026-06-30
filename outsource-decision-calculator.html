@@ -1,0 +1,421 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Outsource Decision Calculator</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --card: #ffffff;
+    --text: #1a1f2e;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --border: #e5e7eb;
+    --good: #047857;
+    --good-bg: #d1fae5;
+    --bad: #b91c1c;
+    --bad-bg: #fee2e2;
+    --warn: #92400e;
+    --warn-bg: #fef3c7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin: 0 0 4px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    margin-bottom: 16px;
+  }
+  .input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 6px;
+  }
+  .input-wrap { position: relative; }
+  .prefix, .suffix {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 0.95rem;
+    pointer-events: none;
+  }
+  .prefix { left: 12px; }
+  .suffix { right: 12px; }
+  input[type="number"] {
+    width: 100%;
+    padding: 10px 12px 10px 28px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fff;
+  }
+  input[type="number"].with-suffix {
+    padding-left: 12px;
+    padding-right: 56px;
+  }
+  input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .verdict {
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 2px solid transparent;
+  }
+  .verdict.go { background: var(--good-bg); border-color: var(--good); color: var(--good); }
+  .verdict.no { background: var(--bad-bg); border-color: var(--bad); color: var(--bad); }
+  .verdict.warn { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); }
+  .verdict.empty { background: #f3f4f6; border-color: var(--border); color: var(--muted); }
+  .verdict-headline {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .verdict-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: currentColor;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .verdict-icon span { color: var(--card); }
+  .verdict-detail {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    margin-top: 8px;
+  }
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .compare-cell {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .compare-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .compare-amount {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .compare-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .section-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin: 24px 0 12px;
+    font-weight: 700;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: #f9fafb;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+  td.right, th.right { text-align: right; font-variant-numeric: tabular-nums; }
+  .pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .pill.go { background: var(--good-bg); color: var(--good); }
+  .pill.no { background: var(--bad-bg); color: var(--bad); }
+  .footnote {
+    color: var(--muted);
+    font-size: 0.75rem;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Outsource Decision Calculator</h1>
+    <p class="subtitle">Enter an order's subtotal and distance — see whether outsourcing to Weknock costs less than what you charge the client.</p>
+
+    <div class="card">
+      <div class="input-grid">
+        <div>
+          <label for="subtotal">Order Subtotal</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="subtotal" min="0" step="0.01" placeholder="0.00" autofocus>
+          </div>
+        </div>
+        <div>
+          <label for="distance">Delivery Distance</label>
+          <div class="input-wrap">
+            <input type="number" id="distance" min="0" step="0.1" placeholder="0" class="with-suffix">
+            <span class="suffix">miles</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="verdict" class="verdict empty">
+      <div class="verdict-headline">
+        <span class="verdict-icon"><span>—</span></span>
+        <span id="verdict-text">Enter order details above</span>
+      </div>
+      <div class="verdict-detail" id="verdict-detail">Both subtotal and distance are required.</div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-cell">
+        <div class="compare-label">You charge client</div>
+        <div class="compare-amount" id="client-amount">$0.00</div>
+        <div class="compare-sub" id="client-sub">—</div>
+      </div>
+      <div class="compare-cell">
+        <div class="compare-label">Weknock charges you</div>
+        <div class="compare-amount" id="weknock-amount">$0.00</div>
+        <div class="compare-sub" id="weknock-sub">—</div>
+      </div>
+    </div>
+
+    <div class="section-title">Max subtotal you can outsource at each distance</div>
+    <div class="card" style="padding:0; overflow:hidden;">
+      <table>
+        <thead>
+          <tr>
+            <th>Distance</th>
+            <th class="right">Client charge</th>
+            <th class="right">Weknock mileage</th>
+            <th class="right">Max subtotal to outsource</th>
+          </tr>
+        </thead>
+        <tbody id="reference-table"></tbody>
+      </table>
+    </div>
+
+    <p class="footnote">
+      Bracket convention used: <strong>≤10 mi = $35</strong>, <strong>11–30 mi = $50</strong>, <strong>31–40 mi = $75</strong>. Distances over 40 miles aren't covered by your standard rates — quote them separately.<br>
+      Does not include the 10% automatic tip surcharge that Weknock may apply if a client's tipping conditions don't qualify.
+    </p>
+  </div>
+
+<script>
+  // Weknock base fee tiers (subtotal -> base fee)
+  function weknockBase(subtotal) {
+    if (subtotal <= 0) return 0;
+    if (subtotal <= 399) return 26;
+    if (subtotal <= 499) return 35;
+    if (subtotal <= 599) return 45;
+    if (subtotal <= 799) return 55;
+    if (subtotal <= 999) return 70;
+    return subtotal * 0.08;
+  }
+
+  function weknockMileage(distance) {
+    if (distance <= 10) return 0;
+    return Math.ceil(distance - 10) * 1.25;
+  }
+
+  function weknockTotal(subtotal, distance) {
+    return weknockBase(subtotal) + weknockMileage(distance);
+  }
+
+  // Your client-facing rate (distance-only)
+  function clientRate(distance) {
+    if (distance <= 0) return null;
+    if (distance <= 10) return { fee: 35, label: '≤10 mi tier' };
+    if (distance <= 30) return { fee: 50, label: '11–30 mi tier' };
+    if (distance <= 40) return { fee: 75, label: '31–40 mi tier' };
+    return null; // out of range
+  }
+
+  // Find the maximum subtotal at which Weknock total <= client charge
+  // Weknock base tiers are step functions, so check each tier's upper bound + the 8% formula
+  function maxOutsourceSubtotal(distance) {
+    const client = clientRate(distance);
+    if (!client) return null;
+    const mileage = weknockMileage(distance);
+    const budget = client.fee - mileage; // budget left for base fee
+    if (budget < 26) return 0; // even smallest base doesn't fit
+    // Walk down tiers
+    if (budget >= 26 && budget < 35) return 399;
+    if (budget >= 35 && budget < 45) return 499;
+    if (budget >= 45 && budget < 55) return 599;
+    if (budget >= 55 && budget < 70) return 799;
+    if (budget >= 70) {
+      // Beyond $999 it's 8% of subtotal. Max subtotal where 0.08 * S <= budget:
+      const eightPctMax = Math.floor(budget / 0.08);
+      if (eightPctMax >= 1000) return eightPctMax;
+      return 999;
+    }
+    return 0;
+  }
+
+  function fmt(n) {
+    return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+  function fmtInt(n) {
+    return '$' + Math.floor(n).toLocaleString();
+  }
+
+  const subtotalInput = document.getElementById('subtotal');
+  const distanceInput = document.getElementById('distance');
+
+  function update() {
+    const subtotal = parseFloat(subtotalInput.value) || 0;
+    const distance = parseFloat(distanceInput.value) || 0;
+
+    const client = clientRate(distance);
+    const weknock = subtotal > 0 && distance > 0 ? weknockTotal(subtotal, distance) : 0;
+
+    // Client display
+    document.getElementById('client-amount').textContent = client ? fmt(client.fee) : '—';
+    document.getElementById('client-sub').textContent = client ? client.label : (distance > 40 ? 'Distance exceeds standard tiers' : 'Enter distance');
+
+    // Weknock display
+    document.getElementById('weknock-amount').textContent = subtotal > 0 && distance > 0 ? fmt(weknock) : '$0.00';
+    const baseDesc = subtotal > 0 ? fmt(weknockBase(subtotal)) + ' base' : '—';
+    const milesDesc = distance > 10 ? ' + ' + fmt(weknockMileage(distance)) + ' mileage' : '';
+    document.getElementById('weknock-sub').textContent = subtotal > 0 && distance > 0 ? baseDesc + milesDesc : 'Enter subtotal & distance';
+
+    // Verdict
+    const verdictEl = document.getElementById('verdict');
+    const verdictText = document.getElementById('verdict-text');
+    const verdictDetail = document.getElementById('verdict-detail');
+    const iconEl = verdictEl.querySelector('.verdict-icon span');
+
+    verdictEl.classList.remove('go', 'no', 'warn', 'empty');
+
+    if (!subtotal || !distance) {
+      verdictEl.classList.add('empty');
+      verdictText.textContent = 'Enter order details above';
+      verdictDetail.textContent = 'Both subtotal and distance are required.';
+      iconEl.textContent = '—';
+    } else if (!client) {
+      verdictEl.classList.add('warn');
+      verdictText.textContent = 'Out of standard range';
+      verdictDetail.textContent = `Distance of ${distance} mi exceeds your 40-mile tier — quote this delivery manually. Weknock would charge ${fmt(weknock)}.`;
+      iconEl.textContent = '!';
+    } else {
+      const diff = client.fee - weknock;
+      if (diff >= 0) {
+        verdictEl.classList.add('go');
+        verdictText.textContent = 'OUTSOURCE — ' + fmt(diff) + ' margin';
+        verdictDetail.textContent = `You charge ${fmt(client.fee)}, Weknock costs ${fmt(weknock)}. You keep ${fmt(diff)}.`;
+        iconEl.textContent = '✓';
+      } else {
+        verdictEl.classList.add('no');
+        verdictText.textContent = 'KEEP IN-HOUSE — ' + fmt(-diff) + ' loss';
+        verdictDetail.textContent = `Weknock would charge ${fmt(weknock)} but you only collect ${fmt(client.fee)}. Outsourcing loses ${fmt(-diff)}.`;
+        iconEl.textContent = '✗';
+      }
+    }
+  }
+
+  // Build reference table
+  function buildReferenceTable() {
+    const rows = [
+      { range: '1–10 mi', distance: 10 },
+      { range: '11–20 mi', distance: 20 },
+      { range: '21–30 mi', distance: 30 },
+      { range: '31–35 mi', distance: 35 },
+      { range: '36–40 mi', distance: 40 },
+    ];
+    const tbody = document.getElementById('reference-table');
+    tbody.innerHTML = rows.map(r => {
+      const client = clientRate(r.distance);
+      const mileage = weknockMileage(r.distance);
+      const max = maxOutsourceSubtotal(r.distance);
+      let maxCell;
+      if (max === 0) {
+        maxCell = '<span class="pill no">never outsource</span>';
+      } else if (max >= 1000) {
+        maxCell = `up to <strong>${fmtInt(max)}</strong> <span class="pill go">8% tier</span>`;
+      } else {
+        maxCell = `up to <strong>${fmtInt(max)}</strong>`;
+      }
+      return `<tr>
+        <td>${r.range}</td>
+        <td class="right">${fmt(client.fee)}</td>
+        <td class="right">${fmt(mileage)}</td>
+        <td class="right">${maxCell}</td>
+      </tr>`;
+    }).join('');
+  }
+
+  subtotalInput.addEventListener('input', update);
+  distanceInput.addEventListener('input', update);
+  buildReferenceTable();
+  update();
+</script>
+</body>
+</html>
