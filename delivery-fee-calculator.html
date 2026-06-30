@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Weknock Delivery Fee Calculator</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --card: #ffffff;
+    --text: #1a1f2e;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --accent-dark: #1d4ed8;
+    --border: #e5e7eb;
+    --good: #047857;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 520px;
+    margin: 0 auto;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin: 0 0 4px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    margin-bottom: 16px;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 6px;
+  }
+  .input-row {
+    margin-bottom: 18px;
+  }
+  .input-wrap {
+    position: relative;
+  }
+  .prefix, .suffix {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 0.95rem;
+    pointer-events: none;
+  }
+  .prefix { left: 12px; }
+  .suffix { right: 12px; }
+  input[type="number"] {
+    width: 100%;
+    padding: 10px 12px 10px 28px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fff;
+  }
+  input[type="number"].with-suffix {
+    padding-left: 12px;
+    padding-right: 56px;
+  }
+  input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .hint {
+    color: var(--muted);
+    font-size: 0.8rem;
+    margin-top: 4px;
+  }
+  .result-card {
+    background: linear-gradient(135deg, #1e3a8a, #2563eb);
+    color: white;
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+  }
+  .result-label {
+    font-size: 0.85rem;
+    opacity: 0.85;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+  }
+  .result-total {
+    font-size: 2.5rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+  .breakdown {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px 24px;
+  }
+  .breakdown h3 {
+    margin: 0 0 12px;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+  .breakdown-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 6px 0;
+    font-size: 0.95rem;
+  }
+  .breakdown-row.total {
+    border-top: 1px solid var(--border);
+    margin-top: 8px;
+    padding-top: 12px;
+    font-weight: 700;
+  }
+  .breakdown-row .desc {
+    color: var(--muted);
+  }
+  .breakdown-row .amount {
+    font-variant-numeric: tabular-nums;
+  }
+  .footnote {
+    color: var(--muted);
+    font-size: 0.75rem;
+    margin-top: 16px;
+    text-align: center;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <h1>Weknock Delivery Fee Calculator</h1>
+    <p class="subtitle">Calculates the pass-through delivery charge based on order subtotal and distance.</p>
+
+    <div class="card">
+      <div class="input-row">
+        <label for="subtotal">Order Subtotal</label>
+        <div class="input-wrap">
+          <span class="prefix">$</span>
+          <input type="number" id="subtotal" min="0" step="0.01" placeholder="0.00" autofocus>
+        </div>
+      </div>
+
+      <div class="input-row" style="margin-bottom:0;">
+        <label for="distance">Delivery Distance</label>
+        <div class="input-wrap">
+          <input type="number" id="distance" min="0" step="0.1" placeholder="0" class="with-suffix">
+          <span class="suffix">miles</span>
+        </div>
+        <p class="hint">First 10 miles included. $1.25 per additional mile (rounded up).</p>
+      </div>
+    </div>
+
+    <div class="result-card">
+      <div class="result-label">Total Delivery Fee</div>
+      <div class="result-total" id="total">$0.00</div>
+    </div>
+
+    <div class="breakdown">
+      <h3>Breakdown</h3>
+      <div class="breakdown-row">
+        <span class="desc" id="base-desc">Base fee</span>
+        <span class="amount" id="base-amount">$0.00</span>
+      </div>
+      <div class="breakdown-row">
+        <span class="desc" id="mileage-desc">Mileage</span>
+        <span class="amount" id="mileage-amount">$0.00</span>
+      </div>
+      <div class="breakdown-row total">
+        <span>Total charge</span>
+        <span class="amount" id="total-amount">$0.00</span>
+      </div>
+    </div>
+
+    <p class="footnote">Tip surcharge (10% of subtotal) not included &mdash; apply manually if client conditions require it.</p>
+  </div>
+
+<script>
+  const subtotalInput = document.getElementById('subtotal');
+  const distanceInput = document.getElementById('distance');
+
+  function calculateBaseFee(subtotal) {
+    if (subtotal <= 0) return { fee: 0, desc: 'Base fee' };
+    if (subtotal <= 399) return { fee: 26, desc: 'Base fee ($1–$399)' };
+    if (subtotal <= 499) return { fee: 35, desc: 'Base fee ($400–$499)' };
+    if (subtotal <= 599) return { fee: 45, desc: 'Base fee ($500–$599)' };
+    if (subtotal <= 799) return { fee: 55, desc: 'Base fee ($600–$799)' };
+    if (subtotal <= 999) return { fee: 70, desc: 'Base fee ($800–$999)' };
+    return { fee: subtotal * 0.08, desc: 'Base fee (8% of subtotal, $1,000+)' };
+  }
+
+  function calculateMileage(distance) {
+    if (distance <= 10) return { fee: 0, extraMiles: 0 };
+    const extra = Math.ceil(distance - 10);
+    return { fee: extra * 1.25, extraMiles: extra };
+  }
+
+  function fmt(n) {
+    return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+
+  function update() {
+    const subtotal = parseFloat(subtotalInput.value) || 0;
+    const distance = parseFloat(distanceInput.value) || 0;
+
+    const base = calculateBaseFee(subtotal);
+    const mileage = calculateMileage(distance);
+    const total = base.fee + mileage.fee;
+
+    document.getElementById('base-desc').textContent = base.desc;
+    document.getElementById('base-amount').textContent = fmt(base.fee);
+
+    document.getElementById('mileage-desc').textContent =
+      mileage.extraMiles > 0
+        ? `Mileage (${mileage.extraMiles} mi over 10 @ $1.25)`
+        : 'Mileage (within 10 mi)';
+    document.getElementById('mileage-amount').textContent = fmt(mileage.fee);
+
+    document.getElementById('total').textContent = fmt(total);
+    document.getElementById('total-amount').textContent = fmt(total);
+  }
+
+  subtotalInput.addEventListener('input', update);
+  distanceInput.addEventListener('input', update);
+  update();
+</script>
+</body>
+</html>
