@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Delivery Quote Calculator</title>
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --card: #ffffff;
+    --text: #1a1f2e;
+    --muted: #6b7280;
+    --accent: #2563eb;
+    --border: #e5e7eb;
+    --good: #047857;
+    --good-bg: #d1fae5;
+    --bad: #b91c1c;
+    --bad-bg: #fee2e2;
+    --warn: #92400e;
+    --warn-bg: #fef3c7;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    margin: 0;
+    padding: 40px 20px;
+    min-height: 100vh;
+  }
+  .container {
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .logo-header {
+    text-align: center;
+    margin-bottom: 28px;
+  }
+  .logo-header img {
+    max-width: 260px;
+    width: 100%;
+    height: auto;
+    display: inline-block;
+  }
+  h1 {
+    font-size: 1.5rem;
+    margin: 0 0 4px;
+  }
+  .subtitle {
+    color: var(--muted);
+    font-size: 0.9rem;
+    margin-bottom: 24px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+    margin-bottom: 16px;
+  }
+  .input-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  label {
+    display: block;
+    font-weight: 600;
+    font-size: 0.875rem;
+    margin-bottom: 6px;
+  }
+  .input-wrap { position: relative; }
+  .prefix, .suffix {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--muted);
+    font-size: 0.95rem;
+    pointer-events: none;
+  }
+  .prefix { left: 12px; }
+  .suffix { right: 12px; }
+  input[type="number"] {
+    width: 100%;
+    padding: 10px 12px 10px 28px;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 1rem;
+    font-family: inherit;
+    background: #fff;
+  }
+  input[type="number"].with-suffix {
+    padding-left: 12px;
+    padding-right: 56px;
+  }
+  input[type="number"]:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+  }
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .verdict {
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 16px;
+    border: 2px solid transparent;
+  }
+  .verdict.go { background: var(--good-bg); border-color: var(--good); color: var(--good); }
+  .verdict.no { background: var(--bad-bg); border-color: var(--bad); color: var(--bad); }
+  .verdict.warn { background: var(--warn-bg); border-color: var(--warn); color: var(--warn); }
+  .verdict.empty { background: #f3f4f6; border-color: var(--border); color: var(--muted); }
+  .verdict-headline {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 1.5rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+  .verdict-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: currentColor;
+    color: white;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.25rem;
+    font-weight: 900;
+    flex-shrink: 0;
+  }
+  .verdict-icon span { color: var(--card); }
+  .verdict-detail {
+    font-size: 0.95rem;
+    opacity: 0.9;
+    margin-top: 8px;
+  }
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+  }
+  .compare-cell {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 20px;
+  }
+  .compare-label {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .compare-amount {
+    font-size: 1.875rem;
+    font-weight: 700;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+  }
+  .compare-sub {
+    font-size: 0.8rem;
+    color: var(--muted);
+    margin-top: 6px;
+  }
+  .section-title {
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+    margin: 24px 0 12px;
+    font-weight: 700;
+  }
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+  th, td {
+    text-align: left;
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    background: #f9fafb;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--muted);
+  }
+  td.right, th.right { text-align: right; font-variant-numeric: tabular-nums; }
+  .pill {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+  .pill.go { background: var(--good-bg); color: var(--good); }
+  .pill.no { background: var(--bad-bg); color: var(--bad); }
+  .footnote {
+    color: var(--muted);
+    font-size: 0.75rem;
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+</style>
+</head>
+<body>
+  <div class="container">
+    <div class="logo-header">
+      <img src="PnS-Logo-Delivery-04.png" alt="Puff 'n Stuff Delivery">
+    </div>
+    <h1>Delivery Quote Calculator</h1>
+    <p class="subtitle">Enter an order's subtotal and distance — the calculator confirms whether the flat rate covers the delivery cost, or recommends a higher quote when it doesn't.</p>
+
+    <div class="card">
+      <div class="input-grid">
+        <div>
+          <label for="subtotal">Order Subtotal</label>
+          <div class="input-wrap">
+            <span class="prefix">$</span>
+            <input type="number" id="subtotal" min="0" step="0.01" placeholder="0.00" autofocus>
+          </div>
+        </div>
+        <div>
+          <label for="distance">Delivery Distance</label>
+          <div class="input-wrap">
+            <input type="number" id="distance" min="0" step="0.1" placeholder="0" class="with-suffix">
+            <span class="suffix">miles</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="verdict" class="verdict empty">
+      <div class="verdict-headline">
+        <span class="verdict-icon"><span>—</span></span>
+        <span id="verdict-text">Enter order details above</span>
+      </div>
+      <div class="verdict-detail" id="verdict-detail">Both subtotal and distance are required.</div>
+    </div>
+
+    <div class="compare">
+      <div class="compare-cell">
+        <div class="compare-label">Flat rate (baseline)</div>
+        <div class="compare-amount" id="client-amount">$0.00</div>
+        <div class="compare-sub" id="client-sub">—</div>
+      </div>
+      <div class="compare-cell">
+        <div class="compare-label">Estimated delivery cost</div>
+        <div class="compare-amount" id="cost-amount">$0.00</div>
+        <div class="compare-sub" id="cost-sub">—</div>
+      </div>
+    </div>
+
+    <p class="footnote">
+      Flat rates (effective July 1, 2026): <strong>≤10 mi = $75</strong>, <strong>11–30 mi = $100</strong>, <strong>31–40 mi = $125</strong>. Distances over 40 miles aren't covered by the flat rate card — quote them separately using the calculator's minimum recommendation.
+    </p>
+  </div>
+
+<script>
+  // Delivery cost base tiers (subtotal -> base fee)
+  function costBase(subtotal) {
+    if (subtotal <= 0) return 0;
+    if (subtotal <= 399) return 26;
+    if (subtotal <= 499) return 35;
+    if (subtotal <= 599) return 45;
+    if (subtotal <= 799) return 55;
+    if (subtotal <= 999) return 70;
+    return subtotal * 0.08;
+  }
+
+  function costMileage(distance) {
+    if (distance <= 10) return 0;
+    return Math.ceil(distance - 10) * 1.25;
+  }
+
+  function costTotal(subtotal, distance) {
+    return costBase(subtotal) + costMileage(distance);
+  }
+
+  // Your client-facing flat rate (distance-only) — effective July 1, 2026
+  function clientRate(distance) {
+    if (distance <= 0) return null;
+    if (distance <= 10) return { fee: 75, label: '≤10 mi tier' };
+    if (distance <= 30) return { fee: 100, label: '11–30 mi tier' };
+    if (distance <= 40) return { fee: 125, label: '31–40 mi tier' };
+    return null; // out of range
+  }
+
+  function fmt(n) {
+    return '$' + n.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  }
+  function fmtInt(n) {
+    return '$' + Math.floor(n).toLocaleString();
+  }
+
+  const subtotalInput = document.getElementById('subtotal');
+  const distanceInput = document.getElementById('distance');
+
+  function update() {
+    const subtotal = parseFloat(subtotalInput.value) || 0;
+    const distance = parseFloat(distanceInput.value) || 0;
+
+    const client = clientRate(distance);
+    const deliveryCost = subtotal > 0 && distance > 0 ? costTotal(subtotal, distance) : 0;
+
+    // Client display
+    document.getElementById('client-amount').textContent = client ? fmt(client.fee) : '—';
+    document.getElementById('client-sub').textContent = client ? client.label : (distance > 40 ? 'Distance exceeds standard tiers' : 'Enter distance');
+
+    // Delivery cost display
+    document.getElementById('cost-amount').textContent = subtotal > 0 && distance > 0 ? fmt(deliveryCost) : '$0.00';
+    const baseDesc = subtotal > 0 ? fmt(costBase(subtotal)) + ' base' : '—';
+    const milesDesc = distance > 10 ? ' + ' + fmt(costMileage(distance)) + ' mileage' : '';
+    document.getElementById('cost-sub').textContent = subtotal > 0 && distance > 0 ? baseDesc + milesDesc : 'Enter subtotal & distance';
+
+    // Verdict
+    const verdictEl = document.getElementById('verdict');
+    const verdictText = document.getElementById('verdict-text');
+    const verdictDetail = document.getElementById('verdict-detail');
+    const iconEl = verdictEl.querySelector('.verdict-icon span');
+
+    verdictEl.classList.remove('go', 'no', 'warn', 'empty');
+
+    if (!subtotal || !distance) {
+      verdictEl.classList.add('empty');
+      verdictText.textContent = 'Enter order details above';
+      verdictDetail.textContent = 'Both subtotal and distance are required.';
+      iconEl.textContent = '—';
+    } else if (!client) {
+      verdictEl.classList.add('warn');
+      verdictText.textContent = 'Out of standard range';
+      verdictDetail.textContent = `Distance of ${distance} mi exceeds your 40-mile tier — quote this delivery manually. Estimated delivery cost is ${fmt(deliveryCost)}.`;
+      iconEl.textContent = '!';
+    } else {
+      const diff = client.fee - deliveryCost;
+      if (diff >= 0) {
+        verdictEl.classList.add('go');
+        verdictText.textContent = 'QUOTE FLAT RATE';
+        verdictDetail.textContent = `Flat rate is ${fmt(client.fee)}, estimated delivery cost is ${fmt(deliveryCost)}. Quote the flat rate.`;
+        iconEl.textContent = '✓';
+      } else {
+        verdictEl.classList.add('no');
+        verdictText.textContent = 'ADJUST QUOTE — minimum ' + fmt(deliveryCost);
+        verdictDetail.textContent = `Estimated delivery cost is ${fmt(deliveryCost)}, but the flat rate is only ${fmt(client.fee)}. Quote at least ${fmt(deliveryCost)} to cover our cost.`;
+        iconEl.textContent = '!';
+      }
+    }
+  }
+
+  subtotalInput.addEventListener('input', update);
+  distanceInput.addEventListener('input', update);
+  update();
+</script>
+</body>
+</html>
