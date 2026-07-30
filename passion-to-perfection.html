@@ -281,6 +281,9 @@
   .gterm:last-child{border-bottom:none;}
   .gtt{font-family:var(--serif);font-weight:800;font-size:15px;}
   .gtd{font-size:13px;color:#34302b;line-height:1.5;margin-top:2px;}
+  .grel{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px;}
+  .relchip{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:.3px;border:1.5px solid var(--frame);background:var(--soft);color:var(--ink);padding:3px 8px;cursor:pointer;}
+  .relchip:active{background:var(--frame);color:#fff;}
 
   /* Elevate — Weekly Focus + Recognition feed */
   .wfocus{border:2.5px solid var(--frame);background:var(--charcoal);color:#f6f5f0;padding:16px 17px;margin-top:14px;}
@@ -729,9 +732,33 @@ function renderStation(id){
   initGallery();
 }
 
+function lessonKey(name){
+  name=name.toLowerCase();
+  for(let mi=0;mi<PLAYBOOK.length;mi++)for(let ti=0;ti<PLAYBOOK[mi].topics.length;ti++){
+    if(PLAYBOOK[mi].topics[ti].toLowerCase().indexOf(name)>-1)return mi+'-'+ti;
+  } return null;
+}
+function relatedLinks(term){
+  const t=term.toLowerCase(), out=[], seen={};
+  function add(view,arg,label){const k=view+arg; if(arg&&!seen[k]){seen[k]=1;out.push({view:view,arg:arg,label:label});}}
+  if(/place\s*-?setting|charger|underliner/.test(t)) add('station','place-setting','Place Setting');
+  if(/coffee|(^|\b)urn|cambro/.test(t)) add('station','coffee-station','Coffee Station');
+  const lmap=[[/buffet/,'Buffet Service','Buffet'],[/plated/,'Plated Service','Plated'],[/family style/,'Family Style Service','Family Style'],
+    [/butler pass|passed|hors|canap|amuse/,'Passed Service','Passed service'],[/break ?down|strike/,'Breakdown Plan','Breakdown'],
+    [/\bbar\b|jigger|speed rack|wine key|mixer|mocktail|signature drink/,'Bar Station','Bar'],[/beverage/,'Beverage Station','Beverage'],
+    [/\btable/,'Tables','Tables'],[/chair/,'Chairs','Chairs'],[/linen/,'Linens','Linens'],[/napkin/,'Napkins','Napkins'],
+    [/\btray/,'Service Tray','Tray handling'],[/load ?in|load ?out|truck|z-?rack|hand truck/,'Unload & Reload a Truck','Truck lesson']];
+  for(const row of lmap){ if(row[0].test(t)){ const k=lessonKey(row[1]); if(k)add('pblesson',k,row[2]+' lesson'); } }
+  if(/\bbar\b|jigger|speed rack|wine key|mixer|mocktail|brut|varietal|vintner|neat|jig/.test(t)) add('manual','bartender','Bartender manual');
+  return out.slice(0,3);
+}
 function glossItems(list){
   if(!list.length)return `<div class="tbdbox" style="border-style:solid;border-color:var(--frame)">No terms match.</div>`;
-  return list.map(function(e){return `<div class="gterm"><div class="gtt">${e[0]}</div><div class="gtd">${e[1]}</div></div>`;}).join('');
+  return list.map(function(e){
+    const rel=relatedLinks(e[0]);
+    const chips=rel.length?`<div class="grel">${rel.map(function(r){var act=r.view==='manual'?`openManual('${r.arg}')`:`go('${r.view}','${r.arg}')`;return `<button class="relchip" onclick="${act}">${r.label} ›</button>`;}).join('')}</div>`:'';
+    return `<div class="gterm"><div class="gtt">${e[0]}</div><div class="gtd">${e[1]}</div>${chips}</div>`;
+  }).join('');
 }
 function filterGloss(q){
   q=(q||'').trim().toLowerCase();
