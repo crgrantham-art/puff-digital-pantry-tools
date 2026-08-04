@@ -216,6 +216,10 @@
   .lbd{font-size:11px;color:var(--muted);line-height:1.4;margin-top:3px;}
   .lbtags{display:flex;flex-wrap:wrap;gap:4px;margin-top:7px;}
   .lbtag{font-size:8.5px;font-weight:700;letter-spacing:.5px;border:1.5px solid var(--verified);color:var(--verified);padding:2px 6px;}
+  .lbnav{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px;}
+  .lbsec{display:flex;align-items:center;gap:10px;margin:22px 0 10px;scroll-margin-top:70px;}
+  .lbsect{font-family:var(--serif);font-size:13px;font-weight:800;letter-spacing:2px;text-transform:uppercase;}
+  .lbcount{font-size:10px;font-weight:700;background:var(--charcoal);color:#fff;padding:1px 7px;border-radius:20px;}
   .attirehero{position:relative;border:2.5px solid var(--frame);margin-top:2px;}
   .attirehero img{width:100%;display:block;}
   .acap{position:absolute;top:10px;left:10px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;border:1.5px solid var(--frame);}
@@ -1116,13 +1120,42 @@ const MENU_FALLBACK=[
 ["Small Bites","Select items arrive partially deconstructed with setup instructions included","","Seasonal_Bruschetta_Spring_Summer_1_496f209a-eeac-4759-a75b-9994c7bfca50.jpg?v=1780678697"]
 ];
 let MENUDATA=null, MENULIVE=false;
-function menuFromFallback(){return MENU_FALLBACK.map(m=>({t:m[0],d:m[1],tags:m[2]?m[2].split(','):[],imgs:[MENU_CDN+m[3]]}));}
+const MENU_SKIP=["enhanced-presentation","delivery-options","display-additions","small-bites","signature-dips"];
+const MENU_CATS=[
+  ["Breakfast & Brunch",/breakfast|bagel|pastri|croissant|muffin|frittata|quiche|french toast|parfait|avocado toast|salmon toast|morning|rise & dine|brunch|bacon|sausage|smashed|crumb cake/i],
+  ["Packages & Kits",/grill pack|picnic|stock the fridge|entertainer|sunset supper|relax & refresh|poolside|kit|bundle|reception spread|savor summer spread/i],
+  ["Soups",/soup|gazpacho/i],
+  ["Platters & Displays",/platter|display|charcuterie|crudite|^cheese$|hummus|antipasti|dip/i],
+  ["Appetizers & Small Bites",/crostini|skewer|bruschetta|shrimp|meatball|empanada|arancini|crab|lobster|ahi|black bean cake|mac & cheese/i],
+  ["Entrées & Buffets",/short rib|chicken|salmon|pork|hearts of palm|ssam|buffet|boxed lunch/i],
+  ["Sandwiches & Salads",/sandwich|salad/i],
+  ["Sides & Snacks",/chips|popcorn|potato|rice|couscous|broccoli|vegetable|fingerling/i],
+  ["Desserts & Sweets",/cookie|brownie|pie in a jar|cobbler|sweets|cupcake|s'mores|smores/i],
+  ["Beverages",/juice|soda|iced tea|sweet tea|lemonade|coffee|water|beverage/i]
+];
+function menuCat(title){for(const c of MENU_CATS){if(c[1].test(title))return c[0];}return "More Good Things";}
+function organizeMenu(items){
+  const byImg={},out=[];
+  items.forEach(m=>{
+    if(MENU_SKIP.includes(m.h||''))return;
+    const clean=Object.assign({},m,{t:m.t.replace(/^\*/,'').trim()});
+    const key=(clean.imgs[0]||'').split('/').pop().split('?')[0];
+    const ex=key&&byImg[key];
+    if(ex){ if(ex.star&&!/^\*/.test(m.t)){Object.assign(ex,clean,{star:false});} return; }
+    clean.star=/^\*/.test(m.t);
+    clean.cat=menuCat(clean.t);
+    if(key)byImg[key]=clean;
+    out.push(clean);
+  });
+  return out;
+}
+function menuFromFallback(){return organizeMenu(MENU_FALLBACK.map(m=>({t:m[0],d:m[1],tags:m[2]?m[2].split(','):[],imgs:[MENU_CDN+m[3]]})));}
 function stripHTML(html){const dv=document.createElement('div');dv.innerHTML=html;return (dv.textContent||'').replace(/\s+/g,' ').trim();}
 function parseDiet(text){const out=[];[['VEG','VEG'],['GF','GF'],['DF','DF'],['NF','NF'],['V','V']].forEach(p=>{if(new RegExp('\\b'+p[0]+'\\b').test(text)&&!out.includes(p[1]))out.push(p[1]);});return out.includes('VEG')?out.filter(x=>x!=='V'):out;}
 function loadMenu(){
   if(MENUDATA)return Promise.resolve(MENUDATA);
   return fetch('https://delivery.puffnstuff.com/products.json?limit=250').then(r=>{if(!r.ok)throw 0;return r.json();})
-    .then(j=>{MENULIVE=true;MENUDATA=j.products.map(p=>{const d=stripHTML(p.body_html||'');return {t:p.title.replace(/^\*/,'').trim(),d:d.slice(0,180),tags:parseDiet(d),imgs:(p.images||[]).slice(0,4).map(im=>im.src+(im.src.includes('?')?'&':'?')+'width=640')};});return MENUDATA;})
+    .then(j=>{MENULIVE=true;MENUDATA=organizeMenu(j.products.map(p=>{const d=stripHTML(p.body_html||'');return {h:p.handle,t:p.title,d:d.slice(0,180),tags:parseDiet(d),imgs:(p.images||[]).slice(0,4).map(im=>im.src+(im.src.includes('?')?'&':'?')+'width=640')};}));return MENUDATA;})
     .catch(()=>{MENUDATA=menuFromFallback();MENULIVE=false;return MENUDATA;});
 }
 function lbCard(m,i){
@@ -1131,22 +1164,33 @@ function lbCard(m,i){
   return `<div class="lbcard"><div class="lbimgw"${multi?` onclick="lbNext(this,${i})"`:''}><img loading="lazy" src="${m.imgs[0]}" alt="${m.t}">${multi?'<span class="lbmore">tap for more ↻</span>':''}</div><div class="lbb"><div class="lbt">${m.t}</div><div class="lbd">${m.d}</div>${chips?`<div class="lbtags">${chips}</div>`:''}</div></div>`;
 }
 function lbNext(el,i){const m=MENUDATA[i];if(!m||m.imgs.length<2)return;el.dataset.ix=((+el.dataset.ix||0)+1)%m.imgs.length;el.querySelector('img').src=m.imgs[el.dataset.ix];}
+function lbGroupedHTML(list){
+  const order=MENU_CATS.map(c=>c[0]).concat(["More Good Things"]);
+  const groups={};
+  list.forEach(m=>{(groups[m.cat]=groups[m.cat]||[]).push(m);});
+  return order.filter(c=>groups[c]&&groups[c].length).map(c=>`
+    <div class="lbsec" id="lbsec-${c.replace(/[^a-z]/gi,'')}"><span class="diamond" style="--dc:var(--displayed)"></span><span class="lbsect">${c}</span><span class="lbcount">${groups[c].length}</span></div>
+    <div class="lbgrid">${groups[c].map(m=>lbCard(m,MENUDATA.indexOf(m))).join('')}</div>`).join('');
+}
 function filterMenu(q){
   q=(q||'').trim().toLowerCase();
-  const list=!q?MENUDATA:MENUDATA.filter(m=>m.t.toLowerCase().includes(q)||m.d.toLowerCase().includes(q));
-  const el=document.getElementById('lbgrid');
-  if(el)el.innerHTML=list.length?list.map((m,i)=>lbCard(m,MENUDATA.indexOf(m))).join(''):'<div class="tbdbox" style="border-style:solid;border-color:var(--frame)">Nothing matches — try fewer letters?</div>';
+  const el=document.getElementById('lbwrap'); if(!el)return;
+  if(!q){el.innerHTML=lbGroupedHTML(MENUDATA);return;}
+  const list=MENUDATA.filter(m=>m.t.toLowerCase().includes(q)||m.d.toLowerCase().includes(q)||m.cat.toLowerCase().includes(q));
+  el.innerHTML=list.length?`<div class="lbgrid" style="margin-top:6px">${list.map(m=>lbCard(m,MENUDATA.indexOf(m))).join('')}</div>`:'<div class="tbdbox" style="border-style:solid;border-color:var(--frame)">Nothing matches — try fewer letters?</div>';
 }
 function renderLookbook(){
   screen.innerHTML=`<p class="kicker">Kitchen · Delivery</p><h1 class="disp">Menu Lookbook</h1><p class="lead">Loading the delivery menu…</p>`;
   loadMenu().then(list=>{
+    const cats=MENU_CATS.map(c=>c[0]).concat(["More Good Things"]).filter(c=>list.some(m=>m.cat===c));
     screen.innerHTML=`
       <p class="kicker">Kitchen · Delivery</p>
       <h1 class="disp">Menu Lookbook</h1>
-      <p class="lead">What every delivery item should look like going out the door. ${list.length} items.</p>
+      <p class="lead">What every delivery item should look like going out the door. ${list.length} items in ${cats.length} categories.</p>
       <div class="rsrc">${MENULIVE?'Live from <b>delivery.puffnstuff.com</b> — updates automatically with the menu':'Showing a saved snapshot — the live menu loads when online'}</div>
       <input class="gsearch" type="search" placeholder="Search — e.g. bruschetta, short ribs, platter" oninput="filterMenu(this.value)" autocomplete="off">
-      <div class="lbgrid" id="lbgrid">${list.map((m,i)=>lbCard(m,i)).join('')}</div>
+      <div class="lbnav">${cats.map(c=>`<button class="relchip" onclick="const e=document.getElementById('lbsec-${c.replace(/[^a-z]/gi,'')}');if(e)e.scrollIntoView({behavior:'smooth',block:'start'})">${c}</button>`).join('')}</div>
+      <div id="lbwrap">${lbGroupedHTML(list)}</div>
       <div class="note-inline">Photos come straight from the delivery site — pair with the <b>Packaging Guide</b> for how each item is packed &amp; labeled. <button class="relchip" onclick="go('packaging')">Packaging Guide ›</button></div>
       <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
   });
