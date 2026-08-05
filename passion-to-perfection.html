@@ -25,17 +25,6 @@
     -webkit-font-smoothing:antialiased;}
   .phone{max-width:464px;margin:0 auto;min-height:100vh;background:var(--paper);
     box-shadow:0 0 46px rgba(0,0,0,.22);display:flex;flex-direction:column;position:relative;}
-  /* Use more of the screen on tablet / desktop — same layout, wider */
-  @media(min-width:760px){
-    .phone{max-width:680px;}
-    .frame{left:max(8px,calc(50% - 340px + 8px));right:max(8px,calc(50% - 340px + 8px));}
-    .screen{padding:24px 30px 30px;}
-  }
-  @media(min-width:1160px){
-    .phone{max-width:768px;}
-    .frame{left:max(8px,calc(50% - 384px + 8px));right:max(8px,calc(50% - 384px + 8px));}
-    .screen{padding:26px 40px 34px;}
-  }
 
   /* Decorative black frame with corner accents */
   .frame{position:fixed;pointer-events:none;z-index:30;top:8px;bottom:8px;
@@ -241,22 +230,22 @@
   .bgtabs{display:flex;gap:8px;margin:14px 0 4px;}
   .bgtab{flex:1;font-family:var(--sans);font-size:12.5px;font-weight:700;border:2px solid var(--frame);background:var(--paper);color:var(--ink);padding:9px 8px;cursor:pointer;}
   .bgtab.on{background:var(--charcoal);color:#fff;}
-  .tcgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:8px 0 18px;}
-  .flip{perspective:900px;cursor:pointer;min-height:152px;}
-  .flipin{position:relative;width:100%;min-height:152px;transition:transform .55s cubic-bezier(.4,.2,.2,1);transform-style:preserve-3d;}
-  .flip.flipped .flipin{transform:rotateY(180deg);}
-  .fcard{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;
-    border:1.5px solid #dcd6c2;border-radius:6px;background-color:#FDFBEF;
-    background-image:repeating-linear-gradient(#FDFBEF 0 23px,#d6e3ec 23px 24px);
-    box-shadow:2px 3px 0 rgba(20,19,16,.13);padding:13px 13px 11px 34px;display:flex;flex-direction:column;overflow:hidden;}
-  .fcard::after{content:"";position:absolute;left:24px;top:0;bottom:0;width:1.5px;background:#e7aaa2;}
-  .fcard::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;background:var(--tc);opacity:.9;}
-  .fcat{font-size:9px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);position:relative;z-index:1;}
-  .fq{font-family:var(--serif);font-weight:800;font-size:17px;line-height:1.28;margin-top:9px;flex:1;color:var(--ink);position:relative;z-index:1;}
-  .fhint{font-size:9px;font-weight:700;letter-spacing:.8px;text-transform:uppercase;color:#b7ae98;position:relative;z-index:1;}
-  .fback{transform:rotateY(180deg);}
-  .fa{font-family:var(--serif);font-weight:800;font-size:16px;line-height:1.32;flex:1;color:var(--ink);display:flex;align-items:center;position:relative;z-index:1;}
-  .fmore{align-self:flex-start;font-size:10px;font-weight:700;letter-spacing:.3px;background:none;border:none;color:var(--muted);cursor:pointer;padding:0;text-decoration:underline;position:relative;z-index:1;}
+  .jscorebar{display:flex;align-items:center;justify-content:space-between;margin:10px 0;}
+  .jscore{font-family:var(--serif);font-weight:800;font-size:18px;}
+  .jdone{border:2px solid var(--verified);background:#eaf5ee;padding:11px 13px;font-size:13.5px;margin-bottom:12px;text-align:center;}
+  .jboard{margin:4px 0 16px;}
+  .jrow{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:5px;}
+  .jhead .jcat{background:#0b1f8f;color:#fff;font-family:var(--serif);font-weight:800;font-size:9.5px;text-transform:uppercase;letter-spacing:.3px;padding:7px 3px;text-align:center;line-height:1.15;display:flex;align-items:center;justify-content:center;min-height:46px;}
+  .jcell{background:#0b1f8f;color:#F5C518;font-family:var(--serif);font-weight:800;font-size:16px;padding:15px 3px;text-align:center;cursor:pointer;min-height:52px;display:flex;align-items:center;justify-content:center;transition:background .12s;}
+  .jcell:hover{background:#16309c;}
+  .jcell.done{background:var(--soft);color:var(--muted);cursor:default;font-size:15px;}
+  .jov{position:fixed;inset:0;background:rgba(11,31,143,.94);display:none;align-items:center;justify-content:center;padding:24px;z-index:110;}
+  .jov.on{display:flex;}
+  .jmodal{max-width:400px;width:100%;text-align:center;color:#fff;}
+  .jval{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#F5C518;margin-bottom:12px;}
+  .jclue{font-family:var(--serif);font-weight:800;font-size:23px;line-height:1.3;margin-bottom:18px;}
+  .jans{font-family:var(--serif);font-size:18px;color:#F5C518;margin-bottom:18px;line-height:1.35;}
+  .jbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
   .attirehero{position:relative;border:2.5px solid var(--frame);margin-top:2px;}
   .attirehero img{width:100%;display:block;}
   .acap{position:absolute;top:10px;left:10px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;border:1.5px solid var(--frame);}
@@ -454,6 +443,17 @@
   .daily .dv{font-size:12.5px;line-height:1.5;color:#34302b;}
   .daily .dvhide{display:none;}
   .daily .dvhide.show{display:block;margin-bottom:8px;}
+  /* Use more of the screen on tablet / desktop — same layout, wider frame (placed last so it wins) */
+  @media(min-width:760px){
+    .phone{max-width:680px;}
+    .frame{left:max(8px,calc(50% - 340px + 8px)) !important;right:max(8px,calc(50% - 340px + 8px)) !important;}
+    .screen{padding:24px 30px 30px;}
+  }
+  @media(min-width:1160px){
+    .phone{max-width:768px;}
+    .frame{left:max(8px,calc(50% - 384px + 8px)) !important;right:max(8px,calc(50% - 384px + 8px)) !important;}
+    .screen{padding:26px 40px 34px;}
+  }
 </style>
 </head>
 <body>
@@ -1182,7 +1182,7 @@ function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
 function render(){
   const cur=stack[stack.length-1];
   backBtn.classList.toggle('show',stack.length>1);
-  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Cards',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Build · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Kitchen · Culinary',culmod:'Culinary Playbook',leadership:'Build · Leadership',leadmod:'Event Supervisor'};
+  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Kitchen · Culinary',culmod:'Culinary Playbook',leadership:'Build · Leadership',leadmod:'Event Supervisor'};
   crumb.textContent=map[cur.view]||'';
   ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:renderPlaybook,pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:renderGlossary,manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:renderCulPlaybook,culmod:()=>renderCulModule(cur.arg),leadership:renderLeadership,leadmod:()=>renderLeadModule(cur.arg)})[cur.view]();
   if(cur.view==='home')fillHomeFocus();
@@ -1241,8 +1241,7 @@ function renderService(){
   const resources=[
     ["Station Standards","Equipment, setup &amp; GUEST Ready","stations"],
     ["P2P Playbook","Guided training · 6 modules","playbook"],
-    ["Training Cards","Quick-reference cards","cards"],
-    ["Manuals &amp; SOPs","SET training manuals","manuals"],
+    ["P2P Jeopardy","Test yourself · study game","cards"],
     ["Videos","Setup walkthroughs",""],
     ["P2P Academy","Assessments &amp; sign-off",""]
   ];
@@ -1255,7 +1254,8 @@ function renderService(){
         ? `<div class="tile active" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active',r[2]==='stations'?STATIONS.length+' standards':'Live')}</div>`
         : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`
       ).join('')}
-    </div>`;
+    </div>
+    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('service')">Service ›</button> <button class="relchip" onclick="openManual('bartender')">Bartender ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
 }
 function renderStations(){
   const byCat={};STATIONS.forEach(s=>{(byCat[s.cat]=byCat[s.cat]||[]).push(s);});
@@ -1277,44 +1277,72 @@ function renderStations(){
     <p class="lead">${STATIONS.length} station standards — equipment, setup, and the GUEST Ready check. Tap one.</p>
     ${stationHTML}`;
 }
-const CARDS=[
-  ["Setup","Round table legs?","12 → 6 · tables ~5 ft apart","1-0","var(--place)"],
-  ["Setup","Where's the guide chair?","12 o'clock · chair edge just touches the linen","1-1","var(--place)"],
-  ["Setup","Napkin placement?","One inch from the edge · start at 12, go clockwise","1-3","var(--place)"],
-  ["Setup","Place-setting order?","1 · 2 · 3 — Flatware → Coffee → Glassware","1-4","var(--place)"],
-  ["Service","Serve &amp; clear?","Leave Left · Remove Right","4-1","var(--chef)"],
-  ["Service","Plating clock?","Protein 6 · Vegetable 10 · Starch 2","4-1","var(--chef)"],
-  ["Service","Carrying a tray?","Heaviest in the middle · one hand under the center","2-0","var(--chef)"],
-  ["Service","The 5×5 rule?","Scraped plates ≤ 5 high · ≤ 2 stacks per tray","2-0","var(--chef)"],
-  ["Bar &amp; Beverage","Coffee station?","Regular on the Right","5-1","var(--coffee)"],
-  ["Bar &amp; Beverage","Chafer water?","One inch of water — no more","4-3","var(--coffee)"],
-  ["Bar &amp; Beverage","Before you pour?","Check the AIS — inventory first","5-2","var(--coffee)"],
-  ["Breakdown","Breakdown station?","Build in bussing order · 2 bags per can","3-1","var(--displayed)"],
-  ["Breakdown","Back of house?","BOH is FOH — leave it show-ready","3-0","var(--displayed)"],
-  ["Safety","Lifting heavy gear?","With your legs, not your back","2-1","var(--chef)"]
+/* Jeopardy-style training game — clue = [value, question, answer, lessonKey] */
+const JEO=[
+  {cat:"Setup",clues:[
+    [100,"Which way do you work around a table when setting?","Start at 12 o'clock, move clockwise","1-4"],
+    [200,"How far from the table edge does a place setting sit?","One inch — knuckle to thumb-tip","1-4"],
+    [300,"What's the place-setting order?","1·2·3 — Flatware, Coffee, Glassware","1-4"]]},
+  {cat:"Service",clues:[
+    [100,"Serve from which side, clear from which side?","Leave Left, Remove Right","4-1"],
+    [200,"Where does the protein sit on a plated entrée?","6 o'clock (veg 10, starch 2)","4-1"],
+    [300,"How do you carry a full football tray?","One hand under the center, up over the shoulder","2-0"]]},
+  {cat:"Bar & Bev",clues:[
+    [100,"Where does Regular coffee go on the station?","On the right","5-1"],
+    [200,"How much water goes in a chafer pan?","About one inch — no more","4-3"],
+    [300,"What happens before the bar opens?","Inventory is cross-checked against the AIS","5-2"]]},
+  {cat:"Breakdown",clues:[
+    [100,"In what order do you build a breakdown station?","Bussing order — trash, flatware, plates, dump bucket, glass","3-1"],
+    [200,"How many bags line each breakdown trash can?","Two, corners tied together","3-1"],
+    [300,"Where may you dump leftover ice or liquid?","Working sinks, drains, or dump buckets — never the grass","3-0"]]},
+  {cat:"Safety",clues:[
+    [100,"How do you lift heavy equipment?","With your legs, not your back","2-1"],
+    [200,"How long is a proper hand-wash scrub?","At least twenty seconds","cul-6-1"],
+    [300,"Minimum cook temperature for poultry?","165°F","cul-1-0"]]}
 ];
+let JEOS={score:0,done:{},cur:null};
 function renderTrainingCards(){
-  const cats=[];CARDS.forEach(c=>{if(!cats.includes(c[0]))cats.push(c[0]);});
-  let html='';
-  cats.forEach(cat=>{
-    const col=CARDS.find(c=>c[0]===cat)[4];
-    html+=`<div class="cathead"><span class="diamond" style="--dc:${col}"></span><span class="catname">${cat}</span></div><div class="tcgrid">`;
-    CARDS.filter(c=>c[0]===cat).forEach(c=>{
-      html+=`<div class="flip" onclick="this.classList.toggle('flipped')"><div class="flipin">
-        <div class="fcard ffront" style="--tc:${c[4]}"><div class="fcat">${c[0]}</div><div class="fq">${c[1]}</div><div class="fhint">tap to flip ↻</div></div>
-        <div class="fcard fback" style="--tc:${c[4]}"><div class="fa">${c[2]}</div><button class="fmore" onclick="event.stopPropagation();go('pblesson','${c[3]}')">Full lesson ›</button></div>
-      </div></div>`;
-    });
-    html+='</div>';
-  });
+  const total=JEO.reduce((n,c)=>n+c.clues.length,0), doneN=Object.keys(JEOS.done).length;
+  const rows=[0,1,2].map(ri=>`<div class="jrow">${JEO.map((c,ci)=>{
+    const cl=c.clues[ri],key=ci+'-'+ri,done=JEOS.done[key];
+    return `<div class="jcell${done?' done':''}"${done?'':` onclick="openClue(${ci},${ri})"`}>${done?'✓':'$'+cl[0]}</div>`;
+  }).join('')}</div>`).join('');
+  const complete=doneN===total;
   screen.innerHTML=`
-    <p class="kicker">Service · Quick Reference</p>
-    <h1 class="disp">Training Cards</h1>
-    <p class="lead">Flip to study — the prompt's on the front, the answer's on the back. Tap the answer for the full lesson.</p>
-    ${html}
-    <div class="note-inline">Pulled from the SET Service manual lessons. <button class="relchip" onclick="go('playbook')">Full Playbook ›</button></div>
-    <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
+    <p class="kicker">Service · Study Game</p>
+    <h1 class="disp">P2P Jeopardy</h1>
+    <p class="lead">Pick a category and value, read the clue, then reveal and score yourself. Standards straight from the manuals.</p>
+    <div class="jscorebar"><span class="jscore">Score: $${JEOS.score}</span><button class="relchip" onclick="JEOS={score:0,done:{},cur:null};renderTrainingCards()">New game ↻</button></div>
+    ${complete?`<div class="jdone">Board cleared — final score <b>$${JEOS.score}</b> of $${JEO.reduce((n,c)=>n+c.clues.reduce((s,x)=>s+x[0],0),0)}. ✦</div>`:''}
+    <div class="jboard"><div class="jrow jhead">${JEO.map(c=>`<div class="jcat">${c.cat}</div>`).join('')}</div>${rows}</div>
+    <div class="note-inline">Answers trace to the SET manual lessons. <button class="relchip" onclick="go('playbook')">Full Playbook ›</button></div>
+    <div class="rule">Dedication ~ Quality ~ Creativity</div>
+    <div class="jov" id="jov" onclick="if(event.target===this)closeJeo()"><div class="jmodal">
+      <div class="jval" id="jval"></div><div class="jclue" id="jclue"></div>
+      <div class="jans" id="jans" style="display:none"></div>
+      <div class="jbtns" id="jbtns"></div>
+    </div></div>`;
 }
+function openClue(ci,ri){
+  JEOS.cur=[ci,ri]; const cl=JEO[ci].clues[ri];
+  document.getElementById('jval').textContent='$'+cl[0]+' · '+JEO[ci].cat;
+  document.getElementById('jclue').textContent=cl[1];
+  const a=document.getElementById('jans'); a.style.display='none'; a.innerHTML='';
+  document.getElementById('jbtns').innerHTML=`<button class="btn" onclick="revealClue()">Reveal answer</button>`;
+  document.getElementById('jov').classList.add('on');
+}
+function revealClue(){
+  const [ci,ri]=JEOS.cur, cl=JEO[ci].clues[ri];
+  const a=document.getElementById('jans'); a.style.display='block';
+  a.innerHTML=`${cl[2]} <button class="relchip" style="border-color:#F5C518;color:#F5C518" onclick="go('pblesson','${cl[3]}')">Lesson ›</button>`;
+  document.getElementById('jbtns').innerHTML=`<button class="btn ok" onclick="scoreClue(1)">Got it ✓</button><button class="btn ghost" onclick="scoreClue(0)">Missed</button>`;
+}
+function scoreClue(got){
+  const [ci,ri]=JEOS.cur, cl=JEO[ci].clues[ri];
+  if(got){JEOS.score+=cl[0]; bump('quiz'); const r=document.getElementById('jov').getBoundingClientRect(); confettiBurst(r.left+r.width/2, 120);}
+  JEOS.done[ci+'-'+ri]=1; closeJeo(); renderTrainingCards();
+}
+function closeJeo(){const o=document.getElementById('jov'); if(o)o.classList.remove('on');}
 
 const G0=50;
 function ruleTag(r){return {g:'per guest','pct25':'25% of guests','cap25':'1 per 25 guests'}[r]||null;}
@@ -1592,7 +1620,8 @@ function renderLeadership(){
     <p class="kicker">Build · Leadership</p>
     <h1 class="disp">Event Supervisor Playbook</h1>
     <p class="lead">The SET Event Supervisor manual as interactive lessons. Leading the team, pre-shift, execution, and emergencies.</p>
-    <div class="arc">${mods}</div>`;
+    <div class="arc">${mods}</div>
+    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('supervisor')">Event Supervisor ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
 }
 function renderLeadModule(mi){
   mi=+mi; const m=LEADPB[mi];
@@ -1804,7 +1833,8 @@ function renderKitchen(){
     <div class="titleblock" style="--tbcolor:var(--displayed);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Delivery</span></div>
     <div class="grid" style="margin-top:12px">${delivery.map(tile).join('')}</div>
     <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Culinary Standards</span></div>
-    <div class="grid" style="margin-top:12px">${culinary.map(tile).join('')}</div>`;
+    <div class="grid" style="margin-top:12px">${culinary.map(tile).join('')}</div>
+    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('culinary')">Culinary ›</button> <button class="relchip" onclick="openManual('leadculinary')">Lead Culinary ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
 }
 function renderPresentation(){
   const T="https://cdn.shopify.com/s/files/1/0754/7984/3015/files/";
@@ -1930,9 +1960,9 @@ function renderDriverGuide(){
 function renderManuals(){
   const rows=MANUALS.map(m=>`<div class="manual" onclick="openManual('${m[2]}')"><div><div class="rt">${m[0]} Manual</div><div class="rd">${m[1]}</div></div><span class="go">↗</span></div>`).join('');
   screen.innerHTML=`
-    <p class="kicker">Build · Service</p>
-    <h1 class="disp">Manuals &amp; SOPs</h1>
-    <p class="lead">The full Service Excellence Training manuals, built into this file. Tap to open.</p>
+    <p class="kicker">Reference · Training Manuals</p>
+    <h1 class="disp">Training Manuals</h1>
+    <p class="lead">The complete SET Service Excellence manuals — the source behind every interactive section. Each craft links its own; this is the full archive.</p>
     ${rows}
     <div class="note-inline">The complete reference manuals are embedded so they open even from the standalone file.</div>
   `;
