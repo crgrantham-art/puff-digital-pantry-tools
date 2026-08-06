@@ -1597,11 +1597,9 @@ function renderStation(id){
 
     ${pointer}
 
-    <div class="guest" data-stamp="Station Perfected ✦"><div class="gh">Is the station GUEST ready?</div>
-      <div class="gsub"><span>Run every point before you step away</span>${badge('verified','Verified framework')}</div>
+    <div class="guest" data-stamp="${badgeEmoji(s.id)} ${s.name} badge!"><div class="gh">Is the station GUEST ready?</div>
+      <div class="gsub"><span>${hasBadge(s.id)?`${badgeEmoji(s.id)} You earned the ${s.name} badge — nice work`:`Tick all five to earn the ${badgeEmoji(s.id)} ${s.name} badge`}</span>${badge('verified','Verified framework')}</div>
       ${guestItems}</div>
-
-    <div id="sbadge" class="setupbadge${hasBadge(s.id)?' earned':''}" onclick="toggleBadge('${s.id}','${s.name}')">${hasBadge(s.id)?`<span class="sbi">🏅</span><span class="sbt"><b>Setup badge earned</b><small>Tap to undo</small></span>`:`<span class="sbi">◇</span><span class="sbt"><b>Mark this station setup complete</b><small>Earn the ${s.name} badge</small></span>`}</div>
 
     <div class="tbdbox"><b>During Service &amp; Breakdown:</b> not written up yet — check back soon.</div>
     <div class="rule">Dedication ~ Quality ~ Creativity</div>
@@ -2588,26 +2586,25 @@ function stLoad(){try{return JSON.parse(localStorage.getItem(SKEY))||{};}catch(e
 function stSave(s){try{localStorage.setItem(SKEY,JSON.stringify(s));}catch(e){}}
 function todayKey(){return new Date().toISOString().slice(0,10);}
 function bump(kind){const s=stLoad();s.days=s.days||{};s.days[todayKey()]=(s.days[todayKey()]||0)+1;if(kind==='quiz')s.quiz=(s.quiz||0)+1;stSave(s);}
-function markPerfect(id){const s=stLoad();s.perf=s.perf||{};s.perf[id]=1;stSave(s);}
+function markPerfect(id){const s=stLoad();s.badges=s.badges||{};s.badges[id]=1;stSave(s);}
 function streak(){const s=stLoad();if(!s.days)return 0;let n=0,d=new Date();
   for(;;){const k=d.toISOString().slice(0,10);if(s.days[k]){n++;d.setDate(d.getDate()-1);}else break;}
   return n;}
-/* ---- Setup badges ---- */
+/* ---- Setup badges (earned by completing a station's GUEST Ready check) ---- */
+const STATION_BADGE={
+  "coffee-station":"☕","carved-turkey":"🦃","carved-ham":"🍖","carved-flank":"🥩","carved-chicken":"🍗",
+  "hot-dog-bar":"🌭","omelet":"🍳","eggs-benedict":"🥚","sundae-bar":"🍨","walking-cannoli":"🧁",
+  "byo-bowl":"🥣","pasta-bowl":"🍝","rice-krispy":"🍡","sweet-savory":"🍫","place-setting":"🍽️"
+};
+function badgeEmoji(id){return STATION_BADGE[id]||'🏅';}
 function hasBadge(id){const s=stLoad();return !!(s.badges&&s.badges[id]);}
 function badgeCount(){const s=stLoad();return s.badges?Object.keys(s.badges).length:0;}
-function setBadgeBtn(id,name){const b=document.getElementById('sbadge');if(!b)return;const on=hasBadge(id);
-  b.className='setupbadge'+(on?' earned':'');
-  b.innerHTML=on?`<span class="sbi">🏅</span><span class="sbt"><b>Setup badge earned</b><small>Tap to undo</small></span>`
-    :`<span class="sbi">◇</span><span class="sbt"><b>Mark this station setup complete</b><small>Earn the ${name} badge</small></span>`;}
-function toggleBadge(id,name){const s=stLoad();s.badges=s.badges||{};const was=!!s.badges[id];
-  if(was)delete s.badges[id];else s.badges[id]=1;stSave(s);setBadgeBtn(id,name);
-  if(!was){bump('badge');const b=document.getElementById('sbadge');if(b)celebrate(b,'BADGE EARNED');}}
 function renderBadges(){
   const earned=(stLoad().badges)||{};
   const all=STATIONS, got=all.filter(x=>earned[x.id]).length, pct=all.length?Math.round(got/all.length*100):0;
   const allDone=all.length>0&&got===all.length;
   const grid=all.map(x=>{const c=CATS[x.cat],on=!!earned[x.id];
-    return `<div class="bdg${on?' on':''}" style="--bc:${c.color}" onclick="go('station','${x.id}')"><div class="bdgm">${on?'🏅':'🔒'}</div><div class="bdgn">${x.name}</div><div class="bdgc">${c.name}</div></div>`;}).join('');
+    return `<div class="bdg${on?' on':''}" style="--bc:${c.color}" onclick="go('station','${x.id}')"><div class="bdgm">${badgeEmoji(x.id)}</div><div class="bdgn">${x.name}</div><div class="bdgc">${on?c.name:'Locked'}</div></div>`;}).join('');
   screen.innerHTML=`
    <p class="kicker">Service · Badges</p>
    <h1 class="disp">Setup Badges</h1>
@@ -2615,7 +2612,7 @@ function renderBadges(){
    <div class="bdgtop">${ringSVG(pct, allDone?'var(--displayed)':'var(--bar)')}<div><div class="bdgbig">${got} / ${all.length}</div><div class="bdgsub">stations completed</div></div></div>
    ${allDone?'<div class="famnote" style="border-color:var(--displayed)">🏆 Every station collected — you\'re a Puff setup master!</div>':''}
    <div class="bdggrid">${grid}</div>
-   <div class="bcnote">Open any station and tap <b>Mark setup complete</b> to earn its badge. Badges save on this device (they'll follow your login once accounts are live).</div>
+   <div class="bcnote">Earn a station's badge by opening it and completing the <b>GUEST Ready check</b> — tick all five points. Badges save on this device (they'll follow your login once accounts are live).</div>
    <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
   if(allDone){const s2=stLoad();if(!s2.badgeAllCel){s2.badgeAllCel=1;stSave(s2);setTimeout(()=>{const el=screen.querySelector('.bdgtop');if(el)celebrate(el,'ALL BADGES!');},250);}}
 }
@@ -2662,13 +2659,11 @@ function momentumHTML(){
   const s=stLoad(),st=streak();
   let top=null,topPct=-1,cert=0;
   ROLE_ORDER.forEach(k=>{const p=pctRole(k);if(p>=100)cert++;if(p>0&&p<100&&p>topPct){topPct=p;top=k;}});
-  const perf=s.perf?Object.keys(s.perf).length:0;
   const chips=[];
   if(st>=2)chips.push('🔥 '+st+'-day streak');
-  if(perf)chips.push('✦ '+perf+' station'+(perf>1?'s':'')+' perfected');
+  const bc=badgeCount();if(bc)chips.push('🏅 '+bc+'/'+STATIONS.length+' station badges');
   if(cert)chips.push('🎓 '+cert+' certification'+(cert>1?'s':''));
   if(s.quiz)chips.push('✓ '+s.quiz+' quiz wins');
-  const bc=badgeCount();if(bc)chips.push('🏅 '+bc+'/'+STATIONS.length+' badges');
   const chipsHTML=chips.length?`<div class="momo">${chips.map(c=>`<span class="mchip">${c}</span>`).join('')}</div>`:'';
   let card;
   if(top){const r=TRAINING[top],left=r.n-progFor(top,r.n),close=left<=3;
