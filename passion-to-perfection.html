@@ -334,6 +334,46 @@
   .ctaband .go{color:#fff;font-size:20px;}
   .qcframe{border:2.5px solid var(--frame);background:#f5f6f8;margin:8px 0 12px;box-shadow:3px 3px 0 var(--frame);}
   .qcframe iframe{width:100%;height:640px;border:0;display:block;}
+  /* Bar program calculator */
+  .bccard{border:2.5px solid var(--frame);background:#FCFCFB;padding:14px;margin-bottom:14px;}
+  .bcrow2{display:flex;gap:12px;margin-bottom:12px;}
+  .bcfield{flex:1;display:flex;flex-direction:column;gap:4px;font-size:11px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#5c574c;}
+  .bcfield input{font-family:var(--sans);font-size:18px;font-weight:700;border:2px solid var(--frame);background:var(--paper);color:var(--ink);padding:8px 10px;}
+  .bcslider{margin-bottom:10px;}
+  .bctoast{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--ink);cursor:pointer;}
+  .bcsum{display:flex;gap:8px;margin:4px 0 4px;flex-wrap:wrap;}
+  .bcstat{flex:1;min-width:66px;border:2px solid var(--frame);background:#fff;padding:9px 6px;text-align:center;}
+  .bcstat .bcnum{font-family:var(--serif);font-weight:800;font-size:23px;color:var(--charcoal);}
+  .bcstat .bcl{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);}
+  .bcgrp{font-family:var(--serif);font-weight:800;color:var(--charcoal);margin:15px 0 6px;display:flex;justify-content:space-between;align-items:baseline;border-bottom:2px solid var(--frame);padding-bottom:4px;}
+  .bcgt{font-size:12px;color:var(--muted);font-weight:600;}
+  .bcline{display:flex;align-items:baseline;gap:12px;padding:7px 2px;border-bottom:1px solid var(--hair);}
+  .bcline:last-child{border-bottom:none;}
+  .bcline .bcb{font-family:var(--serif);font-weight:800;font-size:18px;color:var(--bar);min-width:34px;text-align:right;flex:none;}
+  .bcline .bcn{font-size:14px;color:var(--ink);}
+  .bcsup{font-size:9px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:#efe9d9;padding:1px 6px;border-radius:8px;margin-left:6px;white-space:nowrap;}
+  .bcnote{font-size:11px;color:#5c574c;background:#f4efe2;padding:9px 11px;border-left:3px solid var(--charcoal);margin-bottom:14px;}
+  /* Setup badges */
+  .setupbadge{display:flex;align-items:center;gap:12px;border:2px dashed var(--frame);background:#fff;padding:12px 14px;margin:14px 0;cursor:pointer;position:relative;transition:transform .1s;}
+  .setupbadge:active{transform:scale(.99);}
+  .setupbadge .sbi{font-size:26px;flex:none;filter:grayscale(1);opacity:.6;}
+  .setupbadge .sbt{display:flex;flex-direction:column;line-height:1.3;}
+  .setupbadge .sbt b{font-family:var(--serif);font-size:14px;color:var(--ink);}
+  .setupbadge .sbt small{font-size:11px;color:var(--muted);}
+  .setupbadge.earned{border-style:solid;border-color:var(--bar);background:linear-gradient(0deg,#fff6ec,#fffdf8);}
+  .setupbadge.earned .sbi{filter:none;opacity:1;}
+  .setupbadge.earned .sbt b{color:#b8641a;}
+  .bdgtop{display:flex;align-items:center;gap:14px;border:2.5px solid var(--frame);background:#FCFCFB;padding:12px 16px;margin:6px 0 14px;}
+  .bdgtop .ringsvg{width:64px;height:64px;flex:none;}
+  .bdgbig{font-family:var(--serif);font-weight:800;font-size:26px;color:var(--charcoal);}
+  .bdgsub{font-size:12px;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;}
+  .bdggrid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:14px;}
+  .bdg{border:2px solid var(--hair);background:#faf8f3;padding:12px 10px;text-align:center;cursor:pointer;opacity:.7;}
+  .bdg.on{border-color:var(--bc);background:#fff;opacity:1;box-shadow:inset 0 0 0 1px var(--bc);}
+  .bdg .bdgm{font-size:26px;filter:grayscale(1);}
+  .bdg.on .bdgm{filter:none;}
+  .bdg .bdgn{font-family:var(--serif);font-weight:700;font-size:13px;line-height:1.25;margin-top:4px;color:var(--ink);}
+  .bdg .bdgc{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);margin-top:2px;}
   /* Guest-count scaling control */
   .gcbar{border:2px solid var(--frame);background:#FCFCFB;padding:11px 12px;margin-bottom:13px;}
   .gclabel{font-family:var(--serif);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:1px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;}
@@ -555,12 +595,11 @@ const CATS = {
 };
 const DEPTS={
   exec:{label:"Exec / Key Leadership"},
-  service:{label:"Service",roles:["server","bartender"]},
+  service:{label:"Service",roles:["server","bartender","supervisor"]},
   kitchen:{label:"Kitchen",roles:["culinary","lead"]},
   warehouse:{label:"Warehouse",roles:[]},
   salesmkt:{label:"Sales & Marketing",roles:[]},
-  admin:{label:"Admin",roles:[]},
-  leadership:{label:"Leadership",roles:["supervisor"]}
+  admin:{label:"Admin",roles:[]}
 };
 let VIEWAS="exec";
 function setViewAs(v){VIEWAS=v;stack=[{view:'home'}];render();}
@@ -1258,9 +1297,9 @@ function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
 function render(){
   const cur=stack[stack.length-1];
   backBtn.classList.toggle('show',stack.length>1);
-  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Kitchen · Culinary',culmod:'Culinary Playbook',leadership:'Build · Leadership',leadmod:'Event Supervisor',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator'};
+  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Kitchen · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Service · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Sales · Bar Calculator',barlist:'Bar · Setup Checklist'};
   crumb.textContent=map[cur.view]||'';
-  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:renderPlaybook,pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:renderCulPlaybook,culmod:()=>renderCulModule(cur.arg),leadership:renderLeadership,leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc})[cur.view]();
+  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:renderPlaybook,pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:renderCulPlaybook,culmod:()=>renderCulModule(cur.arg),leadership:renderLeadership,leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges})[cur.view]();
   if(cur.view==='home'){fillHomeFocus();fillHomeRec();}
 }
 
@@ -1297,8 +1336,7 @@ function renderBuild(){
     ["Kitchen","Culinary standards &amp; packaging","kitchen","kitchen","var(--displayed)"],
     ["Warehouse","Linen, laundry &amp; equipment","warehouse","warehouse","var(--coffee)"],
     ["Sales / Marketing","Brand &amp; client standards","salesmkt","salesmkt","var(--bar)"],
-    ["Admin","Office &amp; process standards","","admin","var(--place)"],
-    ["Leadership","Event Supervisor &amp; manager standards","leadership","leadership","var(--beverage)"]
+    ["Admin","Office &amp; process standards","","admin","var(--place)"]
   ];
   const lead=VIEWAS==='exec'?`Pick your department to reach its standards.`:`Showing standards for <b>${DEPTS[VIEWAS].label}</b>. Other departments are locked to your role.`;
   screen.innerHTML=`
@@ -1320,8 +1358,11 @@ function renderService(){
   const resources=[
     ["Station Standards","Equipment, setup &amp; GUEST Ready","stations"],
     ["Bar Glassware Setup","Racks by bar type &amp; guest count","barglass"],
+    ["Bar Setup Checklist","Full bar vs beer &amp; wine — what to pull","barlist"],
     ["P2P Playbook","Guided training · 6 modules","playbook"],
     ["P2P Jeopardy","Test yourself · study game","cards"],
+    ["Event Supervisor Playbook","Leading the team on-site","leadership"],
+    ["Setup Badges","A badge for every station setup","badges"],
     ["Videos","Setup walkthroughs",""],
     ["P2P Academy","Assessments &amp; sign-off",""]
   ];
@@ -1434,11 +1475,14 @@ function buildSearchIndex(){
    ['Training Manuals','Reference','manuals'],
    ['Delivery Driver Guide','Warehouse','driverguide'],['Linen & Laundry SOP','Warehouse','linensop'],
    ['Menu Lookbook','Kitchen · Delivery','lookbook'],['Packaging Guide','Kitchen · Delivery','packaging'],['Presentation Styles','Kitchen · Delivery','presentation'],
-   ['Culinary Playbook','Kitchen','culpb'],['Event Supervisor Playbook','Leadership','leadership'],
+   ['Culinary Playbook','Kitchen','culpb'],['Event Supervisor Playbook','Service','leadership'],
    ['Weekly Focus & Recognition','Elevate','elevate'],['Training Checklists','Deliver','deliver']
   ].forEach(p=>add(p[0],p[1],p[2],null));
   add('Bar Glassware Setup · Calculator','Bar · rocks, wine, flutes, racks','barglass',null);
+  add('Bar Setup Checklist','Bar · mixers, kit, fruit, tools, liquor','barlist',null);
+  add('Setup Badges','Service · collect, badge, gamify, complete','badges',null);
   add('Delivery Quote Calculator','Sales · delivery, quote, pricing, fee','quotecalc',null);
+  add('Bar Program Calculator','Sales · bottles, liquor, wine, quantities','barcalc',null);
   add('Brand — How We Sound (Voice)','Sales','brandguide','voice');
   add('Brand Guidelines — Look & Foundations','Sales','brandguide','look');
   STATIONS.forEach(s=>add(s.name,'Station · '+CATS[s.cat].name,'station',s.id));
@@ -1556,6 +1600,8 @@ function renderStation(id){
     <div class="guest" data-stamp="Station Perfected ✦"><div class="gh">Is the station GUEST ready?</div>
       <div class="gsub"><span>Run every point before you step away</span>${badge('verified','Verified framework')}</div>
       ${guestItems}</div>
+
+    <div id="sbadge" class="setupbadge${hasBadge(s.id)?' earned':''}" onclick="toggleBadge('${s.id}','${s.name}')">${hasBadge(s.id)?`<span class="sbi">🏅</span><span class="sbt"><b>Setup badge earned</b><small>Tap to undo</small></span>`:`<span class="sbi">◇</span><span class="sbt"><b>Mark this station setup complete</b><small>Earn the ${s.name} badge</small></span>`}</div>
 
     <div class="tbdbox"><b>During Service &amp; Breakdown:</b> not written up yet — check back soon.</div>
     <div class="rule">Dedication ~ Quality ~ Creativity</div>
@@ -1745,6 +1791,7 @@ function renderBarGlass(){
       <li>Need more? <b>Flag down your supervisor or a server</b> to bring it out <b>on a tray</b>. <b>Never</b> carry glass racks out once the event has started.</li></ul>
     </div>
     <div class="pointer" style="--pc:var(--bar)"><div class="pl"><span class="star">✦</span> Perfecting Pointer ${badge('verified','Verified')}</div><div class="pv">Always set your bar for <b>two stations</b> — so if someone jumps in to help, everything's already doubled and in reach, and service never slows.</div></div>
+    <div class="note-inline">Planning the order? The <b>Bar Program Calculator</b> turns guest count into bottles per brand. <button class="relchip" onclick="go('barcalc')">Bar Program Calculator ›</button></div>
     <div class="guest" style="margin-top:16px"><div class="gh">Is it GUEST ready?</div><div class="gsub"><span>Before doors open</span>${badge('verified','Verified framework')}</div>${guestItems}</div>
     <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
 }
@@ -1762,6 +1809,118 @@ function renderQuoteCalc(){
   try{const html=new TextDecoder().decode(Uint8Array.from(atob(QUOTE_B64),c=>c.charCodeAt(0)));document.getElementById('qcif').srcdoc=html;}
   catch(e){document.getElementById('qcif').srcdoc='<p style="font-family:sans-serif;padding:24px">Calculator unavailable in this copy.</p>';}
 }
+/* ---------- Puff Bar Program Calculator (ClickToTable consumption model) ---------- */
+const BARCALC_TIERS={
+  premium:{name:'Premium',
+    spirits:[["Vodka","Grey Goose","Bacardi",34],["Tequila","1800","Proximo",22],["Bourbon","Knob Creek","Suntory",20],["Gin","Bombay Sapphire","Bacardi",13],["Rum","Appleton","Campari",11]],
+    wines:[["Chardonnay","Hahn","",26],["Cabernet","Bonanza","Wagner",24],["Sauvignon Blanc","Dashwood","Foley",20],["Pinot Noir","Sea Sun","Wagner",20],["Rosé","Ferrari-Carano","New",10]],
+    sparkling:null},
+  house:{name:'House & Open Bar',
+    spirits:[["Vodka","Tito's","",30],["Tequila","Espolòn","Campari",20],["Bourbon","Maker's Mark","Suntory",18],["Gin","Bombay","Bacardi",12],["Rum","Bacardi","",10],["Scotch","Dewar's","",10]],
+    wines:[["House Wine","EOS","Foley",100]],
+    sparkling:["Prosecco","Ruffino","Constellation"]}
+};
+const BC={tier:'premium', guests:120, hours:5, winePct:45, toast:true};
+function bcCompute(){
+  const T=BARCALC_TIERS[BC.tier];
+  const g=Math.max(0,BC.guests||0), H=Math.max(1,BC.hours||1);
+  const perGuest=(1.0 + 0.75*(H-1))*1.10;            // ~1 drink/guest hr1, taper, +10%
+  const totalDrinks=Math.round(g*perGuest);
+  const wineDrinks=Math.round(totalDrinks*BC.winePct/100);
+  const spiritDrinks=totalDrinks-wineDrinks;
+  const WINE_YIELD=5, SPIRIT_YIELD=16, SPARK_YIELD=6;
+  const sW=T.spirits.reduce((a,s)=>a+s[3],0)||1;
+  const spirits=T.spirits.map(s=>{const d=spiritDrinks*s[3]/sW;return {cat:s[0],brand:s[1],sup:s[2],btl:Math.ceil(d/SPIRIT_YIELD)};});
+  const wW=T.wines.reduce((a,s)=>a+s[3],0)||1;
+  const wines=T.wines.map(s=>{const d=wineDrinks*s[3]/wW;return {cat:s[0],brand:s[1],sup:s[2],btl:Math.ceil(d/WINE_YIELD)};});
+  const spark=(BC.toast&&T.sparkling)?{cat:'Sparkling toast',brand:T.sparkling[1],sup:T.sparkling[2],btl:Math.ceil(g/SPARK_YIELD)}:null;
+  return {g,H,totalDrinks,spirits,wines,spark,spiritBtl:spirits.reduce((a,s)=>a+s.btl,0),wineBtl:wines.reduce((a,s)=>a+s.btl,0)};
+}
+function bcOut(){
+  const r=bcCompute();
+  const line=x=>`<div class="bcline"><span class="bcb">${x.btl}</span><span class="bcn">${x.cat} — <b>${x.brand}</b>${x.sup?`<span class="bcsup">${x.sup}</span>`:''}</span></div>`;
+  return `
+   <div class="bcsum">
+     <div class="bcstat"><div class="bcnum">${r.totalDrinks}</div><div class="bcl">total drinks</div></div>
+     <div class="bcstat"><div class="bcnum">${r.spiritBtl}</div><div class="bcl">spirit btls</div></div>
+     <div class="bcstat"><div class="bcnum">${r.wineBtl}</div><div class="bcl">wine btls</div></div>
+     ${r.spark?`<div class="bcstat"><div class="bcnum">${r.spark.btl}</div><div class="bcl">sparkling</div></div>`:''}
+   </div>
+   <div class="bcgrp">Spirits <span class="bcgt">${r.spiritBtl} btl</span></div>
+   ${r.spirits.map(line).join('')}
+   <div class="bcgrp">Wine <span class="bcgt">${r.wineBtl} btl</span></div>
+   ${r.wines.map(line).join('')}
+   ${r.spark?`<div class="bcgrp">Sparkling</div>${line(r.spark)}`:''}`;
+}
+function renderBarCalc(){
+  const T=BARCALC_TIERS[BC.tier];
+  const tabs=Object.keys(BARCALC_TIERS).map(k=>`<button class="bgtab${k===BC.tier?' on':''}" onclick="bcTier('${k}')">${BARCALC_TIERS[k].name}</button>`).join('');
+  screen.innerHTML=`
+   <div class="titleblock" style="--tbcolor:var(--charcoal)"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="color:#fff">Bar Program Calculator<small style="color:#e6e2d7">Sales &amp; Planning · bottles by brand</small></span></div>
+   <p class="lead">Estimate bottles per brand for an event. Uses the Click to Table model — about one drink per guest the first hour, tapering after, with a 10% planning cushion.</p>
+   <div class="bgtabs">${tabs}</div>
+   <div class="bccard">
+     <div class="bcrow2">
+       <label class="bcfield"><span>Guests</span><input type="number" min="0" value="${BC.guests}" oninput="bcNum('guests',this.value)"></label>
+       <label class="bcfield"><span>Hours</span><input type="number" min="1" value="${BC.hours}" oninput="bcNum('hours',this.value)"></label>
+     </div>
+     <div class="bcslider">
+       <div class="gclabel"><span>Wine vs. spirits mix</span><span class="bgcount" id="bcmix">${BC.winePct}% wine · ${100-BC.winePct}% spirits</span></div>
+       <input type="range" min="0" max="100" step="5" value="${BC.winePct}" oninput="bcWine(this.value)">
+     </div>
+     <label class="bctoast"><input type="checkbox" ${BC.toast?'checked':''} onchange="bcToast(this.checked)"> Sparkling toast (1 pour/guest)${T.sparkling?` · ${T.sparkling[1]}`:' — <em>none in Premium list</em>'}</label>
+   </div>
+   <div id="bcout">${bcOut()}</div>
+   <div class="bcnote">Yields: spirits ≈16 cocktails/750ml · wine 5 glasses/btl · sparkling 6/btl. Each brand rounds up for ordering. Slide the mix to match the crowd.</div>
+   <div class="note-inline">Setting the bar itself? <b>Bar Glassware Setup</b> gives racks by guest count. <button class="relchip" onclick="go('barglass')">Bar Glassware Setup ›</button></div>
+   <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
+}
+function bcNum(k,v){BC[k]=Math.max(0,parseInt(v,10)||0);document.getElementById('bcout').innerHTML=bcOut();}
+function bcWine(v){BC.winePct=parseInt(v,10)||0;const m=document.getElementById('bcmix');if(m)m.textContent=`${BC.winePct}% wine · ${100-BC.winePct}% spirits`;document.getElementById('bcout').innerHTML=bcOut();}
+function bcToast(c){BC.toast=!!c;document.getElementById('bcout').innerHTML=bcOut();}
+function bcTier(k){BC.tier=k;renderBarCalc();}
+/* ---------- Bar Setup Checklist (Full Bar vs Beer & Wine) ---------- */
+const BARLIST={type:'full', tier:'premium',
+  data:{
+    full:{liquor:true, beers:true,
+      mixers:["Coke","Diet Coke","Sprite","Ginger ale","Tonic Water","Club Soda","Cranberry Juice","Orange Juice","Pineapple Juice","Puff Logo'd Bottled Water","Grenadine","Sweet &amp; Sour Mix"],
+      fruit:["Limes","Lemons","Oranges","Cherries","Olives"],
+      kit:["Shaker","Strainer","Muddler","Pour Spouts","Jigger","Bar Spoon","Garnish Picks","Bitters","Simple Syrup","Red Bull †","Ginger Beer †","Wine Key ‡"]},
+    bw:{liquor:false, beers:true,
+      mixers:["Coke","Diet Coke","Sprite","Puff Logo'd Bottled Water","Sparkling Water / Perrier"],
+      fruit:["Limes","Lemons"],
+      kit:["Wine Key ‡"]}
+  },
+  tools:["Silver Ice Bin","Black plastic bin for beer &amp; wine (double-bagged, 2 trash bags)","Ice Scoops","Candles","Beverage Napkins","Stir Sticks","1–2 Plastic Pitchers","Tray Jack with cover","Football Trays with 1–2 black linens","1–2 Slim Jim garbage cans w/ black covers (double-bagged)","Bar Menu"],
+  beers:[["Domestic","Michelob Ultra"],["Import","Corona"],["Local Craft","Jai Lai"],["Hard Seltzers","—"]]
+};
+function renderBarList(){
+  const B=BARLIST, d=B.data[B.type], T=BARCALC_TIERS[B.tier];
+  const typeTabs=[['full','Full Bar'],['bw','Beer &amp; Wine']].map(x=>`<button class="bgtab${B.type===x[0]?' on':''}" onclick="blType('${x[0]}')">${x[1]}</button>`).join('');
+  const tierTabs=Object.keys(BARCALC_TIERS).map(k=>`<button class="bgtab${B.tier===k?' on':''}" onclick="blTier('${k}')">${BARCALC_TIERS[k].name}</button>`).join('');
+  const chk=t=>`<label class="checkline" onclick="toggle(this)"><input type="checkbox"><span>${t}</span></label>`;
+  const brandLine=s=>`<label class="checkline" onclick="toggle(this)"><input type="checkbox"><span><b>${s[0]}</b> — ${s[1]}${s[2]?`<span class="bcsup">${s[2]}</span>`:''}</span></label>`;
+  let sec='';
+  if(d.liquor) sec+=`<div class="bcgrp">Liquor <span class="bcgt">${T.name}</span></div>${T.spirits.map(brandLine).join('')}`;
+  sec+=`<div class="bcgrp">Wine <span class="bcgt">${T.name}</span></div>${T.wines.map(brandLine).join('')}`;
+  if(d.beers) sec+=`<div class="bcgrp">Beer</div>${B.beers.map(b=>brandLine([b[0],b[1],''])).join('')}`;
+  sec+=`<div class="bcgrp">Mixers</div>${d.mixers.map(chk).join('')}`;
+  sec+=`<div class="bcgrp">Bar Fruit</div>${d.fruit.map(chk).join('')}`;
+  sec+=`<div class="bcgrp">Bar Kit</div>${d.kit.map(chk).join('')}`;
+  sec+=`<div class="bcgrp">Tools &amp; Equipment</div>${B.tools.map(chk).join('')}`;
+  screen.innerHTML=`
+   <div class="titleblock" style="--tbcolor:var(--bar)"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext">Bar Setup Checklist<small>What to pull for the bar</small></span></div>
+   <p class="lead">Everything the bar needs, by type. Check items off as you pull them. Liquor &amp; wine brands follow the chosen program.</p>
+   <div class="bgtabs">${typeTabs}</div>
+   <div class="bgtabs" style="margin-top:0">${tierTabs}</div>
+   ${d.liquor?'':'<div class="famnote">Beer &amp; Wine bar — no liquor and no cocktail kit (wine key only).</div>'}
+   ${sec}
+   <div class="bcnote">† Red Bull &amp; Ginger Beer begin October 1, 2026.  ‡ Wine key is a self-provided uniform requirement.  Specialty / signature-drink mixers, garnishes &amp; a caraffe are event-specific — check the SEO.</div>
+   <div class="note-inline">Bottle counts? <button class="relchip" onclick="go('barcalc')">Bar Program Calculator ›</button>  Glassware? <button class="relchip" onclick="go('barglass')">Bar Glassware Setup ›</button></div>
+   <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
+}
+function blType(t){BARLIST.type=t;renderBarList();window.scrollTo(0,0);}
+function blTier(k){BARLIST.tier=k;renderBarList();}
 const CULPB=[
   {m:"C1",title:"Presence & Presentation",topics:["Uniforms & Hygiene"]},
   {m:"C2",title:"Sanitation & Food Safety",topics:["Food Safety & Temperatures"]},
@@ -1773,12 +1932,13 @@ const CULPB=[
   {m:"C8",title:"Break Down & Load Up",topics:["Kitchen Breakdown"]}
 ];
 function renderCulPlaybook(){
-  const mods=CULPB.map((m,i)=>`<div class="node active" onclick="go('culmod',${i})"><div class="num" style="font-size:15px">${m.m}</div><div><div class="nt">${m.title}</div><div class="ns">${m.topics.length} lesson${m.topics.length>1?'s':''}</div></div><span class="go">›</span></div>`).join('');
+  const mods=CULPB.map((m,i)=>({m,i})).filter(x=>x.i!==6).map(({m,i})=>`<div class="node active" onclick="go('culmod',${i})"><div class="num" style="font-size:15px">${m.m}</div><div><div class="nt">${m.title}</div><div class="ns">${m.topics.length} lesson${m.topics.length>1?'s':''}</div></div><span class="go">›</span></div>`).join('');
   screen.innerHTML=`
     <p class="kicker">Build · Kitchen</p>
     <h1 class="disp">Culinary Playbook</h1>
-    <p class="lead">The SET Culinary manual as interactive lessons — eight modules. Food safety, hygiene, HACCP, and execution.</p>
-    <div class="arc">${mods}</div>`;
+    <p class="lead">The SET Culinary manual as interactive lessons. Hygiene, kitchen equipment, station execution, and breakdown.</p>
+    <div class="arc">${mods}</div>
+    <div class="note-inline">Food safety &amp; HACCP live under <button class="relchip" onclick="go('culmod','6')">Kitchen · Food Safety ›</button></div>`;
 }
 function renderCulModule(mi){
   mi=+mi; const m=CULPB[mi];
@@ -1802,9 +1962,9 @@ const LEADPB=[
 function renderLeadership(){
   const mods=LEADPB.map((m,i)=>`<div class="node active" onclick="go('leadmod',${i})"><div class="num" style="font-size:15px">${m.m}</div><div><div class="nt">${m.title}</div><div class="ns">${m.topics.length} lesson${m.topics.length>1?'s':''}</div></div><span class="go">›</span></div>`).join('');
   screen.innerHTML=`
-    <p class="kicker">Build · Leadership</p>
+    <p class="kicker">Build · Service</p>
     <h1 class="disp">Event Supervisor Playbook</h1>
-    <p class="lead">The SET Event Supervisor manual as interactive lessons. Leading the team, pre-shift, execution, and emergencies.</p>
+    <p class="lead">Event Supervisors are senior service staff. The SET Event Supervisor manual as interactive lessons — leading the team, pre-shift, execution, and emergencies.</p>
     <div class="arc">${mods}</div>
     <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('supervisor')">Event Supervisor ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
 }
@@ -1846,7 +2006,7 @@ function renderLinenSOP(){
     <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
 }
 function renderSalesMkt(){
-  const res=[["Brand Guidelines","Purpose, voice, color, type &amp; logo","brandguide"],["Delivery Quote Calculator","Confirm the flat rate or recommend a quote","quotecalc"],["Proposal Standards","Client-facing decks",""],["Client Communication","Email &amp; tone",""],["Social &amp; Marketing","Channels &amp; assets",""]];
+  const res=[["Brand Guidelines","Purpose, voice, color, type &amp; logo","brandguide"],["Bar Program Calculator","Bottles per brand by guest count","barcalc"],["Delivery Quote Calculator","Confirm the flat rate or recommend a quote","quotecalc"],["Proposal Standards","Client-facing decks",""],["Client Communication","Email &amp; tone",""],["Social &amp; Marketing","Channels &amp; assets",""]];
   screen.innerHTML=`
     <p class="kicker">Build · Sales &amp; Marketing</p>
     <h1 class="disp">Sales &amp; Marketing</h1>
@@ -2008,10 +2168,10 @@ function renderLookbook(){
 }
 function renderKitchen(){
   const tile=r=>r[2]
-    ? `<div class="tile active" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
+    ? `<div class="tile active" onclick="go('${r[2]}'${r[3]?`,'${r[3]}'`:''})"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
     : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
   const delivery=[["Menu Lookbook","What every item should look like","lookbook"],["Packaging Guide","How every item is packed &amp; labeled","packaging"],["Presentation Styles","Standard · Enhanced · Elevated","presentation"]];
-  const culinary=[["Culinary Playbook","Food safety, HACCP &amp; execution","culpb"],["Kitchen Set-Up","Onsite kitchen &amp; equipment",""],["Food Safety","HACCP &amp; handling","culpb"]];
+  const culinary=[["Culinary Playbook","Prep, stations &amp; execution","culpb"],["Kitchen Set-Up","Onsite kitchen &amp; equipment",""],["Food Safety","HACCP, cooling &amp; hand-washing","culmod","6"]];
   screen.innerHTML=`
     <p class="kicker">Build · Kitchen</p>
     <h1 class="disp">Kitchen Craft</h1>
@@ -2432,6 +2592,33 @@ function markPerfect(id){const s=stLoad();s.perf=s.perf||{};s.perf[id]=1;stSave(
 function streak(){const s=stLoad();if(!s.days)return 0;let n=0,d=new Date();
   for(;;){const k=d.toISOString().slice(0,10);if(s.days[k]){n++;d.setDate(d.getDate()-1);}else break;}
   return n;}
+/* ---- Setup badges ---- */
+function hasBadge(id){const s=stLoad();return !!(s.badges&&s.badges[id]);}
+function badgeCount(){const s=stLoad();return s.badges?Object.keys(s.badges).length:0;}
+function setBadgeBtn(id,name){const b=document.getElementById('sbadge');if(!b)return;const on=hasBadge(id);
+  b.className='setupbadge'+(on?' earned':'');
+  b.innerHTML=on?`<span class="sbi">🏅</span><span class="sbt"><b>Setup badge earned</b><small>Tap to undo</small></span>`
+    :`<span class="sbi">◇</span><span class="sbt"><b>Mark this station setup complete</b><small>Earn the ${name} badge</small></span>`;}
+function toggleBadge(id,name){const s=stLoad();s.badges=s.badges||{};const was=!!s.badges[id];
+  if(was)delete s.badges[id];else s.badges[id]=1;stSave(s);setBadgeBtn(id,name);
+  if(!was){bump('badge');const b=document.getElementById('sbadge');if(b)celebrate(b,'BADGE EARNED');}}
+function renderBadges(){
+  const earned=(stLoad().badges)||{};
+  const all=STATIONS, got=all.filter(x=>earned[x.id]).length, pct=all.length?Math.round(got/all.length*100):0;
+  const allDone=all.length>0&&got===all.length;
+  const grid=all.map(x=>{const c=CATS[x.cat],on=!!earned[x.id];
+    return `<div class="bdg${on?' on':''}" style="--bc:${c.color}" onclick="go('station','${x.id}')"><div class="bdgm">${on?'🏅':'🔒'}</div><div class="bdgn">${x.name}</div><div class="bdgc">${c.name}</div></div>`;}).join('');
+  screen.innerHTML=`
+   <p class="kicker">Service · Badges</p>
+   <h1 class="disp">Setup Badges</h1>
+   <p class="lead">Earn a badge each time you complete a station setup. ${allDone?'You collected them all — legend. 🏆':`Collect all ${all.length}.`}</p>
+   <div class="bdgtop">${ringSVG(pct, allDone?'var(--displayed)':'var(--bar)')}<div><div class="bdgbig">${got} / ${all.length}</div><div class="bdgsub">stations completed</div></div></div>
+   ${allDone?'<div class="famnote" style="border-color:var(--displayed)">🏆 Every station collected — you\'re a Puff setup master!</div>':''}
+   <div class="bdggrid">${grid}</div>
+   <div class="bcnote">Open any station and tap <b>Mark setup complete</b> to earn its badge. Badges save on this device (they'll follow your login once accounts are live).</div>
+   <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
+  if(allDone){const s2=stLoad();if(!s2.badgeAllCel){s2.badgeAllCel=1;stSave(s2);setTimeout(()=>{const el=screen.querySelector('.bdgtop');if(el)celebrate(el,'ALL BADGES!');},250);}}
+}
 function confettiBurst(cx,cy){
   const cols=['#E2A9F1','#FF3131','#7ED957','#B8912E','#5170FF','#FF751F','#38B6FF'];
   for(let i=0;i<26;i++){const d=document.createElement('div');d.className='cfx';
@@ -2481,6 +2668,7 @@ function momentumHTML(){
   if(perf)chips.push('✦ '+perf+' station'+(perf>1?'s':'')+' perfected');
   if(cert)chips.push('🎓 '+cert+' certification'+(cert>1?'s':''));
   if(s.quiz)chips.push('✓ '+s.quiz+' quiz wins');
+  const bc=badgeCount();if(bc)chips.push('🏅 '+bc+'/'+STATIONS.length+' badges');
   const chipsHTML=chips.length?`<div class="momo">${chips.map(c=>`<span class="mchip">${c}</span>`).join('')}</div>`:'';
   let card;
   if(top){const r=TRAINING[top],left=r.n-progFor(top,r.n),close=left<=3;
