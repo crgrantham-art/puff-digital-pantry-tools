@@ -353,6 +353,13 @@
   .bcline .bcn{font-size:14px;color:var(--ink);}
   .bcsup{font-size:9px;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);background:#efe9d9;padding:1px 6px;border-radius:8px;margin-left:6px;white-space:nowrap;}
   .bcnote{font-size:11px;color:#5c574c;background:#f4efe2;padding:9px 11px;border-left:3px solid var(--charcoal);margin-bottom:14px;}
+  /* SEC / Sales Operations */
+  .flag{display:flex;gap:9px;align-items:flex-start;background:#fff6ec;border:1.5px solid var(--bar);border-left-width:4px;padding:9px 12px;margin:10px 0 4px;font-size:12.5px;line-height:1.4;color:#5c4a36;}
+  .flag .flagi{color:var(--bar);font-size:15px;flex:none;line-height:1.3;}
+  .flag b{color:#b8641a;}
+  .sday{display:flex;gap:10px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--hair);font-size:13px;line-height:1.45;}
+  .sday:last-child{border-bottom:none;}
+  .sday .sdd{flex:none;width:34px;font-family:var(--serif);font-weight:800;color:var(--charcoal);font-size:13px;}
   /* Setup badges */
   .setupbadge{display:flex;align-items:center;gap:12px;border:2px dashed var(--frame);background:#fff;padding:12px 14px;margin:14px 0;cursor:pointer;position:relative;transition:transform .1s;}
   .setupbadge:active{transform:scale(.99);}
@@ -1289,9 +1296,9 @@ function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
 function render(){
   const cur=stack[stack.length-1];
   backBtn.classList.toggle('show',stack.length>1);
-  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Kitchen · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Service · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Sales · Bar Calculator',barlist:'Bar · Setup Checklist'};
+  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Kitchen · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Service · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Sales · Bar Calculator',barlist:'Bar · Setup Checklist'};
   crumb.textContent=map[cur.view]||'';
-  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:renderPlaybook,pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:renderCulPlaybook,culmod:()=>renderCulModule(cur.arg),leadership:renderLeadership,leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges})[cur.view]();
+  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:renderPlaybook,pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:renderCulPlaybook,culmod:()=>renderCulModule(cur.arg),leadership:renderLeadership,leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg)})[cur.view]();
   if(cur.view==='home'){fillHomeFocus();fillHomeRec();}
 }
 
@@ -1472,6 +1479,9 @@ function buildSearchIndex(){
   ].forEach(p=>add(p[0],p[1],p[2],null));
   add('Bar Glassware Setup · Calculator','Bar · rocks, wine, flutes, racks','barglass',null);
   add('Bar Setup Checklist','Bar · mixers, kit, fruit, tools, liquor','barlist',null);
+  add('SEC / Sales Operations','Sales · SEO, proposals, payments, staffing','salesops','process');
+  add('SEO Ready-to-Post Checklist','Sales · Caterease, tax, titles','salesops','seo');
+  add('Venue Notes','Sales · setup times, tables, kitchens','salesops','venues');
   add('Setup Badges','Service · collect, badge, gamify, complete','badges',null);
   add('Delivery Quote Calculator','Sales · delivery, quote, pricing, fee','quotecalc',null);
   add('Bar Program Calculator','Sales · bottles, liquor, wine, quantities','barcalc',null);
@@ -1995,7 +2005,7 @@ function renderLinenSOP(){
     <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
 }
 function renderSalesMkt(){
-  const res=[["Brand Guidelines","Purpose, voice, color, type &amp; logo","brandguide"],["Bar Program Calculator","Bottles per brand by guest count","barcalc"],["Delivery Quote Calculator","Confirm the flat rate or recommend a quote","quotecalc"],["Proposal Standards","Client-facing decks",""],["Client Communication","Email &amp; tone",""],["Social &amp; Marketing","Channels &amp; assets",""]];
+  const res=[["Brand Guidelines","Purpose, voice, color, type &amp; logo","brandguide"],["SEC / Sales Operations","Process, SEO build, money &amp; venues","salesops"],["Bar Program Calculator","Bottles per brand by guest count","barcalc"],["Delivery Quote Calculator","Confirm the flat rate or recommend a quote","quotecalc"],["Proposal Standards","Client-facing decks",""],["Client Communication","Email &amp; tone",""],["Social &amp; Marketing","Channels &amp; assets",""]];
   screen.innerHTML=`
     <p class="kicker">Build · Sales &amp; Marketing</p>
     <h1 class="disp">Sales &amp; Marketing</h1>
@@ -2006,6 +2016,172 @@ function renderSalesMkt(){
         : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`
       ).join('')}
     </div>`;
+}
+/* ---------- SEC / Sales Operations guide (from Tampa SEC docs, made location-neutral) ---------- */
+function sopFlag(t){return `<div class="flag"><span class="flagi">⚠</span><div><b>Confirm per market</b> — ${t}</div></div>`;}
+function sopChk(a){return a.map(t=>`<label class="checkline" onclick="toggle(this)"><input type="checkbox"><span>${t}</span></label>`).join('');}
+function sopUL(a){return `<ul class="stdlist">${a.map(t=>`<li>${t}</li>`).join('')}</ul>`;}
+function sopBlock(t,badgeHTML,body){return `<div class="block"><div class="bh"><span class="bt">${t}</span>${badgeHTML||''}</div>${body}</div>`;}
+const SOPS_TABS=[['process','Process'],['seo','Build the SEO'],['food','Food &amp; Staff'],['money','Bar &amp; Money'],['setup','Setup &amp; Linen'],['venues','Venues'],['onboard','Onboarding']];
+function sopBody(tab){
+  const V='From SEC docs', src=badge('review',V);
+  if(tab==='process') return `
+    ${sopBlock('The event lifecycle',src,sopUL([
+      'Inquiry → initial call → email → build proposal → tasting (if needed) → client confirms → send SEO to client → receive final info ~14 days prior → update &amp; send + payment link → maintain contact → post to Kitchen, Service &amp; Warehouse (10–14 days out).',
+      'Add <b>every</b> inquiry to Prospect Manager with full contact info (email, phone, initial details), forecasted menu pricing and required staffing — so it shows in SEP forecasting reports.'
+    ]))}
+    ${sopBlock('Weekly rhythm',src,
+      `<div class="sday"><span class="sdd">Mon</span><div>Cost summary (prior week) · note planner re: expense receipts · thank-you emails to weekend clients · check weekend-prior &amp; upcoming-week balances · run booked-events query. Run 14-day query (tentative vs definite) — compare to what&#39;s posted, reach out for finals due in 14 days, flag outstanding payments.</div></div>
+       <div class="sday"><span class="sdd">Tue</span><div>Check boards for production paperwork.</div></div>
+       <div class="sday"><span class="sdd">Wed</span><div>Verify all info in the production week · reach out to clients for final details (guest count, tables/linens, staging, décor color).</div></div>
+       <div class="sday"><span class="sdd">Thu</span><div>Check payment query for the upcoming weekend (Fri–Mon) · check tax for the production period.</div></div>
+       <div class="sday"><span class="sdd">Fri</span><div>Final production review for missing info (check related files) · thank-you emails for the week.</div></div>
+       <div class="concept muted" style="margin-top:8px">Also run a <b>30-day</b> tentative &amp; definite query to check status with the SEP.</div>`)}
+    ${sopBlock('Coordinator best practices',src,sopUL([
+      'At the <b>3-week mark</b>, confirm you have: timelines, floorplans, guaranteed headcount, and 100% payment received.',
+      'Confirm upcoming tastings the week prior — time, location, number attending, allergies.',
+      'Any rentals on an event → alert your SEP, get a quote, and follow up with the vendor to book.',
+      'Mileage &amp; expense reports done in the month they occur.'
+    ]))}
+    ${sopFlag('Expense approvals name an approver and cc list (Tampa: Lauren signs; cc SEP, Chrissy &amp; accounting; keep hard copies). Confirm the Orlando approver.')}`;
+  if(tab==='seo') return `
+    ${sopBlock('Create it in Caterease',src,sopUL([
+      '<b>Prospect Manager</b> → green + → enter name, date, phone, email, event type. Add contact via the green + on the right.',
+      '<b>New Event</b> → green + → Yes → fill the party name and all red (required) fields. Business type: pickup, delivery, or full-service.',
+      '<b>Notes:</b> staging, equipment, parking, any house info (kitchen use), and details the planner didn&#39;t include.',
+      '<b>Event Details → General:</b> description, type, service style, event times (arrival/departure).',
+      '<b>Event Details → Site:</b> type the venue name/address. If it&#39;s a known venue, pull it from the system (its info is already in place).',
+      'Add an allergy: Tools → Allergy Info → type → close → save.'
+    ]))}
+    ${sopBlock('Is your SEO ready to post?',badge('verified','Checklist'),
+      `<div class="concept muted" style="margin-bottom:6px">Tick each before posting.</div>`+sopChk([
+      'Tax rate — event <b>site county</b> confirmed (not the primary schedule)',
+      'Signed contract attached',
+      'Tax-exempt certificate on file (if exempt)',
+      'Serviceware pulled for all categories (HOD, buffet, dessert)',
+      'Titles include times, locations &amp; number of stations/bars — descriptions written',
+      'Arrival/departure times set (2–3 hr weddings · 1–2 hr corporate/social · 1 hr departure)',
+      'Pre-set water · BOH tables or tent as needed',
+      'Timeline complete (weddings)',
+      'Staff quantified &amp; hours; leads adjusted; staff meals if anyone works 6+ hrs',
+      'Vendor meals with times &amp; vendor contact info; arrival/pickup in the timeline',
+      'Tables, linen &amp; décor accents included',
+      'Signature cocktail recipes',
+      'Balance due · parking notes for staff and the Puff truck',
+      'Diagrams: 2 copies for packs, attached in CE, sent to client for approval',
+      'Fonts all matching']))}
+    ${sopFlag('Tax county is location-specific — always assign the event&#39;s county and check the correct %, never the primary schedule.')}`;
+  if(tab==='food') return `
+    ${sopBlock('Portions &amp; quantities',src,sopUL([
+      'Butler passed (BP): <b>1 pp</b> · Buffet (BUF): <b>1.5–2 pp</b>',
+      'Entrées: 4 oz buffet (two proteins) · 8 oz plated (one protein) · 4 oz plated (two proteins)',
+      'Starches/veggies: tied to guest count; ~0.75 each when there are two',
+      'Buffet order: <b>bread → salad → veggie → starch → entrée</b>',
+      '(16) 8 oz cups per gallon',
+      'Serving ice cream → add <b>dry ice</b> to the SEO',
+      'Holding vessels: buffet 2 ft per food item + 2 ft for serviceware · 3 QT chafing dish · heat lamp · cold/room-temp platters'
+    ]))}
+    ${sopBlock('Staffing',src,
+      `<div class="soph">Roles</div>`+sopUL([
+      '<b>Supervisor</b> — runs the staff; ensures setup is correct and on time',
+      '<b>Super/Cul</b> — small events one person can set up &amp; cook',
+      '<b>Lead Chef</b> — cooks all food, mans the BOH',
+      '<b>Event Chef</b> — assists the lead in the BOH',
+      '<b>Floor Chef</b> — client-facing; chef-attended / carving'])+
+      `<div class="soph" style="margin-top:8px">Ratios</div>`+sopUL([
+      'Servers — plated: <b>1 per 12</b> · buffet: <b>1 per 25–50</b> (depends on event/food)',
+      'Action stations require a <b>floor chef</b>',
+      'Bartenders per bar']))}`;
+  if(tab==='money') return `
+    ${sopBlock('Bar &amp; alcohol',src,sopUL([
+      'Cash bars: <b>$300</b> stocking fee · 1 cashier per bartender · <b>$500 minimum</b> (client covers any shortfall — e.g. spends $450, owes $50)',
+      'Signature cocktail recipes go in the SEO'
+    ]))}
+    ${sopFlag('Client alcohol drop-offs use a named contact &amp; hours (Tampa: Steve, M–Th 9 am–12 &amp; 1–4 pm, except lunch 12–12:30; needs a drop-off sheet &amp; inventory). Confirm the Orlando contact/hours.')}
+    ${sopBlock('Deposits &amp; payments',src,sopUL([
+      'Secure deposit: <b>15% or $1,000</b>, whichever is greater · <b>50%</b> if booked late',
+      '50% due <b>60 days</b> out (30 days if booked late)',
+      'Balance due <b>10 days</b> out (unless booked last-minute)'
+    ]))}
+    ${sopFlag('The training doc phrases this as &quot;all events paid 10–14 days in advance unless approved,&quot; while Things to Know says &quot;balance due 10 days out.&quot; Confirm the exact rule so both markets match.')}
+    ${sopBlock('Tax, exemptions &amp; costing',src,sopUL([
+      'Assign every event to a <b>county</b> (not the primary schedule) and check the correct sales-tax %',
+      'Tax-exempt: current certificate on the account, added under tax rates in Caterease; W-9 on file',
+      'Cost summaries: Event Subprints → print PDF → highlight product(s) → print invoice → scan, save &amp; send to <b>AP@puffnstuff.com</b>; place summaries in the calendar',
+      'Month-end: labor &amp; venue commission, plus venue billing'
+    ]))}
+    ${sopBlock('Fees &amp; extras',src,sopUL([
+      'F&amp;B linens (bars, buffet, stations): <b>no charge</b> — black, white or ivory only; special colors are extra',
+      'Delivery: base <b>$50</b> (see the Delivery SOP / quote calculator)',
+      '10×10 pop-up tent: <b>$40</b> — pull whenever staging outside to protect food; <b>do not charge</b> if it&#39;s for staging',
+      'Special elevations, décor or uniforms: SEP/SEC pull from the warehouse, print a cart tag, place on/near the shelf for the supervisor',
+      'COI needed → send to the insurance contact → IOA (Insurance Office of America)'
+    ]))}
+    ${sopFlag('COI contact is a named person (Tampa: Al). Confirm the Orlando contact.')}`;
+  if(tab==='setup') return `
+    ${sopBlock('Linen sizing',src,
+      `<table class="ltbl"><thead><tr><th>Table</th><th>Linen</th></tr></thead><tbody>
+      <tr><td>6 ft</td><td>90&quot; × 132&quot;</td></tr>
+      <tr><td>8 ft</td><td>90&quot; × 156&quot;</td></tr>
+      <tr><td>Cocktail table</td><td>132&quot; with sash</td></tr>
+      <tr><td>48&quot; round</td><td>108&quot; round</td></tr>
+      <tr><td>60&quot; round</td><td>120&quot; round</td></tr>
+      <tr><td>72&quot; round</td><td>132&quot; round</td></tr></tbody></table>`)}
+    ${sopBlock('Station tables &amp; linens',src,
+      `<table class="ltbl"><thead><tr><th>Station</th><th>Tables</th></tr></thead><tbody>
+      <tr><td>Bar</td><td>6 ft + 6 ft bar top + 6 ft deacon · 3 linens</td></tr>
+      <tr><td>Coffee</td><td>6 ft · 1 linen</td></tr>
+      <tr><td>Gourmet coffee</td><td>8 ft · 1 linen</td></tr>
+      <tr><td>Water / lemonade / iced tea</td><td>6–8 ft · 1 linen</td></tr>
+      <tr><td>Chef-attended</td><td>6 ft + 6 ft deacon</td></tr>
+      <tr><td>Culinary work table</td><td>1–4 × 6 ft</td></tr>
+      <tr><td>Breakdown</td><td>6 ft</td></tr></tbody></table>`)}
+    ${sopBlock('Table dimensions',src,sopUL(['6 ft table: 30&quot;H × 30&quot;W × 72&quot;L','8 ft table: 30&quot;H × 30&quot;W × 96&quot;L']))}
+    <div class="note-inline">Full washing, pressing &amp; napkin standards: <button class="relchip" onclick="go('linensop')">Linen &amp; Laundry SOP ›</button></div>`;
+  if(tab==='venues') return `
+    <div class="famnote">This venue list is the <b>Orlando / Central FL</b> set from the source docs. ⚠ A <b>Tampa</b> venue list is still needed to complete both markets.</div>
+    ${sopBlock('Venue notes',src,sopUL([
+      '<b>Venue 1902:</b> 3 hr set-up (kitchen on 2nd floor). No linen or bar tops for bars. Send oven, no elevator access. Attended buffet per venue.',
+      '<b>The Balcony Orlando:</b> 3 hr set-up (load-in). Provide all tables &amp; chairs.',
+      '<b>Venue 650:</b> 1:30 drive time (Winter Haven, ~50 mi).',
+      '<b>Leu Gardens:</b> site name &quot;Harry P. Leu Gardens.&quot; Full kitchen, 6 ft tables, 60&quot; &amp; 72&quot; rounds. Notify Accounting the month of an event here.',
+      '<b>Paradise Cove:</b> offers to fill a canoe ~$120; confirm if the venue provides ice. Tiki bar &amp; wooden cocktail tables need no linen.',
+      '<b>Winter Park Farmer&#39;s Market:</b> one oven — suggest cold/room-temp items.',
+      '<b>Orlando Science Center:</b> 2:30 set-up; no access until 4:00 pm (crew no earlier than 3:30). No staging in the Dino Dig room. Park on the 2nd floor of the garage. OSC provides tables &amp; chairs; cocktail tables can&#39;t be tied.',
+      '<b>Oviedo Cultural Center:</b> provides all tables &amp; chairs.',
+      '<b>Crystal Ballroom at the Veranda:</b> handles all bar arrangements &amp; bartenders; on-site staff, so fewer of ours.',
+      '<b>Lake Mary Crystal Ballroom:</b> bring buffet equipment &amp; linen.',
+      '<b>Lake Mary Event Center:</b> provides guest, buffet &amp; bar tables; bring linen &amp; bar tops.',
+      '<b>Siena:</b> set food/desserts on the existing counter (kitchen island); bring tables for bars/beverage.',
+      '<b>Tavares Pavilion on the Lake:</b> round tables for guests, a few 6 ft for food, existing bar (2nd floor); may need tables for an outside/1st-floor bar.',
+      '<b>The Estate on the Halifax:</b> venue pays the event SEO by check on event date. Pull pop-up tent, 3 extension cords, 1 power strip. Venue provides guest tables &amp; linen; PNS provides napkins.',
+      '<b>Winter Park Event Center:</b> no plastic — biodegradable only. Provides 8 ft, 60&quot; round &amp; tall cocktail (inside use only).',
+      '<b>Haus 820:</b> full catering kitchen with oven.'
+    ]))}`;
+  if(tab==='onboard') return `
+    ${sopBlock('New coordinator onboarding',src,
+      `<div class="soph">Leads</div>`+sopUL(['How lead rotation is handled (list + tracker) and which lead types go to whom','Where leads come from · new business to conquer'])+
+      `<div class="soph" style="margin-top:8px">Proposals</div>`+sopUL(['Build the proposal in event order; post to self, Chef, Ops &amp; WH','Contract &amp; terms (deposit, 50%, final) and when details are due','Setting up a tasting; revisions to proposals/contracts; initial shells'])+
+      `<div class="soph" style="margin-top:8px">Events &amp; posting</div>`+sopUL(['Posting colors — everyone gets everything and all revisions','Production meeting &amp; the revisions email'])+
+      `<div class="soph" style="margin-top:8px">Money</div>`+sopUL(['Payment schedule &amp; process · CC payment links · phone payments','Term clients · gratuity · costing summaries','Tax-exempt forms &amp; W-9 in file and CE · check the county % (not primary)','Month-end: labor &amp; venue commission, venue billing'])+
+      `<div class="soph" style="margin-top:8px">Tentatives &amp; calendar</div>`+sopUL(['Follow up on tentatives every week','Calendar &amp; appointments · monthly expense/mileage before month-end'])+
+      `<div class="soph" style="margin-top:8px">Miscellaneous</div>`+sopUL(['Shared drive location · our venues, partnerships &amp; exclusives','Nowsta (clock in/out, lunch) · staffing basics · marketing basics','Menus binder + CE tree · phones/extensions · business cards · printer setup · Design Center · Caterease settings &amp; filters']))}
+    ${sopFlag('This outline names market contacts (staffing, marketing, design, insurance, expense approvals). Confirm the Orlando equivalents when merging.')}`;
+  return '';
+}
+function renderSalesOps(tab){
+  const keys=SOPS_TABS.map(x=>x[0]);
+  tab=keys.includes(tab)?tab:'process';
+  const tabs=SOPS_TABS.map(x=>`<button class="bgtab${x[0]===tab?' on':''}" onclick="go('salesops','${x[0]}')">${x[1]}</button>`).join('');
+  screen.innerHTML=`
+    <p class="kicker">Build · Sales &amp; Marketing</p>
+    <h1 class="disp">SEC / Sales Operations</h1>
+    <p class="lead">The Sales Event Coordinator playbook — one consistent reference for both markets. ⚠ flags mark <b>location-specific</b> items to confirm for Orlando.</p>
+    <div class="flag" style="margin-bottom:12px"><span class="flagi">⚠</span><div><b>To finish the Tampa + Orlando merge, confirm:</b> alcohol drop-off contact/hours · tax counties · COI contact · expense approver · staffing/marketing/design contacts · and the venue list (Orlando shown; Tampa needed).</div></div>
+    <div class="bgtabs" style="flex-wrap:wrap;gap:5px">${tabs}</div>
+    ${sopBody(tab)}
+    <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
+  window.scrollTo(0,0);
 }
 function renderBrandGuide(tab){
   const B=BRAND;
