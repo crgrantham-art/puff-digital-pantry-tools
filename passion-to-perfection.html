@@ -1296,9 +1296,9 @@ function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
 function render(){
   const cur=stack[stack.length-1];
   backBtn.classList.toggle('show',stack.length>1);
-  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Kitchen · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Service · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Sales · Bar Calculator',barlist:'Bar · Setup Checklist'};
+  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Kitchen · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Service · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Bar · Program Calculator',barlist:'Bar · Setup Checklist',bar:'Build · Bar'};
   crumb.textContent=map[cur.view]||'';
-  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:renderPlaybook,pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:renderCulPlaybook,culmod:()=>renderCulModule(cur.arg),leadership:renderLeadership,leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg)})[cur.view]();
+  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:renderPlaybook,pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:renderCulPlaybook,culmod:()=>renderCulModule(cur.arg),leadership:renderLeadership,leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg),bar:renderBarHub})[cur.view]();
   if(cur.view==='home'){fillHomeFocus();fillHomeRec();}
 }
 
@@ -1332,6 +1332,7 @@ function renderHome(){
 function renderBuild(){
   const crafts=[
     ["Service","Stations, service &amp; setup standards","service","service","var(--chef)"],
+    ["Bar","Calculators &amp; checklists for the bar","bar","all","var(--bar)"],
     ["Kitchen","Culinary standards &amp; packaging","kitchen","kitchen","var(--displayed)"],
     ["Warehouse","Linen, laundry &amp; equipment","warehouse","warehouse","var(--coffee)"],
     ["Sales / Marketing","Brand &amp; client standards","salesmkt","salesmkt","var(--bar)"],
@@ -1344,7 +1345,7 @@ function renderBuild(){
     <p class="lead">${lead}</p>
     <div class="grid">
       ${crafts.map(c=>{
-        const mine=VIEWAS==='exec'||VIEWAS===c[3];
+        const mine=VIEWAS==='exec'||c[3]==='all'||VIEWAS===c[3];
         if(!mine)return `<div class="tile locked"><div><div class="tt">${c[0]}</div><div class="td">Not your department</div></div><span class="lockmk">🔒</span></div>`;
         if(c[2])return `<div class="tile active" style="--tc:${c[4]}" onclick="go('${c[2]}')"><div><div class="tt">${c[0]}</div><div class="td">${c[1]}</div></div>${badge('active','Live')}</div>`;
         return `<div class="tile planned"><div><div class="tt">${c[0]}</div><div class="td">${c[1]}</div></div>${badge('plan',VIEWAS==='exec'?'Planned':'Your dept · soon')}</div>`;
@@ -1353,11 +1354,24 @@ function renderBuild(){
   `;
 }
 
+function renderBarHub(){
+  const tiles=[
+    ["Bar Program Calculator","Bottles per brand by guest count &amp; hours","barcalc"],
+    ["Bar Glassware Setup","Racks by bar type &amp; guest count","barglass"],
+    ["Bar Setup Checklist","Full bar vs beer &amp; wine — what to pull","barlist"]
+  ];
+  screen.innerHTML=`
+    <p class="kicker">Build · Bar</p>
+    <h1 class="disp">Bar</h1>
+    <p class="lead">Everything for planning and setting the bar, in one place — order the right bottles, set the glassware, and pull the checklist.</p>
+    <div class="grid">
+      ${tiles.map(r=>`<div class="tile active" style="--tc:var(--bar);grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`).join('')}
+    </div>
+    <div class="note-inline">Bar standards &amp; the AIS inventory check live in the <button class="relchip" onclick="go('playbook')">P2P Playbook ›</button></div>`;
+}
 function renderService(){
   const resources=[
     ["Station Standards","Equipment, setup &amp; GUEST Ready","stations"],
-    ["Bar Glassware Setup","Racks by bar type &amp; guest count","barglass"],
-    ["Bar Setup Checklist","Full bar vs beer &amp; wine — what to pull","barlist"],
     ["P2P Playbook","Guided training · 6 modules","playbook"],
     ["P2P Jeopardy","Test yourself · study game","cards"],
     ["Event Supervisor Playbook","Leading the team on-site","leadership"],
@@ -1477,6 +1491,7 @@ function buildSearchIndex(){
    ['Culinary Playbook','Kitchen','culpb'],['Event Supervisor Playbook','Service','leadership'],
    ['Weekly Focus & Recognition','Elevate','elevate'],['Training Checklists','Deliver','deliver']
   ].forEach(p=>add(p[0],p[1],p[2],null));
+  add('Bar — Tools &amp; Checklists','Build · calculator, glassware, checklist','bar',null);
   add('Bar Glassware Setup · Calculator','Bar · rocks, wine, flutes, racks','barglass',null);
   add('Bar Setup Checklist','Bar · mixers, kit, fruit, tools, liquor','barlist',null);
   add('SEC / Sales Operations','Sales · SEO, proposals, payments, staffing','salesops','process');
@@ -1484,7 +1499,7 @@ function buildSearchIndex(){
   add('Venue Notes','Sales · setup times, tables, kitchens','salesops','venues');
   add('Setup Badges','Service · collect, badge, gamify, complete','badges',null);
   add('Delivery Quote Calculator','Sales · delivery, quote, pricing, fee','quotecalc',null);
-  add('Bar Program Calculator','Sales · bottles, liquor, wine, quantities','barcalc',null);
+  add('Bar Program Calculator','Bar · bottles, liquor, wine, quantities','barcalc',null);
   add('Brand — How We Sound (Voice)','Sales','brandguide','voice');
   add('Brand Guidelines — Look & Foundations','Sales','brandguide','look');
   STATIONS.forEach(s=>add(s.name,'Station · '+CATS[s.cat].name,'station',s.id));
@@ -2005,7 +2020,7 @@ function renderLinenSOP(){
     <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
 }
 function renderSalesMkt(){
-  const res=[["Brand Guidelines","Purpose, voice, color, type &amp; logo","brandguide"],["SEC / Sales Operations","Process, SEO build, money &amp; venues","salesops"],["Bar Program Calculator","Bottles per brand by guest count","barcalc"],["Delivery Quote Calculator","Confirm the flat rate or recommend a quote","quotecalc"],["Proposal Standards","Client-facing decks",""],["Client Communication","Email &amp; tone",""],["Social &amp; Marketing","Channels &amp; assets",""]];
+  const res=[["Brand Guidelines","Purpose, voice, color, type &amp; logo","brandguide"],["SEC / Sales Operations","Process, SEO build, money &amp; venues","salesops"],["Delivery Quote Calculator","Confirm the flat rate or recommend a quote","quotecalc"],["Proposal Standards","Client-facing decks",""],["Client Communication","Email &amp; tone",""],["Social &amp; Marketing","Channels &amp; assets",""]];
   screen.innerHTML=`
     <p class="kicker">Build · Sales &amp; Marketing</p>
     <h1 class="disp">Sales &amp; Marketing</h1>
