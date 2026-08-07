@@ -53,7 +53,7 @@
     border-left:1.5px solid var(--ink);border-bottom:1.5px solid var(--ink);}
   .crumb{margin-left:auto;font-size:9.5px;letter-spacing:2px;text-transform:uppercase;
     color:var(--muted);text-align:right;font-weight:600;}
-  .wmimg{height:34px;width:auto;display:block;}
+  .wmimg{height:34px;width:auto;display:block;cursor:pointer;}
   .lklogo{display:block;width:260px;max-width:78%;height:auto;margin:8px auto 4px;}
   .modref{border:2px solid var(--frame);background:var(--soft);padding:12px 14px;margin:14px 0 6px;}
   .modrefh{font-family:var(--serif);font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:1.5px;margin-bottom:4px;}
@@ -586,7 +586,7 @@
   <div class="viewbar"><span>Preview as</span><select id="viewas" onchange="setViewAs(this.value)"></select><span class="vbnote">demo only — the real app scopes to each person's login</span></div>
   <div class="topbar">
     <button class="back" id="backBtn" aria-label="Back">‹</button>
-    <img class="wmimg" alt="Passion to Perfection" src="img/b55f1597ff.png">
+    <img class="wmimg" alt="Passion to Perfection — Home" src="img/b55f1597ff.png" id="homeLogo" role="button" tabindex="0" aria-label="Home">
     <div class="crumb" id="crumb"></div>
     <button class="srchbtn" onclick="openSearch()" aria-label="Search">🔍</button>
   </div>
@@ -1299,6 +1299,10 @@ let stack=[];
 function go(view,arg){stack.push({view,arg});render();window.scrollTo(0,0);}
 function back(){if(stack.length>1){stack.pop();render();window.scrollTo(0,0);}}
 backBtn.onclick=back;
+const homeLogo=document.getElementById('homeLogo');
+function goHome(){if(stack.length===1&&stack[0].view==='home')return;stack=[{view:'home'}];render();window.scrollTo(0,0);}
+homeLogo.onclick=goHome;
+homeLogo.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();goHome();}};
 function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
 
 function render(){
