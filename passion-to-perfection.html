@@ -1376,12 +1376,14 @@ function renderBarHub(){
     <p class="kicker">Build · Bar</p>
     <h1 class="disp">Bar</h1>
     <p class="lead">Everything for planning and setting the bar, in one place — order the right bottles, set the glassware, and pull the checklist.</p>
-    <div class="grid">
+    <div class="titleblock" style="--tbcolor:var(--bar);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Tools</span></div>
+    <div class="grid" style="margin-top:12px">
       ${tiles.map(r=>`<div class="tile active" style="--tc:var(--bar);grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`).join('')}
     </div>
     <div class="note-inline">Bar standards &amp; the AIS inventory check live in the <button class="relchip" onclick="go('playbook')">P2P Playbook ›</button></div>`;
 }
 function renderService(){
+  const tools=[];
   const resources=[
     ["Station Standards","Equipment, setup &amp; GUEST Ready","stations"],
     ["P2P Playbook","Guided training · 6 modules","playbook"],
@@ -1391,16 +1393,17 @@ function renderService(){
     ["Videos","Setup walkthroughs",""],
     ["P2P Academy","Assessments &amp; sign-off",""]
   ];
+  const tile=r=>r[2]
+    ? `<div class="tile active" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active',r[2]==='stations'?STATIONS.length+' standards':'Live')}</div>`
+    : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
   screen.innerHTML=`
     <p class="kicker">Build · Service</p>
     <h1 class="disp">Service Craft</h1>
     <p class="lead">Everything the service team needs on the floor.</p>
-    <div class="grid">
-      ${resources.map(r=>r[2]
-        ? `<div class="tile active" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active',r[2]==='stations'?STATIONS.length+' standards':'Live')}</div>`
-        : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`
-      ).join('')}
-    </div>
+    <div class="titleblock" style="--tbcolor:var(--chef);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Tools</span></div>
+    <div class="grid" style="margin-top:12px">${(tools.length?tools:[["More Tools","Coming soon",""]]).map(tile).join('')}</div>
+    <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Training &amp; Reference</span></div>
+    <div class="grid" style="margin-top:12px">${resources.map(tile).join('')}</div>
     <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('service')">Service ›</button> <button class="relchip" onclick="openManual('bartender')">Bartender ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
 }
 function renderStations(){
@@ -2005,17 +2008,19 @@ function renderLeadModule(mi){
     ${rows}`;
 }
 function renderWarehouse(){
+  const tools=[];
   const res=[["Linen &amp; Laundry SOP","Washing, pressing &amp; napkins","linensop"],["Delivery Driver Guide","Standard &amp; Enhanced deliveries","driverguide"],["Truck Loading &amp; Care","Load-in / load-out",""],["Equipment Handling","Pull, pack &amp; repair",""],["Inventory Controls","Counts &amp; par levels",""]];
+  const tile=r=>r[2]
+    ? `<div class="tile active" style="grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
+    : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
   screen.innerHTML=`
     <p class="kicker">Build · Warehouse</p>
     <h1 class="disp">Warehouse Craft</h1>
     <p class="lead">Behind-the-scenes standards.</p>
-    <div class="grid">
-      ${res.map(r=>r[2]
-        ? `<div class="tile active" style="grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
-        : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`
-      ).join('')}
-    </div>`;
+    <div class="titleblock" style="--tbcolor:var(--coffee);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Tools</span></div>
+    <div class="grid" style="margin-top:12px">${(tools.length?tools:[["More Tools","Coming soon",""]]).map(tile).join('')}</div>
+    <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Standards &amp; Reference</span></div>
+    <div class="grid" style="margin-top:12px">${res.map(tile).join('')}</div>`;
 }
 function renderLinenSOP(){
   const S=LINEN_SOP;
@@ -2032,17 +2037,19 @@ function renderLinenSOP(){
     <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
 }
 function renderSalesMkt(){
-  const res=[["Brand Guidelines","Purpose, voice, color, type &amp; logo","brandguide"],["SEC / Sales Operations","Process, SEO build, money &amp; venues","salesops"],["Delivery Quote Calculator","Confirm the flat rate or recommend a quote","quotecalc"],["Proposal Standards","Client-facing decks",""],["Client Communication","Email &amp; tone",""],["Social &amp; Marketing","Channels &amp; assets",""]];
+  const tools=[["Delivery Quote Calculator","Confirm the flat rate or recommend a quote","quotecalc"]];
+  const res=[["Brand Guidelines","Purpose, voice, color, type &amp; logo","brandguide"],["SEC / Sales Operations","Process, SEO build, money &amp; venues","salesops"],["Proposal Standards","Client-facing decks",""],["Client Communication","Email &amp; tone",""],["Social &amp; Marketing","Channels &amp; assets",""]];
+  const tile=r=>r[2]
+    ? `<div class="tile active" style="grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
+    : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
   screen.innerHTML=`
     <p class="kicker">Build · Sales &amp; Marketing</p>
     <h1 class="disp">Sales &amp; Marketing</h1>
     <p class="lead">Brand and client-facing standards.</p>
-    <div class="grid">
-      ${res.map(r=>r[2]
-        ? `<div class="tile active" style="grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
-        : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`
-      ).join('')}
-    </div>`;
+    <div class="titleblock" style="--tbcolor:var(--bar);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Tools</span></div>
+    <div class="grid" style="margin-top:12px">${tools.map(tile).join('')}</div>
+    <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Standards &amp; Reference</span></div>
+    <div class="grid" style="margin-top:12px">${res.map(tile).join('')}</div>`;
 }
 /* ---------- SEC / Sales Operations guide (from Tampa SEC docs, made location-neutral) ---------- */
 function sopFlag(t){return `<div class="flag"><span class="flagi">⚠</span><div><b>Confirm per market</b> — ${t}</div></div>`;}
@@ -2362,13 +2369,16 @@ function renderKitchen(){
   const tile=r=>r[2]
     ? `<div class="tile active" onclick="go('${r[2]}'${r[3]?`,'${r[3]}'`:''})"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
     : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
+  const tools=[["Beverage Quantity Calculator","Lemonade, Half &amp; Half, Hot Chocolate, OJ, Apple Cider — by guest count",""]];
   const delivery=[["Menu Lookbook","What every item should look like","lookbook"],["Packaging Guide","How every item is packed &amp; labeled","packaging"],["Presentation Styles","Standard · Enhanced · Elevated","presentation"]];
   const culinary=[["Culinary Playbook","Prep, stations &amp; execution","culpb"],["Kitchen Set-Up","Onsite kitchen &amp; equipment",""],["Food Safety","HACCP, cooling &amp; hand-washing","culmod","6"]];
   screen.innerHTML=`
     <p class="kicker">Build · Kitchen</p>
     <h1 class="disp">Kitchen Craft</h1>
     <p class="lead">Culinary standards, and everything the kitchen sends out the door for <b>Delivery</b>.</p>
-    <div class="titleblock" style="--tbcolor:var(--displayed);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Delivery</span></div>
+    <div class="titleblock" style="--tbcolor:var(--displayed);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Tools</span></div>
+    <div class="grid" style="margin-top:12px">${tools.map(tile).join('')}</div>
+    <div class="titleblock" style="--tbcolor:var(--displayed);margin-top:22px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Delivery</span></div>
     <div class="grid" style="margin-top:12px">${delivery.map(tile).join('')}</div>
     <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Culinary Standards</span></div>
     <div class="grid" style="margin-top:12px">${culinary.map(tile).join('')}</div>
