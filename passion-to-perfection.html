@@ -1308,7 +1308,7 @@ function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
 function render(){
   const cur=stack[stack.length-1];
   backBtn.classList.toggle('show',stack.length>1);
-  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Kitchen · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Service · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Bar · Program Calculator',barlist:'Bar · Setup Checklist',bar:'Build · Bar',postreport:'Tools · Post-Event Report'};
+  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Service · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Deliver · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Bar · Program Calculator',barlist:'Bar · Setup Checklist',bar:'Build · Bar',postreport:'Tools · Post-Event Report'};
   crumb.textContent=map[cur.view]||'';
   ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:renderPlaybook,pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:renderCulPlaybook,culmod:()=>renderCulModule(cur.arg),leadership:renderLeadership,leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg),bar:renderBarHub,postreport:()=>renderPostReport(cur.arg)})[cur.view]();
   if(cur.view==='home'){fillHomeFocus();fillHomeRec();}
@@ -1400,13 +1400,14 @@ function renderPostReport(kind){
     </div>`;
 }
 function renderService(){
-  const tools=[["Event Supervisor Post-Event Report","Submit after every event — pick your market","postreport","supervisor"]];
+  const tools=[["Event Supervisor Post-Event Report","Submit after every event — pick your market","postreport","supervisor"],["Lead Event Chef Post-Event Report","Submit after every event — pick your market","postreport","leadchef"]];
   const resources=[
     ["Station Standards","Equipment, setup &amp; GUEST Ready","stations"],
     ["P2P Playbook","Guided training · 6 modules","playbook"],
+    ["Culinary Playbook","Prep, stations &amp; execution","culpb"],
     ["P2P Jeopardy","Test yourself · study game","cards"],
     ["Event Supervisor Playbook","Leading the team on-site","leadership"],
-    ["Setup Badges","A badge for every station setup","badges"],
+    ["Food Safety","HACCP, cooling &amp; hand-washing","culmod","6"],
     ["Videos","Setup walkthroughs",""],
     ["P2P Academy","Assessments &amp; sign-off",""]
   ];
@@ -1421,7 +1422,7 @@ function renderService(){
     <div class="grid" style="margin-top:12px">${(tools.length?tools:[["More Tools","Coming soon",""]]).map(tile).join('')}</div>
     <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Training &amp; Reference</span></div>
     <div class="grid" style="margin-top:12px">${resources.map(tile).join('')}</div>
-    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('service')">Service ›</button> <button class="relchip" onclick="openManual('bartender')">Bartender ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
+    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('service')">Service ›</button> <button class="relchip" onclick="openManual('bartender')">Bartender ›</button> <button class="relchip" onclick="openManual('culinary')">Culinary ›</button> <button class="relchip" onclick="openManual('leadculinary')">Lead Culinary ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
 }
 function renderStations(){
   const byCat={};STATIONS.forEach(s=>{(byCat[s.cat]=byCat[s.cat]||[]).push(s);});
@@ -1520,7 +1521,7 @@ function buildSearchIndex(){
    ['Training Manuals','Reference','manuals'],
    ['Delivery Driver Guide','Warehouse','driverguide'],['Linen & Laundry SOP','Warehouse','linensop'],
    ['Menu Lookbook','Kitchen · Delivery','lookbook'],['Packaging Guide','Kitchen · Delivery','packaging'],['Presentation Styles','Kitchen · Delivery','presentation'],
-   ['Culinary Playbook','Kitchen','culpb'],['Event Supervisor Playbook','Service','leadership'],
+   ['Culinary Playbook','Service','culpb'],['Event Supervisor Playbook','Service','leadership'],
    ['Weekly Focus & Recognition','Elevate','elevate'],['Training Checklists','Deliver','deliver']
   ].forEach(p=>add(p[0],p[1],p[2],null));
   add('Bar — Tools &amp; Checklists','Build · calculator, glassware, checklist','bar',null);
@@ -1529,16 +1530,16 @@ function buildSearchIndex(){
   add('SEC / Sales Operations','Sales · SEO, proposals, payments, staffing','salesops','process');
   add('SEO Ready-to-Post Checklist','Sales · Caterease, tax, titles','salesops','seo');
   add('Venue Notes','Sales · setup times, tables, kitchens','salesops','venues');
-  add('Setup Badges','Service · collect, badge, gamify, complete','badges',null);
+  add('Setup Badges','Deliver · collect, badge, gamify, complete','badges',null);
   add('Delivery Quote Calculator','Sales · delivery, quote, pricing, fee','quotecalc',null);
   add('Bar Program Calculator','Bar · bottles, liquor, wine, quantities','barcalc',null);
   add('Brand — How We Sound (Voice)','Sales','brandguide','voice');
   add('Brand Guidelines — Look & Foundations','Sales','brandguide','look');
   add('Event Supervisor Post-Event Report','Service · Tools · JotForm, Tampa, Orlando','postreport','supervisor');
-  add('Lead Event Chef Post-Event Report','Kitchen · Tools · JotForm, Tampa, Orlando','postreport','leadchef');
+  add('Lead Event Chef Post-Event Report','Service · Tools · JotForm, Tampa, Orlando','postreport','leadchef');
   STATIONS.forEach(s=>add(s.name,'Station · '+CATS[s.cat].name,'station',s.id));
   PLAYBOOK.forEach((m,mi)=>m.topics.forEach((t,ti)=>add(t,'Service · '+m.title,'pblesson',mi+'-'+ti)));
-  CULPB.forEach((m,mi)=>m.topics.forEach((t,ti)=>add(t,'Kitchen · '+m.title,'pblesson','cul-'+mi+'-'+ti)));
+  CULPB.forEach((m,mi)=>m.topics.forEach((t,ti)=>add(t,(mi===6?'Kitchen · Service · ':'Service · ')+m.title,'pblesson','cul-'+mi+'-'+ti)));
   LEADPB.forEach((m,mi)=>m.topics.forEach((t,ti)=>add(t,'Leadership · '+m.title,'pblesson','lead-'+mi+'-'+ti)));
   ROLE_ORDER.forEach(k=>{if(TRAINING[k])add(roleName(k)+' Checklist','Deliver','role',k);});
   GLOSSARY.forEach(g=>add(g[0],'Glossary term','glossary',g[0]));
@@ -1982,7 +1983,7 @@ const CULPB=[
 function renderCulPlaybook(){
   const mods=CULPB.map((m,i)=>({m,i})).filter(x=>x.i!==6).map(({m,i})=>`<div class="node active" onclick="go('culmod',${i})"><div class="num" style="font-size:15px">${m.m}</div><div><div class="nt">${m.title}</div><div class="ns">${m.topics.length} lesson${m.topics.length>1?'s':''}</div></div><span class="go">›</span></div>`).join('');
   screen.innerHTML=`
-    <p class="kicker">Build · Kitchen</p>
+    <p class="kicker">Build · Service</p>
     <h1 class="disp">Culinary Playbook</h1>
     <p class="lead">The SET Culinary manual as interactive lessons. Hygiene, kitchen equipment, station execution, and breakdown.</p>
     <div class="arc">${mods}</div>
@@ -2388,9 +2389,9 @@ function renderKitchen(){
   const tile=r=>r[2]
     ? `<div class="tile active" onclick="go('${r[2]}'${r[3]?`,'${r[3]}'`:''})"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
     : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
-  const tools=[["Beverage Quantity Calculator","Lemonade, Half &amp; Half, Hot Chocolate, OJ, Apple Cider — by guest count",""],["Lead Event Chef Post-Event Report","Submit after every event — pick your market","postreport","leadchef"]];
+  const tools=[["Beverage Quantity Calculator","Lemonade, Half &amp; Half, Hot Chocolate, OJ, Apple Cider — by guest count",""]];
   const delivery=[["Menu Lookbook","What every item should look like","lookbook"],["Packaging Guide","How every item is packed &amp; labeled","packaging"],["Presentation Styles","Standard · Enhanced · Elevated","presentation"]];
-  const culinary=[["Culinary Playbook","Prep, stations &amp; execution","culpb"],["Kitchen Set-Up","Onsite kitchen &amp; equipment",""],["Food Safety","HACCP, cooling &amp; hand-washing","culmod","6"]];
+  const culinary=[["Kitchen Set-Up","Onsite kitchen &amp; equipment",""],["Food Safety","HACCP, cooling &amp; hand-washing","culmod","6"]];
   screen.innerHTML=`
     <p class="kicker">Build · Kitchen</p>
     <h1 class="disp">Kitchen Craft</h1>
@@ -2401,7 +2402,7 @@ function renderKitchen(){
     <div class="grid" style="margin-top:12px">${delivery.map(tile).join('')}</div>
     <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Culinary Standards</span></div>
     <div class="grid" style="margin-top:12px">${culinary.map(tile).join('')}</div>
-    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('culinary')">Culinary ›</button> <button class="relchip" onclick="openManual('leadculinary')">Lead Culinary ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
+    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('culinary')">Culinary ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
 }
 function renderPresentation(){
   const T="https://cdn.shopify.com/s/files/1/0754/7984/3015/files/";
@@ -2771,6 +2772,7 @@ function renderDeliver(){
     <p class="lead">${lead}</p>
     ${cards}
     <div class="grid" style="margin-top:16px">
+      <div class="tile active" onclick="go('badges')"><div><div class="tt">Setup Badges</div><div class="td">A badge for every station setup</div></div>${badge('active',badgeCount()+'/'+STATIONS.length)}</div>
       <div class="tile planned"><div><div class="tt">Performance</div><div class="td">Goals &amp; feedback</div></div>${badge('plan','Planned')}</div>
       <div class="tile planned"><div><div class="tt">Resources</div><div class="td">Handbook · PTO · uniform</div></div>${badge('plan','Planned')}</div>
     </div>
@@ -2829,7 +2831,7 @@ function renderBadges(){
   const grid=all.map(x=>{const c=CATS[x.cat],on=!!earned[x.id];
     return `<div class="bdg${on?' on':''}" style="--bc:${c.color}" onclick="go('station','${x.id}')"><div class="bdgm">${badgeEmoji(x.id)}</div><div class="bdgn">${x.name}</div><div class="bdgc">${on?c.name:'Locked'}</div></div>`;}).join('');
   screen.innerHTML=`
-   <p class="kicker">Service · Badges</p>
+   <p class="kicker">Deliver · Badges</p>
    <h1 class="disp">Setup Badges</h1>
    <p class="lead">Earn a badge each time you complete a station setup. ${allDone?'You collected them all — legend. 🏆':`Collect all ${all.length}.`}</p>
    <div class="bdgtop">${ringSVG(pct, allDone?'var(--displayed)':'var(--bar)')}<div><div class="bdgbig">${got} / ${all.length}</div><div class="bdgsub">stations completed</div></div></div>
