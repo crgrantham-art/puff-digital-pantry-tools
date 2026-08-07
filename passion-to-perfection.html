@@ -6,7 +6,7 @@
 <title>Passion to Perfection — Preview</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,500;1,600;1,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=Lato:wght@400;700;900&family=Allura&display=swap" rel="stylesheet">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
   :root{
@@ -316,6 +316,29 @@
   .swname{font-family:var(--serif);font-weight:800;font-size:14px;}
   .swhex{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums;letter-spacing:.5px;}
   .swdesc{font-size:11.5px;color:#34302b;margin-top:1px;line-height:1.4;}
+  /* Brand Guidelines — visual assets */
+  .bg-hero{display:flex;align-items:center;gap:10px;margin:12px 0 6px;flex-wrap:wrap;}
+  .bg-hero-panel{flex:1 1 130px;min-width:130px;position:relative;display:flex;align-items:center;justify-content:center;padding:24px 12px 26px;border:1.5px solid var(--frame);}
+  .bg-hero-panel.light{background:#FEFFF9;}
+  .bg-hero-panel.dark{background:#202020;}
+  .bg-hero-panel img{max-width:100%;height:auto;max-height:54px;}
+  .bg-hero-cap{position:absolute;bottom:6px;left:0;right:0;text-align:center;font-family:var(--sans);font-size:9px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);}
+  .bg-hero-panel.dark .bg-hero-cap{color:#9c9994;}
+  .bg-seal{width:64px;height:64px;flex:none;animation:bgspin 16s linear infinite;}
+  @keyframes bgspin{from{transform:rotate(0deg)}to{transform:rotate(360deg)}}
+  .type-spec{border:1.5px solid var(--frame);padding:14px 14px 12px;margin-bottom:9px;background:var(--paper);}
+  .type-spec .tsname{font-family:var(--sans);font-weight:800;font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--muted);display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;}
+  .type-spec .tssample{margin:9px 0 2px;line-height:1.1;overflow-wrap:anywhere;}
+  .type-spec .tsuse{font-size:11.5px;color:#34302b;margin-top:6px;line-height:1.4;}
+  .availbadge{font-family:var(--sans);font-size:9px;font-weight:800;letter-spacing:.03em;padding:3px 6px;border:1px solid currentColor;text-transform:uppercase;white-space:nowrap;}
+  .availbadge.free{color:#2f6f4f;}
+  .availbadge.paid{color:#a3672d;}
+  .icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px 6px;margin:10px 0 4px;}
+  .icon-card{display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;}
+  .icon-circ{width:50px;height:50px;border-radius:50%;border:1.5px solid var(--frame);display:flex;align-items:center;justify-content:center;background:var(--paper);flex:none;}
+  .icon-circ svg{width:22px;height:22px;}
+  .icon-lbl{font-family:var(--sans);font-size:9px;color:var(--muted);line-height:1.25;}
+  .misuse-img{width:100%;height:auto;display:block;border:1.5px solid var(--frame);margin:10px 0 2px;}
   /* Bar glassware calculator */
   .bgtabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
   .bgtab{flex:1;min-width:92px;font-family:var(--sans);font-weight:700;font-size:12px;padding:9px 8px;border:2px solid var(--frame);background:var(--paper);color:var(--ink);cursor:pointer;}
@@ -1569,10 +1592,23 @@ const BRAND={
   voiceLead:"We speak with elegance and warmth.",
   voiceBody:"Reflecting our role as both a luxury caterer and a trusted host, our words inspire anticipation, convey care, and reassure clients throughout their planning journey — confident with warmth, professional with ease, celebratory with genuine charm.",
   voice:[["Warm & Welcoming","Every interaction feels personal and inviting."],["Confident & Reassuring","We inspire trust without sounding arrogant."],["Joyful & Celebratory","We highlight the happiness of every occasion."],["Elegant & Refined","Communication reflects our luxury brand identity."],["Descriptive & Sensory","Words evoke taste, texture, and atmosphere."]],
-  colors:[["Cloud Frost","#FFFFFF","Clean, pure white for minimal, fresh design moments."],["Velvet Cream","#FEFFF9","Soft, airy backgrounds — about 70% of brand visuals."],["Pearl Sugar","#E9E8E6","Light gray for body text and supporting typography."],["Smoke Cacao","#424242","Supporting typography on dark backgrounds."],["Midnight Roast","#202020","Deep black for premium backgrounds and main headings."]],
+  colors:[["Cloud Frost","#FFFFFF","Clean, pure white for minimal, fresh design moments."],["Velvet Cream","#FEFFF9","Soft, airy backgrounds — about 70% of brand visuals."],["Pearl Sugar","#E8E8E6","Light gray for body text and supporting typography."],["Smoke Cacao","#424242","Supporting typography on dark backgrounds."],["Midnight Roast","#202020","Deep black for premium backgrounds and main headings."]],
   type:[["Larken","Headlines & titles","serif display"],["Lato","Body text & subheadings","sans-serif"],["The Signature","Accent & signature moments","script"]],
   logoDonts:["Don't rotate the logo","Don't flip the logo","Don't crop the logo","Don't outline the logo","Don't skew the logo","Don't use unofficial colors","Don't adjust the layout","Don't stretch or squeeze","Don't add drop shadow or glow"]
 };
+// Real assets pulled from the uploaded Brand Guidelines PDF (logo wordmark, signature seal, logo-misuse grid)
+const BRAND_IMG={logo:"img/bg-a81a2fb4cd.png", seal:"img/bg-e256dac7f3.png", misuse:"img/bg-ac93cd5258.jpg"};
+// Custom line-icon set, redrawn to match the Brand Guidelines' Icon System page
+const BRAND_ICONS=[
+  ["Hospitality",'<path d="M3 18h18"/><path d="M5 18a7 7 0 0 1 14 0"/><line x1="12" y1="4" x2="12" y2="7"/><circle cx="12" cy="3" r="1"/>'],
+  ["Excellence",'<path d="M12 3c.6 3 2 4.4 5 5-3 .6-4.4 2-5 5-.6-3-2-4.4-5-5 3-.6 4.4-2 5-5Z"/><path d="M19 15c.3 1.4 1 2.1 2.4 2.4-1.4.3-2.1 1-2.4 2.4-.3-1.4-1-2.1-2.4-2.4 1.4-.3 2.1-1 2.4-2.4Z"/>'],
+  ["Celebration",'<path d="M6 3l2 7a2 2 0 0 0 2 1.6V19"/><path d="M4 3h6"/><path d="M18 5l-1.6 6.4a2 2 0 0 1-1.9 1.5V19"/><path d="M15.6 5H20"/><line x1="6" y1="21" x2="10" y2="21"/><line x1="13" y1="21" x2="17" y2="21"/>'],
+  ["Recognition",'<circle cx="12" cy="8" r="5"/><path d="M9 12.5 7 21l5-3 5 3-2-8.5"/>'],
+  ["Planning",'<rect x="5" y="3" width="14" height="18" rx="1"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="13" y2="16"/>'],
+  ["Scheduling",'<rect x="3" y="5" width="18" height="16" rx="1"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="7" y1="3" x2="7" y2="7"/><line x1="17" y1="3" x2="17" y2="7"/><circle cx="15" cy="15" r="4"/><line x1="15" y1="13" x2="15" y2="15"/><line x1="15" y1="15" x2="16.5" y2="16"/>'],
+  ["Communication",'<path d="M4 5h16v11H9l-4 4V5Z"/><line x1="8" y1="9.5" x2="8.01" y2="9.5"/><line x1="12" y1="9.5" x2="12.01" y2="9.5"/><line x1="16" y1="9.5" x2="16.01" y2="9.5"/>'],
+  ["Custom Requests",'<path d="M5 19h5L19 10a2.5 2.5 0 0 0-4-4L5 15v4Z"/><line x1="14" y1="7" x2="17" y2="10"/>']
+];
 
 function openManual(key){window.open('manuals/'+key+'.pdf','_blank');}
 const COMMITMENTS=["Lead with Dedication.","Deliver Quality.","Embrace Creativity.","Earn Trust.","Pursue Excellence."];
@@ -2638,6 +2674,24 @@ function renderBrandGuide(tab){
   const sw=B.colors.map(c=>`<div class="swrow"><span class="swch" style="background:${c[1]}"></span><div><div class="swname">${c[0]} <span class="swhex">${c[1]}</span></div><div class="swdesc">${c[2]}</div></div></div>`).join('');
   const type=B.type.map(t=>`<li><b>${t[0]}</b> — ${t[1]} <span class="swhex">(${t[2]})</span></li>`).join('');
   const donts=B.logoDonts.map(d=>`<li>${d}</li>`).join('');
+  const typeSpecs=`
+    <div class="type-spec">
+      <div class="tsname">Larken · Headlines &amp; titles<span class="availbadge paid">Adobe Fonts license</span></div>
+      <div class="tssample" style="font-family:var(--serif);font-weight:800;font-size:32px;color:var(--ink)">Puff 'n Stuff</div>
+      <div class="tsuse">Primary display serif for headlines and titles. It's a paid Adobe Fonts license, not free to embed — this preview approximates it with our existing display serif.</div>
+    </div>
+    <div class="type-spec">
+      <div class="tsname">Lato · Body text &amp; subheadings<span class="availbadge free">Google Fonts — live</span></div>
+      <div class="tssample" style="font-family:'Lato',sans-serif;font-weight:900;font-size:32px;color:var(--ink)">Puff 'n Stuff</div>
+      <div class="tssample" style="font-family:'Lato',sans-serif;font-weight:400;font-size:13px;color:#34302b;margin-top:4px">Every detail matters. Every guest matters. Aa Bb Cc 0123</div>
+      <div class="tsuse">Free via Google Fonts — this sample is rendering in the real typeface.</div>
+    </div>
+    <div class="type-spec">
+      <div class="tsname">The Signature · Accent &amp; signature moments<span class="availbadge paid">License not confirmed</span></div>
+      <div class="tssample" style="font-family:'Allura',cursive;font-size:38px;color:var(--ink)">Puff 'n Stuff</div>
+      <div class="tsuse">Script accent for signature moments. We haven't confirmed a free-embed source for it yet — this preview approximates it with a free script font.</div>
+    </div>`;
+  const iconGrid=BRAND_ICONS.map(i=>`<div class="icon-card"><div class="icon-circ"><svg viewBox="0 0 24 24" fill="none" stroke="var(--charcoal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${i[1]}</svg></div><div class="icon-lbl">${i[0]}</div></div>`).join('');
   const tb=(c,t,sz)=>`<div class="titleblock" style="--tbcolor:${c};margin-top:20px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="${c==='var(--chef)'?'':'color:#fff;'}font-size:${sz||15}px">${t}</span></div>`;
   const tabs=`<div class="bgtabs"><button class="bgtab${tab==='voice'?' on':''}" onclick="go('brandguide','voice')">🗣 How We Sound</button><button class="bgtab${tab==='look'?' on':''}" onclick="go('brandguide','look')">🎨 Look &amp; Foundations</button></div>`;
   const voiceBody=`
@@ -2650,6 +2704,12 @@ function renderBrandGuide(tab){
     <div class="note-inline">For written &amp; client communication standards, see <b>Know → Communication</b>. <button class="relchip" onclick="go('communication')">Communication ›</button></div>`;
   const lookBody=`
     <div class="concept" style="margin-top:6px">The brand foundations and the visual system — what Puff stands for, and how it looks. Mostly for Sales &amp; Marketing; good context for everyone.</div>
+    ${tb('var(--charcoal)','Primary Logo')}
+    <div class="bg-hero">
+      <div class="bg-hero-panel light"><img src="${BRAND_IMG.logo}" alt="Puff 'n Stuff logo on a light background"><div class="bg-hero-cap">On light</div></div>
+      <div class="bg-hero-panel dark"><img src="${BRAND_IMG.logo}" alt="Puff 'n Stuff logo on a dark background" style="filter:invert(1)"><div class="bg-hero-cap">On dark</div></div>
+      <img class="bg-seal" src="${BRAND_IMG.seal}" alt="Puff 'n Stuff signature seal mark">
+    </div>
     <div class="block"><div class="bh"><span class="bt">Our Vision</span></div><div class="concept">${B.vision}</div></div>
     <div class="block"><div class="bh"><span class="bt">Our Purpose</span></div><div class="concept">${B.purpose}</div></div>
     <div class="block"><div class="bh"><span class="bt">Our Positioning</span></div><div class="concept">${B.positioning}</div></div>
@@ -2657,9 +2717,13 @@ function renderBrandGuide(tab){
     ${tb('var(--charcoal)','Color Palette')}
     <div class="block">${sw}</div>
     ${tb('var(--charcoal)','Typefaces')}
-    <div class="block"><ul class="stdlist">${type}</ul></div>
+    ${typeSpecs}
+    ${tb('var(--charcoal)','Icon System')}
+    <div class="concept muted" style="margin-top:6px">Custom, minimalist line icons with soft curves and refined weights — legible across menus, print, and digital.</div>
+    <div class="icon-grid">${iconGrid}</div>
     ${tb('var(--chef)','Logo Misuse')}
-    <div class="block"><div class="bh"><span class="bt">Never do this to the mark</span>${badge('review','Avoid')}</div><ul class="stdlist dont">${donts}</ul></div>
+    <div class="block"><div class="bh"><span class="bt">Never do this to the mark</span>${badge('review','Avoid')}</div>
+      <img class="misuse-img" src="${BRAND_IMG.misuse}" alt="Nine examples of logo misuse to avoid: don't rotate, flip, crop, outline, skew, recolor, adjust layout, stretch, or add drop shadow/glow"></div>
     <div class="note-inline">The 8 <b>Brand Values</b> live in Know → Core Values. <button class="relchip" onclick="go('values')">Brand Values ›</button></div>`;
   screen.innerHTML=`
     <div class="titleblock" style="--tbcolor:var(--charcoal)"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="color:#fff">Brand Guidelines<small style="color:#e6e4df">${B.version}</small></span></div>
