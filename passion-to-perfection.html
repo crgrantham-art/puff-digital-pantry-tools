@@ -571,6 +571,10 @@
     .screen{padding:26px 40px 34px;}
     .gallery{margin:2px -40px 8px;}
   }
+  /* On phones / webviews where position:fixed drifts, drop the decorative corner marks so they can't overlap content */
+  @media(max-width:600px){
+    .corner{display:none;}
+  }
 </style>
 </head>
 <body>
