@@ -1448,28 +1448,29 @@ function renderStations(){
     <p class="lead">${STATIONS.length} station standards — equipment, setup, and the GUEST Ready check. Tap one.</p>
     ${stationHTML}`;
 }
-/* Jeopardy-style training game — clue = [value, clue statement, correct response (question form), lessonKey] */
+/* Jeopardy-style training game — clue = [value, clue statement, correct response (question form), view, arg]
+   Sourced across the Service craft's different training modules: Station Standards, P2P Playbook, Culinary Playbook, Event Supervisor Playbook. */
 const JEO=[
   {cat:"Table Ninja",clues:[
-    [100,"This is the direction and starting point you use to work your way around a table when setting it.","What is clockwise, starting at 12 o'clock?","1-4"],
-    [200,"This is about how far a place setting sits from the table's edge — roughly knuckle to thumb-tip.","What is one inch?","1-4"],
-    [300,"This 1·2·3 order — flatware, coffee, glassware — is how every place setting gets built.","What is the place-setting order?","1-4"]]},
+    [100,"Forks and knives sit this far from the table's bottom edge — and never touching each other.","What is one inch?","station","place-setting"],
+    [200,"The B&amp;B knife always lays horizontally across the B&amp;B plate with the handle facing this direction.","What is right?","station","place-setting"],
+    [300,"This is how full the water glass is filled, set just above the knives without touching them.","What is half an inch from the top?","station","place-setting"]]},
   {cat:"Plate Patrol",clues:[
-    [100,"This rule has you serving a guest from their left side and clearing from their right.","What is Leave Left, Remove Right?","4-1"],
-    [200,"This is the clock position where the protein always sits on a plated entrée (veg at 10, starch at 2).","What is 6 o'clock?","4-1"],
-    [300,"This is the correct way to carry a full football tray — one hand under the center, lifted up over the shoulder.","What is the football-tray carry?","2-0"]]},
+    [100,"This is the order food goes down a buffet line — from the lightest course to the heaviest.","What is lightest to heaviest (salad, bread, vegetable, starch, protein)?","pblesson","4-0"],
+    [200,"This is about how much water goes in a chafer's water pan — enough to heat evenly, never more.","What is about one inch?","pblesson","4-3"],
+    [300,"This rule has you serving a guest from their left side and clearing from their right.","What is Leave Left, Remove Right?","pblesson","4-1"]]},
   {cat:"Pour Decisions",clues:[
-    [100,"This is the side of the station where Regular coffee always goes.","What is the right?","5-1"],
-    [200,"This is about how much water goes in a chafer pan — and no more.","What is one inch?","4-3"],
-    [300,"Before the bar opens, this gets cross-checked against inventory.","What is the AIS?","5-2"]]},
-  {cat:"Tear It Down",clues:[
-    [100,"This is bussing order — trash, flatware, plates, dump bucket, glass — and it's how a breakdown station gets built.","What is bussing order?","3-1"],
-    [200,"This is how many bags line each breakdown trash can, corners tied together.","What is two?","3-1"],
-    [300,"Leftover ice or liquid may be dumped in a working sink, drain, or dump bucket — but never here.","What is the grass?","3-0"]]},
-  {cat:"Better Safe Than Saucy",clues:[
-    [100,"This is the correct way to lift heavy equipment — using these, not your back.","What is your legs?","2-1"],
-    [200,"This is the minimum length of a proper hand-wash scrub.","What is twenty seconds?","cul-6-1"],
-    [300,"This is the minimum cook temperature for poultry.","What is 165°F?","cul-1-0"]]}
+    [100,"This is about how far ahead of service you fill the dispensers and ice at a beverage station.","What is about 30 minutes before service?","pblesson","5-0"],
+    [200,"This is the side of the station where Regular coffee always goes — decaf goes opposite.","What is the right?","pblesson","5-1"],
+    [300,"Before bar set-up begins, this document gets physically cross-checked against every bottle of beer, wine, and liquor.","What is the AIS (Alcohol Inventory Sheet)?","pblesson","5-2"]]},
+  {cat:"Kitchen Command",clues:[
+    [100,"Visible tattoos must be covered with this, from clock-in to clock-out.","What is a long-sleeve or black sleeve (under the uniform)?","pblesson","cul-0-0"],
+    [200,"This is the minimum cook temperature for poultry, stuffing, and reheated foods.","What is 165°F?","pblesson","cul-1-0"],
+    [300,"This is the minimum length of time to vigorously scrub during a proper hand wash.","What is twenty seconds?","pblesson","cul-6-1"]]},
+  {cat:"Boss Moves",clues:[
+    [100,"This is when staff breaks may be taken — never at the start of service or during peak.","What is at the supervisor's discretion?","pblesson","lead-0-0"],
+    [200,"For any life-threatening injury, this is the very first thing you do — before any paperwork.","What is call 911?","pblesson","lead-0-1"],
+    [300,"This is how many minutes before service you run a final walk-through of every station, the bar, and table setups.","What is 15 minutes?","pblesson","lead-3-0"]]}
 ];
 let JEOS={score:0,done:{},cur:null};
 function renderTrainingCards(){
@@ -1505,7 +1506,7 @@ function openClue(ci,ri){
 function revealClue(){
   const [ci,ri]=JEOS.cur, cl=JEO[ci].clues[ri];
   const a=document.getElementById('jans'); a.style.display='block';
-  a.innerHTML=`<div class="janslbl">Correct response</div>${cl[2]} <button class="relchip" style="border-color:#F5C518;color:#F5C518" onclick="go('pblesson','${cl[3]}')">Lesson ›</button>`;
+  a.innerHTML=`<div class="janslbl">Correct response</div>${cl[2]} <button class="relchip" style="border-color:#F5C518;color:#F5C518" onclick="closeJeo();go('${cl[3]}','${cl[4]}')">${cl[3]==='station'?'Station ›':'Lesson ›'}</button>`;
   document.getElementById('jbtns').innerHTML=`<button class="btn ok" onclick="scoreClue(1)">Got it ✓</button><button class="btn ghost" onclick="scoreClue(0)">Missed</button>`;
 }
 function jeoWinnings(){return stLoad().jeoWinnings||0;}
