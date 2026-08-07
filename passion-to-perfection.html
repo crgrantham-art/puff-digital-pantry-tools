@@ -262,8 +262,9 @@
   .bgtabs{display:flex;gap:8px;margin:14px 0 4px;}
   .bgtab{flex:1;font-family:var(--sans);font-size:12.5px;font-weight:700;border:2px solid var(--frame);background:var(--paper);color:var(--ink);padding:9px 8px;cursor:pointer;}
   .bgtab.on{background:var(--charcoal);color:#fff;}
-  .jscorebar{display:flex;align-items:center;justify-content:space-between;margin:10px 0;}
+  .jscorebar{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px 12px;margin:10px 0;}
   .jscore{font-family:var(--serif);font-weight:800;font-size:18px;}
+  .jlifetime{font-family:var(--sans);font-size:12px;font-weight:700;color:var(--muted);}
   .jdone{border:2px solid var(--verified);background:#eaf5ee;padding:11px 13px;font-size:13.5px;margin-bottom:12px;text-align:center;}
   .jboard{margin:4px 0 16px;}
   .jrow{display:grid;grid-template-columns:repeat(5,1fr);gap:5px;margin-bottom:5px;}
@@ -277,7 +278,10 @@
   .jval{font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#F5C518;margin-bottom:12px;}
   .jclue{font-family:var(--serif);font-weight:800;font-size:23px;line-height:1.3;margin-bottom:18px;}
   .jans{font-family:var(--serif);font-size:18px;color:#F5C518;margin-bottom:18px;line-height:1.35;}
+  .janslbl{font-family:var(--sans);font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:#cfcabf;margin-bottom:5px;}
   .jbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+  .jwin{font-family:var(--serif);font-weight:800;font-size:22px;color:#F5C518;animation:jwinpop .35s ease;}
+  @keyframes jwinpop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
   .attirehero{position:relative;border:2.5px solid var(--frame);margin-top:2px;}
   .attirehero img{width:100%;display:block;}
   .acap{position:absolute;top:10px;left:10px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;border:1.5px solid var(--frame);}
@@ -1444,28 +1448,28 @@ function renderStations(){
     <p class="lead">${STATIONS.length} station standards — equipment, setup, and the GUEST Ready check. Tap one.</p>
     ${stationHTML}`;
 }
-/* Jeopardy-style training game — clue = [value, question, answer, lessonKey] */
+/* Jeopardy-style training game — clue = [value, clue statement, correct response (question form), lessonKey] */
 const JEO=[
-  {cat:"Setup",clues:[
-    [100,"Which way do you work around a table when setting?","Start at 12 o'clock, move clockwise","1-4"],
-    [200,"How far from the table edge does a place setting sit?","One inch — knuckle to thumb-tip","1-4"],
-    [300,"What's the place-setting order?","1·2·3 — Flatware, Coffee, Glassware","1-4"]]},
-  {cat:"Service",clues:[
-    [100,"Serve from which side, clear from which side?","Leave Left, Remove Right","4-1"],
-    [200,"Where does the protein sit on a plated entrée?","6 o'clock (veg 10, starch 2)","4-1"],
-    [300,"How do you carry a full football tray?","One hand under the center, up over the shoulder","2-0"]]},
-  {cat:"Bar & Bev",clues:[
-    [100,"Where does Regular coffee go on the station?","On the right","5-1"],
-    [200,"How much water goes in a chafer pan?","About one inch — no more","4-3"],
-    [300,"What happens before the bar opens?","Inventory is cross-checked against the AIS","5-2"]]},
-  {cat:"Breakdown",clues:[
-    [100,"In what order do you build a breakdown station?","Bussing order — trash, flatware, plates, dump bucket, glass","3-1"],
-    [200,"How many bags line each breakdown trash can?","Two, corners tied together","3-1"],
-    [300,"Where may you dump leftover ice or liquid?","Working sinks, drains, or dump buckets — never the grass","3-0"]]},
-  {cat:"Safety",clues:[
-    [100,"How do you lift heavy equipment?","With your legs, not your back","2-1"],
-    [200,"How long is a proper hand-wash scrub?","At least twenty seconds","cul-6-1"],
-    [300,"Minimum cook temperature for poultry?","165°F","cul-1-0"]]}
+  {cat:"Table Ninja",clues:[
+    [100,"This is the direction and starting point you use to work your way around a table when setting it.","What is clockwise, starting at 12 o'clock?","1-4"],
+    [200,"This is about how far a place setting sits from the table's edge — roughly knuckle to thumb-tip.","What is one inch?","1-4"],
+    [300,"This 1·2·3 order — flatware, coffee, glassware — is how every place setting gets built.","What is the place-setting order?","1-4"]]},
+  {cat:"Plate Patrol",clues:[
+    [100,"This rule has you serving a guest from their left side and clearing from their right.","What is Leave Left, Remove Right?","4-1"],
+    [200,"This is the clock position where the protein always sits on a plated entrée (veg at 10, starch at 2).","What is 6 o'clock?","4-1"],
+    [300,"This is the correct way to carry a full football tray — one hand under the center, lifted up over the shoulder.","What is the football-tray carry?","2-0"]]},
+  {cat:"Pour Decisions",clues:[
+    [100,"This is the side of the station where Regular coffee always goes.","What is the right?","5-1"],
+    [200,"This is about how much water goes in a chafer pan — and no more.","What is one inch?","4-3"],
+    [300,"Before the bar opens, this gets cross-checked against inventory.","What is the AIS?","5-2"]]},
+  {cat:"Tear It Down",clues:[
+    [100,"This is bussing order — trash, flatware, plates, dump bucket, glass — and it's how a breakdown station gets built.","What is bussing order?","3-1"],
+    [200,"This is how many bags line each breakdown trash can, corners tied together.","What is two?","3-1"],
+    [300,"Leftover ice or liquid may be dumped in a working sink, drain, or dump bucket — but never here.","What is the grass?","3-0"]]},
+  {cat:"Better Safe Than Saucy",clues:[
+    [100,"This is the correct way to lift heavy equipment — using these, not your back.","What is your legs?","2-1"],
+    [200,"This is the minimum length of a proper hand-wash scrub.","What is twenty seconds?","cul-6-1"],
+    [300,"This is the minimum cook temperature for poultry.","What is 165°F?","cul-1-0"]]}
 ];
 let JEOS={score:0,done:{},cur:null};
 function renderTrainingCards(){
@@ -1478,8 +1482,8 @@ function renderTrainingCards(){
   screen.innerHTML=`
     <p class="kicker">Service · Study Game</p>
     <h1 class="disp">P2P Jeopardy</h1>
-    <p class="lead">Pick a category and value, read the clue, then reveal and score yourself. Standards straight from the manuals.</p>
-    <div class="jscorebar"><span class="jscore">Score: $${JEOS.score}</span><button class="relchip" onclick="JEOS={score:0,done:{},cur:null};renderTrainingCards()">New game ↻</button></div>
+    <p class="lead">Pick a category and value, read the clue, then respond in the form of a question — reveal to check yourself. Standards straight from the manuals.</p>
+    <div class="jscorebar"><span class="jscore">Round: $${JEOS.score}</span><span class="jlifetime">Career winnings: $${jeoWinnings()}</span><button class="relchip" onclick="JEOS={score:0,done:{},cur:null};renderTrainingCards()">New game ↻</button></div>
     ${complete?`<div class="jdone">Board cleared — final score <b>$${JEOS.score}</b> of $${JEO.reduce((n,c)=>n+c.clues.reduce((s,x)=>s+x[0],0),0)}. ✦</div>`:''}
     <div class="jboard"><div class="jrow jhead">${JEO.map(c=>`<div class="jcat">${c.cat}</div>`).join('')}</div>${rows}</div>
     <div class="note-inline">Answers trace to the SET manual lessons. <button class="relchip" onclick="go('playbook')">Full Playbook ›</button></div>
@@ -1501,13 +1505,22 @@ function openClue(ci,ri){
 function revealClue(){
   const [ci,ri]=JEOS.cur, cl=JEO[ci].clues[ri];
   const a=document.getElementById('jans'); a.style.display='block';
-  a.innerHTML=`${cl[2]} <button class="relchip" style="border-color:#F5C518;color:#F5C518" onclick="go('pblesson','${cl[3]}')">Lesson ›</button>`;
+  a.innerHTML=`<div class="janslbl">Correct response</div>${cl[2]} <button class="relchip" style="border-color:#F5C518;color:#F5C518" onclick="go('pblesson','${cl[3]}')">Lesson ›</button>`;
   document.getElementById('jbtns').innerHTML=`<button class="btn ok" onclick="scoreClue(1)">Got it ✓</button><button class="btn ghost" onclick="scoreClue(0)">Missed</button>`;
 }
+function jeoWinnings(){return stLoad().jeoWinnings||0;}
 function scoreClue(got){
   const [ci,ri]=JEOS.cur, cl=JEO[ci].clues[ri];
-  if(got){JEOS.score+=cl[0]; bump('quiz'); const r=document.getElementById('jov').getBoundingClientRect(); confettiBurst(r.left+r.width/2, 120);}
-  JEOS.done[ci+'-'+ri]=1; closeJeo(); renderTrainingCards();
+  JEOS.done[ci+'-'+ri]=1;
+  if(got){
+    JEOS.score+=cl[0]; bump('quiz');
+    const s=stLoad(); s.jeoWinnings=(s.jeoWinnings||0)+cl[0]; stSave(s);
+    const r=document.getElementById('jov').getBoundingClientRect(); confettiBurst(r.left+r.width/2, 120);
+    const btns=document.getElementById('jbtns'); if(btns)btns.innerHTML=`<div class="jwin">+ $${cl[0]} banked 💰</div>`;
+    setTimeout(()=>{closeJeo();renderTrainingCards();},700);
+  } else {
+    closeJeo(); renderTrainingCards();
+  }
 }
 function closeJeo(){const o=document.getElementById('jov'); if(o)o.classList.remove('on');}
 /* ---------- Site-wide search ---------- */
