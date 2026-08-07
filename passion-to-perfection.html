@@ -188,8 +188,8 @@
   .photoph .t1{font-family:var(--serif);font-size:12px;font-weight:800;letter-spacing:1.5px;text-transform:uppercase;}
   .photoph .t2{font-size:10.5px;}
   /* Photo gallery (swipe / scroll multiple photos) */
-  .gallery{position:relative;}
-  .gtrack{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border:2.5px solid var(--frame);-webkit-overflow-scrolling:touch;scrollbar-width:none;}
+  .gallery{position:relative;margin:2px -18px 6px;}
+  .gtrack{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;border-top:2.5px solid var(--frame);border-bottom:2.5px solid var(--frame);-webkit-overflow-scrolling:touch;scrollbar-width:none;}
   .gtrack::-webkit-scrollbar{display:none;}
   .gslide{min-width:100%;scroll-snap-align:center;position:relative;flex:none;}
   .gslide img{width:100%;height:auto;display:block;}
@@ -563,11 +563,13 @@
     .phone{max-width:680px;}
     .frame{left:max(8px,calc(50% - 340px + 8px)) !important;right:max(8px,calc(50% - 340px + 8px)) !important;}
     .screen{padding:24px 30px 30px;}
+    .gallery{margin:2px -30px 8px;}
   }
   @media(min-width:1160px){
     .phone{max-width:768px;}
     .frame{left:max(8px,calc(50% - 384px + 8px)) !important;right:max(8px,calc(50% - 384px + 8px)) !important;}
     .screen{padding:26px 40px 34px;}
+    .gallery{margin:2px -40px 8px;}
   }
 </style>
 </head>
