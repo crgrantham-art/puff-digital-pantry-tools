@@ -571,9 +571,11 @@
     .screen{padding:26px 40px 34px;}
     .gallery{margin:2px -40px 8px;}
   }
-  /* On phones / webviews where position:fixed drifts, drop the decorative corner marks so they can't overlap content */
+  /* On phones / webviews the decorative outer frame (position:fixed) can drift and sit on top of
+     scrolled content instead of framing it. It only makes sense when the phone mockup is narrower
+     than the browser window, so hide it entirely on narrow screens rather than just its corners. */
   @media(max-width:600px){
-    .corner{display:none;}
+    .frame{display:none;}
   }
 </style>
 </head>
