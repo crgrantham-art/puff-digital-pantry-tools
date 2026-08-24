@@ -339,6 +339,25 @@
   .icon-circ svg{width:22px;height:22px;}
   .icon-lbl{font-family:var(--sans);font-size:9px;color:var(--muted);line-height:1.25;}
   .misuse-img{width:100%;height:auto;display:block;border:1.5px solid var(--frame);margin:10px 0 2px;}
+  /* Leadership Brief & Culture Calendar */
+  .lbmonth{border:2.5px solid var(--frame);background:#FCFCFB;padding:16px 15px;margin:14px 0;}
+  .lbmk{font-family:var(--sans);font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted);}
+  .lbmt{font-family:var(--serif);font-weight:800;font-size:22px;margin-top:2px;}
+  .lbseason{font-family:var(--sans);font-size:11.5px;color:#34302b;margin-top:8px;padding-top:8px;border-top:1px solid var(--hair);}
+  .lbseason b{color:var(--ink);}
+  .lbweek{border:1.5px solid var(--frame);padding:14px;margin-bottom:11px;background:var(--paper);}
+  .lbwk-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:8px;flex-wrap:wrap;}
+  .lbwk-title{font-family:var(--serif);font-weight:800;font-size:16px;}
+  .lbwk-stage{font-family:var(--sans);font-size:10px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;padding:3px 8px;border:1px solid var(--frame);color:var(--muted);white-space:nowrap;}
+  .lbrow{font-size:12.5px;line-height:1.5;padding:7px 0;border-top:1px solid var(--hair);}
+  .lbrow:first-of-type{border-top:none;}
+  .lbrow b{font-family:var(--sans);font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);display:block;margin-bottom:2px;}
+  .lbrhythm{display:flex;flex-direction:column;gap:0;}
+  .lbrstep{display:flex;align-items:baseline;gap:10px;padding:7px 0;border-top:1px solid var(--hair);}
+  .lbrstep:first-child{border-top:none;}
+  .lbrnum{font-family:var(--serif);font-weight:800;font-size:13px;color:var(--muted);flex:none;width:52px;}
+  .lbrname{font-family:var(--sans);font-weight:800;font-size:13px;}
+  .lbcard{border:1px solid var(--frame);background:var(--paper);padding:12px;margin-top:8px;}
   /* Bar glassware calculator */
   .bgtabs{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap;}
   .bgtab{flex:1;min-width:92px;font-family:var(--sans);font-weight:700;font-size:12px;padding:9px 8px;border:2px solid var(--frame);background:var(--paper);color:var(--ink);cursor:pointer;}
@@ -1645,19 +1664,19 @@ const STATIONS = [
   { id:"carved-turkey", photos:[{src:"img/st-carved-chicken-1.jpg",label:"Carved family setup"},{src:"img/st-carved-chicken-2.jpg",label:"Detail"}], cat:"chef", name:"Chef Carved Turkey Breast", status:["review","Needs Review"],
     concept:"Herb & Caper Remoulade, Craisin Relish, Parker House Rolls",
     equip:carved("Dinner Knives"), equipStatus:["verified","Verified"],
-    family:"Chef Carved family — shared setup; this variant uses Dinner Knives.", pointer:{v:false} },
+    family:"Chef Carved family — shared setup; this variant uses Dinner Knives.", pointer:{v:true,text:"<b>Set the stage for the Chef.</b> Keep the carving board centered under the heat lamp and the Chef's working area clear. Place accompaniments and guest service pieces within easy reach without crowding the carving space — the Chef should be able to carve, serve, and engage guests without working around the setup."} },
   { id:"carved-ham", photos:[{src:"img/st-carved-chicken-1.jpg",label:"Carved family setup"},{src:"img/st-carved-chicken-2.jpg",label:"Detail"}], cat:"chef", name:"Chef Carved Ham", status:["review","Needs Review"],
     concept:"Grain Mustard, Seasonal Preserves, Parker House Rolls",
     equip:carved("Dinner Knives"), equipStatus:["verified","Verified"],
-    family:"Chef Carved family — shared setup; this variant uses Dinner Knives.", pointer:{v:false} },
+    family:"Chef Carved family — shared setup; this variant uses Dinner Knives.", pointer:{v:true,text:"<b>Set the stage for the Chef.</b> Keep the carving board centered under the heat lamp and the Chef's working area clear. Place accompaniments and guest service pieces within easy reach without crowding the carving space — the Chef should be able to carve, serve, and engage guests without working around the setup."} },
   { id:"carved-flank", photos:[{src:"img/st-carved-chicken-1.jpg",label:"Carved family setup"},{src:"img/st-carved-chicken-2.jpg",label:"Detail"}], cat:"chef", name:"Chef Carved Flank Steak", status:["review","Needs Review"],
     concept:"Peppercorn Crème Fraîche, Dijon, Parker House Rolls",
     equip:carved("Steak Knives"), equipStatus:["verified","Verified"],
-    family:"Chef Carved family — shared setup; this variant swaps in Steak Knives.", pointer:{v:false} },
+    family:"Chef Carved family — shared setup; this variant swaps in Steak Knives.", pointer:{v:true,text:"<b>Set the stage for the Chef.</b> Keep the carving board centered under the heat lamp and the Chef's working area clear. Place accompaniments and guest service pieces within easy reach without crowding the carving space — the Chef should be able to carve, serve, and engage guests without working around the setup."} },
   { id:"carved-chicken", photos:[{src:"img/st-carved-chicken-1.jpg",label:"Full station view"},{src:"img/st-carved-chicken-2.jpg",label:"Detail"}], cat:"chef", name:"Chef Carved Brick Chicken", status:["review","Needs Review"],
     concept:"Tomato & Olive Tapenade, Roasted Garlic Aioli, Parker House Rolls",
     equip:carved("Dinner Knives"), equipStatus:["verified","Verified"],
-    family:"Chef Carved family — shared setup; this variant uses Dinner Knives.", pointer:{v:false} },
+    family:"Chef Carved family — shared setup; this variant uses Dinner Knives.", pointer:{v:true,text:"<b>Set the stage for the Chef.</b> Keep the carving board centered under the heat lamp and the Chef's working area clear. Place accompaniments and guest service pieces within easy reach without crowding the carving space — the Chef should be able to carve, serve, and engage guests without working around the setup."} },
   { id:"hot-dog-bar", photos:[{src:"img/st-hot-dog-bar-1.jpg",label:"Full station view"},{src:"img/st-hot-dog-bar-2.jpg",label:"Detail"}], cat:"displayed", name:"Hot Dog Bar", status:["review","Needs Review"],
     concept:"Mini Corn Dogs, Swanky Pigs in a Blanket, All-Beef Hot Dogs — Onions, Shredded Lettuce, Chopped Tomato, Sharp Cheddar, Bean & Beef Chili, Cheese Sauce, Hot Sauces, Ketchup, Mustard",
     equip:[
@@ -1665,49 +1684,49 @@ const STATIONS = [
       ["3","Heat Lamps"],["3","Extension Cords"],["1","Splitter"],["1","Roll Black Gaffing Tape"],
       ['6','Tongs 9"'],['4','Small Tongs 7"'],["8","Sprinkle Spoons"],["1","Box white square beverage napkins"],
       ["18","Underliner Plates"],["1","Platter for Flatware"],["2","Menu card holders"],["2","Sets of (3) votive candles"]
-    ], equipStatus:["verified","Verified"], pointer:{v:false} },
+    ], equipStatus:["verified","Verified"], pointer:{v:true,text:"<b>Build it like they'll use it.</b> Arrange the station in the order guests will build their plate. Thoughtful placement creates smoother flow and keeps guests from reaching across one another."} },
   { id:"omelet", photos:[{src:"img/st-omelet-1.jpg",label:"Full station view"},{src:"img/st-omelet-2.jpg",label:"Detail"}], cat:"chef", name:"Omelet Station", status:["review","Needs Review"],
     concept:"Whole Eggs, Tomato, Mushroom, Onion, Pepper, Spinach, Cheeses, Bacon, Ham",
     equip:[["50",'8" Square Plates'],["50","Salad Forks"],["4","Butane Burners"],["8","Butane Fuel"],["4","Butane Burner Covers"],["4","Grill Grates"],['4','Small Tongs 7"'],["4","Sprinkle Spoons"],["8","Underliner Plates"],["1","Platter for Flatware"],["2","Bain Marie"],["1","Box white square beverage napkins"],["–","Menu Cards in Holder"],["2","Sets of (3) votive candles"],["1","Slim Jim with Cover"],["2","Garbage Bags"]],
-    equipStatus:["verified","Verified"], pointer:{v:false} },
+    equipStatus:["verified","Verified"], pointer:{v:true,text:"<b>Mise en place makes the moment.</b> Before service begins, make sure every ingredient, utensil, and backup item has a designated place within the Chef's reach. An organized station lets the Chef focus on cooking, conversation, and the guest — not searching for what comes next."} },
   { id:"eggs-benedict", photos:[{src:"img/st-eggs-benedict-1.jpg",label:"Full station view"},{src:"img/st-eggs-benedict-2.jpg",label:"Detail"}], cat:"chef", name:"Eggs Benedict", status:["review","Needs Review"],
     concept:"Fried Egg, Toasted English Muffin, Selected Topping",
     equip:[["50",'8" Square Plates'],["50","Salad Forks"],["2","Butane Burners"],["4","Butane Fuel"],["2","Butane Burner Covers"],["2","Grill Grates"],["1","4qt Chafer"],["2","Sterno"],["2","Heat Lamps"],["2","Extension Cords"],["1","Roll Black Gaffing Tape"],["2","Wood Boards"],['2','Tongs 9"'],["2","Sprinkle Spoons"],["6","Underliner Plates"],["1","Platter for Flatware"],["2","Bain Marie"],["1","Box white square beverage napkins"],["–","Menu Cards in Holder"],["2","Sets of (3) votive candles"],["1","Slim Jim with Cover"],["2","Garbage Bags"]],
-    equipStatus:["verified","Verified"], pointer:{v:false} },
+    equipStatus:["verified","Verified"], pointer:{v:true,text:"<b>Timing is an ingredient.</b> Set the station so cooking, assembly, and service can happen in a smooth sequence. Keep each component within easy reach and the Chef's path clear — the best Eggs Benedict reaches the guest when every element comes together at just the right moment."} },
   { id:"sundae-bar", photos:[{src:"img/st-sundae-bar-1.jpg",label:"Full station view"},{src:"img/st-sundae-bar-2.jpg",label:"Detail"}], cat:"chef", name:"Sundae Bar", status:["review","Needs Review"],
     concept:"Vanilla, Chocolate & Strawberry Ice Creams, Cherries, Chocolate, Caramel, Sprinkles, Strawberry Topping, Mini Mallow, Candied Bacon",
     equip:[["50","Ice Cream Bowls"],["50","Teaspoons"],["3","Ice Cream Shrouds"],["10","Sprinkle Spoons"],['2','Small Tongs 7"'],["10","Underliner Plates"],["1","Platter for Flatware"],["3","Ice Cream Scoops (4oz – Blue)"],["1","Box white square beverage napkins"],["–","Menu Cards in Holder"],["2","Sets of (3) votive candles"]],
-    equipStatus:["verified","Verified"], pointer:{v:false} },
+    equipStatus:["verified","Verified"], pointer:{v:true,text:"<b>Keep the cool in control.</b> Have toppings, bowls, spoons, and service pieces completely set before the ice cream comes out. Once service begins, the Chef's attention should stay on scooping and engaging guests — not searching for supplies while the ice cream waits."} },
   { id:"walking-cannoli", photos:[{src:"img/st-walking-cannoli-1.jpg",label:"Full station view"},{src:"img/st-walking-cannoli-2.jpg",label:"Detail"}], cat:"chef", name:"Walking Cannoli", status:["review","Needs Review"],
     concept:"Classic Fill, Chocolate Shavings, Poprocks, Cookies & Cream, Sprinkles, Candied Nuts",
     equip:[["1","Hawker Tray"],['2','Small Tongs 7"'],["6","Sprinkle Spoons"],["1","Underliner Plate"],["1","Box white square beverage napkins"],["–","Menu Card in Holder"],["2","Sets of (3) votive candles"]],
-    equipStatus:["verified","Verified"], pointer:{v:false} },
+    equipStatus:["verified","Verified"], pointer:{v:true,text:"<b>Take the experience to the guest.</b> Arrange each component so the Chef can assemble and serve without stopping to reorganize the tray. Keep ingredients secure, tools within easy reach, and the presentation polished from the first guest to the last."} },
   { id:"byo-bowl", photos:[{src:"img/st-byo-bowl-1.jpg",label:"Full station view"},{src:"img/st-byo-bowl-2.jpg",label:"Detail"}], cat:"displayed", name:"Build Your Own Bowl", status:["review","Needs Review"], concept:null,
     equip:[["50",'9" Soup Bowls'],["50","Salad Forks"],["4","Sporks"],['4','Serving Spoons 13"'],["4","Sprinkle Spoons"],['4','Small Tongs 7"'],["20","Underliner Plates"],["1","Platter for Flatware"],["1","Box white square beverage napkins"],["–","Menu Cards in Holders"],["2","Sets of (3) votive candles"]],
-    equipStatus:["verified","Verified"], pointer:{v:false} },
+    equipStatus:["verified","Verified"], pointer:{v:true,text:"<b>Make every choice easy to find.</b> Arrange ingredients in a clear, intentional order and keep serving utensils with their corresponding items. A Build Your Own station should offer plenty of choices without ever feeling cluttered or confusing."} },
   { id:"pasta-bowl", photos:[{src:"img/st-pasta-bowl-1.jpg",label:"Full station view"},{src:"img/st-pasta-bowl-2.jpg",label:"Detail"}], cat:"displayed", name:"Pasta Bowl", status:["review","Needs Review"], concept:null,
     equip:[["50",'9" Soup Bowls'],["50","Salad Forks"],["2","Sterno"],["2","8qt Round Chafers"],['4','Serving Spoon 13"'],['4','Small Tongs 7"'],["6","Underliner Plates"],["1","Platter for Flatware"],["1","Box white square beverage napkins"],["–","Menu Cards in Holders"],["2","Sets of (3) votive candles"]],
-    equipStatus:["verified","Verified"], pointer:{v:false} },
+    equipStatus:["verified","Verified"], pointer:{v:true,text:"<b>Let every dish stand on its own.</b> Keep each pasta and protein clearly presented with its correct serving utensil and menu identification. Maintain clean edges around the serving pieces and refresh each offering independently so the entire station stays polished throughout service."} },
   { id:"rice-krispy", photos:[{src:"img/st-rice-krispy-1.jpg",label:"Full station view"},{src:"img/st-rice-krispy-2.jpg",label:"Detail"}], cat:"displayed", name:"Rice Krispy Bar", status:["review","Needs Review"], dynamic:true,
     concept:"Classic Crispy Treat, Dark & Milk Chocolate Dips, Jimmies, Oreos, Hazelnuts, Honey Roasted Peanuts, Heath Bar",
     equip:[["50",'6" Square Plates',"g"],["25","Salad Forks","pct25"],['2','Tongs 9"',"fix"],["14","Sprinkle Spoons","?"],["16","Underliner Plates","?"],["2","2qt Chafer","fix"],["2","Sterno","fix"],["1","Platter for Flatware","fix"],["1","Box white square beverage napkins","?"],["–","Menu Cards in Holder","fix"],["2","Sets of (3) votive candles","fix"]],
-    equipStatus:["verified","Verified"], pointer:{v:false} },
+    equipStatus:["verified","Verified"], pointer:{v:true,text:"<b>Make creativity easy.</b> Arrange the station in the order guests will create their treat — start with the Rice Krispy, move through the chocolate dips, and finish with toppings. A thoughtful setup gives guests the freedom to create without having to figure out where to go next."} },
   { id:"sweet-savory", photos:[{src:"img/st-sweet-savory-1.jpg",label:"Full station view"},{src:"img/st-sweet-savory-2.jpg",label:"Detail"}], cat:"displayed", name:"Sweet & Savory", status:["review","Needs Review"],
     concept:"Chocolate Drizzled Chips, Beignets, Fruit Chews, Yogurt Pretzels, Truffles",
     equip:[["50",'6" Square Plates'],["25",'Salad Forks (25% of guest count)'],['6','Small Tongs 7"'],['6','Tongs 9"'],["12","Underliner Plates"],["1","Platter for Flatware"],["1","Box white square beverage napkins"],["–","Menu Cards in Holder"],["2","Sets of (3) votive candles"]],
-    equipStatus:["verified","Verified"], pointer:{v:false} },
+    equipStatus:["verified","Verified"], pointer:{v:true,text:"<b>Make room for everyone.</b> Arrange snacks so every choice is clearly visible and multiple guests can build their plates at the same time. A well-spaced station keeps choices easy to see, guests moving, and the experience effortless."} },
   { id:"hot-mess-bar", photos:[{src:"img/st-hot-mess-bar-1.jpg",label:"Full station view"},{src:"img/st-hot-mess-bar-2.jpg",label:"Detail"}], cat:"displayed", name:"Hot Mess Bar", status:["review","Needs Review"],
     concept:"Sheet Pan Nachos, Artichoke Dip, Fried Pickles, Grilled & Chilled Vegetables, Toast, Classic Fondue, Sloppy Joes, Soft Rolls, Extra Napkins",
-    equip:[], equipStatus:["tbd","TBD"], pointer:{v:false} },
+    equip:[], equipStatus:["tbd","TBD"], pointer:{v:true,text:"<b>Give the “mess” a method.</b> With so many different offerings, thoughtful placement matters. Group foods with their accompaniments and serving pieces so guests can easily understand their options and build a plate without searching the station."} },
   { id:"blazing-donuts-latin", photos:[{src:"img/st-blazing-donuts-1.jpg",label:"Full station view"},{src:"img/st-blazing-donuts-2.jpg",label:"Detail"}], cat:"chef", name:"Blazing Donuts – Latin Inspired", status:["review","Needs Review"],
     concept:"Dulce de Leche Ice Cream, Cinnamon Bourbon, Chili & Torched Cinnamon Spiced Donut Holes",
-    equip:[], equipStatus:["tbd","TBD"], pointer:{v:false} },
+    equip:[], equipStatus:["tbd","TBD"], pointer:{v:true,text:"<b>Preparation becomes part of the presentation.</b> Guests aren't only experiencing the finished food; they're experiencing the craftsmanship that creates it. A clean workspace, confident movements, thoughtful interaction, and an organized setup allow the Chef to make the preparation itself part of the celebration."} },
   { id:"blazing-donuts-coffee", photos:[{src:"img/st-blazing-donuts-1.jpg",label:"Full station view"},{src:"img/st-blazing-donuts-2.jpg",label:"Detail"}], cat:"chef", name:"Blazing Donuts – Coffee", status:["review","Needs Review"],
     concept:"Coffee Flavored Ice Cream, Spiced Rum, Cake-Donut Holes",
-    equip:[], equipStatus:["tbd","TBD"], pointer:{v:false} },
+    equip:[], equipStatus:["tbd","TBD"], pointer:{v:true,text:"<b>Preparation becomes part of the presentation.</b> Guests aren't only experiencing the finished food; they're experiencing the craftsmanship that creates it. A clean workspace, confident movements, thoughtful interaction, and an organized setup allow the Chef to make the preparation itself part of the celebration."} },
   { id:"blazing-donuts-berries", photos:[{src:"img/st-blazing-donuts-1.jpg",label:"Full station view"},{src:"img/st-blazing-donuts-2.jpg",label:"Detail"}], cat:"chef", name:"Blazing Donuts – Berries & Cream", status:["review","Needs Review"],
     concept:"Vanilla Bean Ice Cream, Mixed Berries, Orange Liqueur, Classic Donut Holes",
-    equip:[], equipStatus:["tbd","TBD"], pointer:{v:false} },
+    equip:[], equipStatus:["tbd","TBD"], pointer:{v:true,text:"<b>Preparation becomes part of the presentation.</b> Guests aren't only experiencing the finished food; they're experiencing the craftsmanship that creates it. A clean workspace, confident movements, thoughtful interaction, and an organized setup allow the Chef to make the preparation itself part of the celebration."} },
   { id:"place-setting", cat:"placesetting", name:"Standard Place Setting", status:["review","Needs Review"], concept:null,
     photos:[{src:"img/710340f27c.jpg",label:"Standard place setting — from Kat's guide"}],
     setup:[
@@ -1739,9 +1758,9 @@ function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
 function render(){
   const cur=stack[stack.length-1];
   backBtn.classList.toggle('show',stack.length>1);
-  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Service · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Deliver · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Bar · Program Calculator',barlist:'Bar · Setup Checklist',bar:'Build · Bar',postreport:'Tools · Post-Event Report'};
+  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Service · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Deliver · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Bar · Program Calculator',barlist:'Bar · Setup Checklist',bar:'Build · Bar',postreport:'Tools · Post-Event Report',leadbrief:'Elevate · Leadership Brief'};
   crumb.textContent=map[cur.view]||'';
-  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:renderPlaybook,pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:renderCulPlaybook,culmod:()=>renderCulModule(cur.arg),leadership:renderLeadership,leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg),bar:renderBarHub,postreport:()=>renderPostReport(cur.arg)})[cur.view]();
+  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:renderPlaybook,pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:renderCulPlaybook,culmod:()=>renderCulModule(cur.arg),leadership:renderLeadership,leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg),bar:renderBarHub,postreport:()=>renderPostReport(cur.arg),leadbrief:()=>renderLeadershipBrief(cur.arg)})[cur.view]();
   if(cur.view==='home'){fillHomeFocus();fillHomeRec();}
 }
 
@@ -1978,6 +1997,7 @@ function buildSearchIndex(){
   add('Brand Guidelines — Look & Foundations','Sales','brandguide','look');
   add('Event Supervisor Post-Event Report','Service · Tools · JotForm, Tampa, Orlando','postreport','supervisor');
   add('Lead Event Chef Post-Event Report','Service · Tools · JotForm, Tampa, Orlando','postreport','leadchef');
+  add('Leadership Brief &amp; Culture Calendar','Elevate · Weekly Rhythm, Let\'s Talk, Safety Spotlight','leadbrief',null);
   STATIONS.forEach(s=>add(s.name,'Station · '+CATS[s.cat].name,'station',s.id));
   PLAYBOOK.forEach((m,mi)=>m.topics.forEach((t,ti)=>add(t,'Service · '+m.title,'pblesson',mi+'-'+ti)));
   CULPB.forEach((m,mi)=>m.topics.forEach((t,ti)=>add(t,(mi===6?'Kitchen · Service · ':'Service · ')+m.title,'pblesson','cul-'+mi+'-'+ti)));
@@ -3201,6 +3221,7 @@ function paintElevate(d){
       <div class="wfm">${f.msg||''}</div>
       ${linkHTML}
     </div>
+    <div class="note-inline">Planning this week's meeting? The full <b>Leadership Brief &amp; Culture Calendar</b> has the philosophy, questions, and prompts behind every Weekly Focus. <button class="relchip" onclick="go('leadbrief')">Open the Brief ›</button></div>
     <div class="titleblock" style="--tbcolor:var(--paper);margin-top:20px;border-width:2px"><span class="tbtext" style="font-size:15px">Recognition Feed</span></div>
     ${src}
     <div class="rchips">${chips}</div>
@@ -3225,6 +3246,73 @@ function goLink(v,a){go(v,a||undefined);}
 function setRecFilter(c){RECFILTER=c;
   screen.querySelectorAll('.rchip').forEach(b=>b.classList.toggle('on',b.textContent===c));
   const fe=document.getElementById('rfeed'); if(fe&&RECDATA)fe.innerHTML=feedHTML(RECDATA.entries);
+}
+const LEADERSHIP_BRIEF={
+  version:"2026",
+  rhythm:[["Inspire","week 1"],["Develop","week 2"],["Practice","week 3"],["Recognize","week 4"],["Reflect","week 5, if applicable"]],
+  facilitate:{
+    before:["Read this week's page.","Think of one real example."],
+    during:["Share the Philosophy.","Ask the Let's Talk question.","Introduce the P2P Challenge.","Recognize last week's success.","Close with the Hospitality Hero and Safety Spotlight."],
+    after:["Observe.","Recognize.","Reinforce."]
+  },
+  months:[
+    { key:"august", name:"August", theme:"Building Trust", philosophy:"Great Events Happen When Great Teams Trust One Another.",
+      seasonalTheme:"Sun, Sand, &amp; Celebrations",
+      companyFocus:["Q4 Hiring Underway","Implementation of Scheduling Efficiency","Employee Reviews","Francis has joined our team as Vice President of Experience, Culinary &amp; Operations","4th Quarter Inquiries at all time high","Intro to Passion to Perfection","Team Hub Preview","Training Cards","P2P Focus Moments"],
+      weeks:[
+        {n:1,stage:"Inspire",title:"Trust Your Team",letsTalk:"What does TRUST look like on your team?",challenge:"Ask one team member “How can I help you succeed today?”",recognition:"Recognize someone who supported another Department, without being asked.",hero:"Guests feel teamwork even if they never see it.",safety:"Safe teams communicate before acting."},
+        {n:2,stage:"Develop",title:"The Power of Communication",letsTalk:"How has a communication breakdown affected an event?",challenge:"Lead Event Chef reviews menu with Executive Chef before departure.",recognition:"Recognize someone who has shown exceptional communication.",hero:"Confidence grows when information is shared.",safety:"Review loading and departure communication."},
+        {n:3,stage:"Practice",title:"Respect Every Role",letsTalk:"How does every role contribute to the overall guest experience?",challenge:"Thank one team member from another department.",recognition:"Recognize cross-functional respect.",hero:"Every interaction shapes hospitality.",safety:"Respect includes safe hand-offs — paperwork, food, equipment."},
+        {n:4,stage:"Recognize",title:"Back to Basics",letsTalk:"Which P2P Standard helped you most this month?",challenge:"Share or demonstrate one core standard with another team member this week.",recognition:"Recognize consistency in daily execution.",hero:"Consistency creates memorable experiences.",safety:"Review PPE and lifting basics."}
+      ]},
+    { key:"september", name:"September", theme:"Ready for Anything", philosophy:"Preparation Today Creates Success Tomorrow.",
+      seasonalTheme:"The Road to Excellence",
+      companyFocus:["Q4 Hiring Continues","Implementation of Scheduling Efficiency","Job Fairs","Hurricane Preparedness Plans","Inventory Checks and Ordering Deficits","Intro to Passion to Perfection","Team Hub Released","Training Cards Released","Large Scale event — September 18th"],
+      weeks:[
+        {n:1,stage:"Inspire",title:"Training Never Stops",letsTalk:"What skill would make your next event or assignment easier?",challenge:"Learn one new skill that will prepare you for your next task.",recognition:"Recognize someone who demonstrates curiosity.",hero:"Knowledge builds confidence, and confidence elevates service.",safety:"Learn safe equipment operation."},
+        {n:2,stage:"Develop",title:"Receiving Feedback",letsTalk:"How has feedback helped you grow?",challenge:"Ask for one piece of coaching from a peer.",recognition:"Recognize someone who is coachable.",hero:"Great hospitality begins with being willing to listen.",safety:"Accept safety corrections immediately."},
+        {n:3,stage:"Practice",title:"Lead From Any Position",letsTalk:"How can you lead without a title?",challenge:"Take initiative once this week.",recognition:"Recognize Quiet Leadership.",hero:"Leadership inspires confidence!",safety:"Model Safe Behaviors."},
+        {n:4,stage:"Recognize",title:"Prepared People Win",letsTalk:"What preparation has saved you time recently?",challenge:"Use your departure checklist and identify one need before it becomes a problem.",recognition:"Recognize preparedness.",hero:"Prepared teams appear polished.",safety:"Use Departure Checklists."}
+      ]}
+  ]
+};
+function renderLeadershipBrief(tab){
+  const B=LEADERSHIP_BRIEF;
+  const keys=B.months.map(m=>m.key);
+  tab=keys.includes(tab)?tab:'howto';
+  const tabs=`<div class="bgtabs"><button class="bgtab${tab==='howto'?' on':''}" onclick="go('leadbrief','howto')">How to Use It</button>${B.months.map(m=>`<button class="bgtab${tab===m.key?' on':''}" onclick="go('leadbrief','${m.key}')">${m.name}</button>`).join('')}</div>`;
+  const howtoBody=`
+    <div class="concept" style="margin-top:6px">Begin every departmental and pre-event meeting by creating conversation with the Weekly Focus.</div>
+    <div class="titleblock" style="--tbcolor:var(--charcoal);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="color:#fff">Weekly Rhythm</span></div>
+    <div class="lbrhythm">${B.rhythm.map(r=>`<div class="lbrstep"><div class="lbrnum">${r[1]}</div><div class="lbrname">${r[0]}</div></div>`).join('')}</div>
+    <div class="titleblock" style="--tbcolor:var(--charcoal);margin-top:20px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="color:#fff">How to Facilitate</span></div>
+    <div class="block"><div class="bh"><span class="bt">Before the Shift/Meeting</span></div><ul class="stdlist">${B.facilitate.before.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    <div class="block"><div class="bh"><span class="bt">During the Shift (3–5 Minutes)</span></div><ul class="stdlist">${B.facilitate.during.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    <div class="block"><div class="bh"><span class="bt">After the Shift/Meeting</span></div><ul class="stdlist">${B.facilitate.after.map(x=>`<li>${x}</li>`).join('')}</ul></div>`;
+  const monthBody=(m)=>`
+    <div class="lbmonth">
+      <div class="lbmk">${m.name} ${B.version} · P2P Philosophy</div>
+      <div class="lbmt">${m.theme}</div>
+      <div class="pquote" style="text-align:left;margin:10px 2px 0">${m.philosophy}</div>
+      <div class="lbseason"><b>Seasonal Theme:</b> ${m.seasonalTheme}</div>
+    </div>
+    <div class="block"><div class="bh"><span class="bt">${m.name} Highlights · Company Focus</span></div><ul class="stdlist">${m.companyFocus.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    <div class="titleblock" style="--tbcolor:var(--displayed);margin-top:20px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="color:#fff">Weekly Focus</span></div>
+    ${m.weeks.map(w=>`
+      <div class="lbweek">
+        <div class="lbwk-top"><div class="lbwk-title">Week ${w.n}: ${w.title}</div><div class="lbwk-stage">${w.stage}</div></div>
+        <div class="lbrow"><b>Let's Talk</b>${w.letsTalk}</div>
+        <div class="lbrow"><b>P2P Challenge</b>${w.challenge}</div>
+        <div class="lbrow"><b>Recognition</b>${w.recognition}</div>
+        <div class="lbrow"><b>Hospitality Hero</b>${w.hero}</div>
+        <div class="lbrow"><b>Safety Spotlight</b>${w.safety}</div>
+      </div>`).join('')}`;
+  screen.innerHTML=`
+    <div class="titleblock" style="--tbcolor:var(--charcoal)"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="color:#fff">Leadership Brief<small style="color:#e6e4df">Culture Calendar ${B.version}</small></span></div>
+    <div class="statusrow">${badge('verified','Leadership Guide')}${badge('review','Aug–Sep 2026')}</div>
+    ${tabs}
+    ${tab==='howto'?howtoBody:monthBody(B.months.find(m=>m.key===tab))}
+    <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
 }
 function renderDeliver(){
   const rlist=VIEWAS==='exec'?ROLE_ORDER:(DEPTS[VIEWAS].roles||[]);
