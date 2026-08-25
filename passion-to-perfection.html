@@ -3221,7 +3221,12 @@ function paintElevate(d){
       <div class="wfm">${f.msg||''}</div>
       ${linkHTML}
     </div>
-    <div class="note-inline">Planning this week's meeting? The full <b>Leadership Brief &amp; Culture Calendar</b> has the philosophy, questions, and prompts behind every Weekly Focus. <button class="relchip" onclick="go('leadbrief')">Open the Brief ›</button></div>
+    <div class="grid" style="margin-top:14px">
+      <div class="tile active" style="grid-column:1/3" onclick="go('leadbrief')">
+        <div><div class="tt">Leadership Brief &amp; Culture Calendar</div><div class="td">Philosophy, Let's Talk questions, P2P Challenges &amp; Safety Spotlights behind every Weekly Focus</div></div>
+        ${badge('verified','Open the Brief ›')}
+      </div>
+    </div>
     <div class="titleblock" style="--tbcolor:var(--paper);margin-top:20px;border-width:2px"><span class="tbtext" style="font-size:15px">Recognition Feed</span></div>
     ${src}
     <div class="rchips">${chips}</div>
