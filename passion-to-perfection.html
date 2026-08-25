@@ -3381,7 +3381,8 @@ function streak(){const s=stLoad();if(!s.days)return 0;let n=0,d=new Date();
 const STATION_BADGE={
   "coffee-station":"☕","carved-turkey":"🦃","carved-ham":"🍖","carved-flank":"🥩","carved-chicken":"🍗",
   "hot-dog-bar":"🌭","omelet":"🍳","eggs-benedict":"🥚","sundae-bar":"🍨","walking-cannoli":"🧁",
-  "byo-bowl":"🥣","pasta-bowl":"🍝","rice-krispy":"🍡","sweet-savory":"🍫","place-setting":"🍽️"
+  "byo-bowl":"🥣","pasta-bowl":"🍝","rice-krispy":"🍡","sweet-savory":"🍫","place-setting":"🍽️",
+  "hot-mess-bar":"🫕","blazing-donuts-latin":"🍩","blazing-donuts-coffee":"🔥","blazing-donuts-berries":"🍓"
 };
 function badgeEmoji(id){return STATION_BADGE[id]||'🏅';}
 function hasBadge(id){const s=stLoad();return !!(s.badges&&s.badges[id]);}
