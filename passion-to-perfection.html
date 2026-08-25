@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<title>Passion to Perfection — Preview</title>
+<title>Passion to Perfection</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,500;1,600;1,700&family=Inter:wght@400;500;600;700&family=Lato:wght@400;700;900&family=Allura&display=swap" rel="stylesheet">
@@ -63,9 +63,6 @@
   .admbar{display:flex;align-items:center;justify-content:space-between;padding:11px 18px;background:var(--charcoal);color:#fff;font-family:var(--serif);font-weight:800;font-size:15px;}
   .admbar button{background:none;border:1.5px solid #6f6f6f;color:#fff;padding:6px 13px;font-size:12px;cursor:pointer;font-family:var(--sans);font-weight:700;}
   #admframe{border:0;flex:1;width:100%;}
-  .previewnote{background:var(--charcoal);color:#f2eee4;font-size:10.5px;line-height:1.45;
-    padding:8px 16px;text-align:center;letter-spacing:.3px;}
-  .previewnote b{color:#FEFFF9;}
   .viewbar{display:flex;align-items:center;gap:8px;flex-wrap:wrap;background:#efe9d9;border-bottom:2px solid var(--frame);padding:7px 14px;font-size:11px;font-weight:600;color:#5c574c;}
   .viewbar select{font-family:var(--sans);font-size:12px;font-weight:700;border:1.5px solid var(--frame);background:var(--paper);color:var(--ink);padding:3px 7px;}
   .viewbar .vbnote{color:var(--muted);font-weight:400;font-style:italic;font-size:10px;}
@@ -628,7 +625,6 @@
 <body>
 <div class="frame"><span class="corner c-tl"><i></i></span><span class="corner c-tr"><i></i></span><span class="corner c-bl"><i></i></span><span class="corner c-br"><i></i></span></div>
 <div class="phone">
-  <div class="previewnote"><b>INTERNAL PREVIEW · Puff 'n Stuff — not for distribution</b><br>Concept direction for review · verified content is badged · other sections are placeholders</div>
   <div class="viewbar"><span>Preview as</span><select id="viewas" onchange="setViewAs(this.value)"></select><span class="vbnote">demo only — the real app scopes to each person's login</span></div>
   <div class="topbar">
     <button class="back" id="backBtn" aria-label="Back">‹</button>
@@ -2710,7 +2706,7 @@ function renderBrandGuide(tab){
     <div class="type-spec">
       <div class="tsname">Larken · Headlines &amp; titles<span class="availbadge paid">Adobe Fonts license</span></div>
       <div class="tssample" style="font-family:var(--serif);font-weight:800;font-size:32px;color:var(--ink)">Puff 'n Stuff</div>
-      <div class="tsuse">Primary display serif for headlines and titles. It's a paid Adobe Fonts license, not free to embed — this preview approximates it with our existing display serif.</div>
+      <div class="tsuse">Primary display serif for headlines and titles. It's a paid Adobe Fonts license, not free to embed — the site currently substitutes our existing display serif until it's licensed.</div>
     </div>
     <div class="type-spec">
       <div class="tsname">Lato · Body text &amp; subheadings<span class="availbadge free">Google Fonts — live</span></div>
@@ -2721,7 +2717,7 @@ function renderBrandGuide(tab){
     <div class="type-spec">
       <div class="tsname">The Signature · Accent &amp; signature moments<span class="availbadge paid">License not confirmed</span></div>
       <div class="tssample" style="font-family:'Allura',cursive;font-size:38px;color:var(--ink)">Puff 'n Stuff</div>
-      <div class="tsuse">Script accent for signature moments. We haven't confirmed a free-embed source for it yet — this preview approximates it with a free script font.</div>
+      <div class="tsuse">Script accent for signature moments. We haven't confirmed a free-embed source for it yet — the site currently substitutes a free script font until one is confirmed.</div>
     </div>`;
   const iconGrid=BRAND_ICONS.map(i=>`<div class="icon-card"><div class="icon-circ"><svg viewBox="0 0 24 24" fill="none" stroke="var(--charcoal)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">${i[1]}</svg></div><div class="icon-lbl">${i[0]}</div></div>`).join('');
   const tb=(c,t,sz)=>`<div class="titleblock" style="--tbcolor:${c};margin-top:20px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="${c==='var(--chef)'?'':'color:#fff;'}font-size:${sz||15}px">${t}</span></div>`;
@@ -3491,7 +3487,7 @@ function openAdmin(){
   let ov=document.getElementById('adminov');
   if(!ov){
     ov=document.createElement('div');ov.id='adminov';
-    ov.innerHTML='<div class="admbar"><span>Admin dashboard <em style="font-style:normal;color:#cfcabf;font-weight:400;font-size:11px">— design preview</em></span><button onclick="closeAdmin()">Close ✕</button></div><iframe id="admframe" title="Admin dashboard"></iframe>';
+    ov.innerHTML='<div class="admbar"><span>Admin dashboard</span><button onclick="closeAdmin()">Close ✕</button></div><iframe id="admframe" title="Admin dashboard"></iframe>';
     document.body.appendChild(ov);
     document.getElementById('admframe').src='admin-dashboard.html';
   }
