@@ -279,6 +279,47 @@
   .jbtns{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
   .jwin{font-family:var(--serif);font-weight:800;font-size:22px;color:#F5C518;animation:jwinpop .35s ease;}
   @keyframes jwinpop{0%{transform:scale(.7);opacity:0}60%{transform:scale(1.08);opacity:1}100%{transform:scale(1)}}
+  .stshero{border:2.5px solid var(--charcoal);background:linear-gradient(180deg,#fff,var(--panel));padding:18px 17px;margin-top:16px;box-shadow:5px 5px 0 var(--chef);}
+  .stsheroTop{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:9px;}
+  .stsnew{font-family:var(--sans);font-weight:800;font-size:10px;letter-spacing:.5px;text-transform:uppercase;color:#fff;background:var(--chef);padding:3px 8px;}
+  .stsheroTitle{font-family:var(--serif);font-weight:800;font-size:24px;line-height:1.15;margin-bottom:8px;}
+  .stsintro{font-size:13px;line-height:1.5;color:#34302b;margin-bottom:12px;}
+  .stsstart{font-family:var(--sans);font-weight:800;font-size:13px;letter-spacing:.3px;border:2px solid var(--charcoal);background:var(--charcoal);color:#fff;padding:10px 18px;cursor:pointer;}
+  .stsprog{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.3px;color:var(--muted);margin-bottom:8px;text-transform:uppercase;}
+  .stssit{font-family:var(--serif);font-weight:700;font-size:17px;line-height:1.35;margin-bottom:14px;}
+  .stsopts{display:flex;flex-direction:column;gap:9px;}
+  .stsopt{text-align:left;font-family:var(--sans);font-size:13.5px;line-height:1.4;border:2px solid var(--frame);background:var(--paper);color:var(--ink);padding:11px 13px;cursor:pointer;}
+  .stsopt:hover:not(:disabled){border-color:var(--charcoal);}
+  .stsopt:disabled{cursor:default;}
+  .stsopt.ok{border-color:var(--verified);background:#eaf5ee;color:#1e5c34;}
+  .stsopt.bad{border-color:#a32d2d;background:#f7e9e9;color:#7a2222;}
+  .stsfb{border:2px solid var(--frame);background:var(--soft);padding:12px 13px;margin-top:12px;}
+  .stsfbhead{font-family:var(--sans);font-weight:800;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--charcoal);margin-bottom:6px;}
+  .stsfbwhy{font-size:13px;line-height:1.5;color:#34302b;}
+  .stsnext{font-family:var(--sans);font-weight:800;font-size:12px;border:2px solid var(--charcoal);background:var(--charcoal);color:#fff;padding:8px 15px;cursor:pointer;margin-top:11px;}
+  .stsdone{font-family:var(--serif);font-size:17px;font-weight:700;text-align:center;padding:8px 0;}
+  .psbtoggles{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:12px;}
+  .psbtog{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.2px;border:1.5px solid var(--frame);background:var(--paper);color:var(--ink);padding:6px 11px;cursor:pointer;}
+  .psbtog.on{background:var(--place);border-color:var(--place);color:#fff;}
+  .psbstage{background:#f2f0ea;border:2px solid var(--frame);padding:6px;}
+  .psbsvg{width:100%;height:auto;display:block;}
+  .psbpc{fill:#e6e3db;stroke:var(--frame);stroke-width:1.5;cursor:pointer;transition:fill .12s;}
+  .psbpc:hover{fill:#d9d5c9;}
+  .psbpc.sel{fill:#fff;stroke:var(--place);stroke-width:3;}
+  .psbring{fill:none;stroke:#d3cfc3;stroke-width:1.5;pointer-events:none;}
+  .psbknob{fill:#e6e3db;stroke:var(--frame);stroke-width:1.5;pointer-events:none;}
+  .psbhint{font-size:12px;font-style:italic;color:var(--muted);padding:11px 2px;}
+  .psbdetail{border:2px solid var(--frame);background:var(--soft);padding:11px 13px;margin-top:2px;}
+  .psbdetcat{font-family:var(--sans);font-size:10px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;color:var(--muted);}
+  .psbdetname{font-family:var(--serif);font-weight:800;font-size:17px;margin:2px 0 7px;display:flex;align-items:center;gap:8px;flex-wrap:wrap;}
+  .psbdetplace{font-size:13px;line-height:1.5;color:#34302b;}
+  .psbdettip{font-size:12.5px;line-height:1.5;color:var(--muted);margin-top:7px;font-style:italic;}
+  .psbchecklabel{font-family:var(--sans);font-weight:800;font-size:11px;letter-spacing:.5px;text-transform:uppercase;color:var(--charcoal);margin:14px 0 6px;}
+  .psbcheck{list-style:none;padding:0;margin:0;}
+  .psbcheck li{font-size:13px;padding:6px 4px 6px 24px;position:relative;border-bottom:1px solid var(--hair);cursor:pointer;}
+  .psbcheck li::before{content:"";position:absolute;left:2px;top:8px;width:13px;height:13px;border:1.5px solid var(--frame);background:var(--paper);}
+  .psbcheck li.on{color:var(--muted);text-decoration:line-through;}
+  .psbcheck li.on::before{content:"✓";background:var(--verified);border-color:var(--verified);color:#fff;font-size:10px;text-align:center;line-height:12px;}
   .attirehero{position:relative;border:2.5px solid var(--frame);margin-top:2px;}
   .attirehero img{width:100%;display:block;}
   .acap{position:absolute;top:10px;left:10px;font-size:10px;font-weight:800;letter-spacing:1px;text-transform:uppercase;padding:4px 9px;border:1.5px solid var(--frame);}
@@ -1966,6 +2007,123 @@ function scoreClue(got){
   }
 }
 function closeJeo(){const o=document.getElementById('jov'); if(o)o.classList.remove('on');}
+/* Place Setting Builder — interactive diagram for the Standard Place Setting station.
+   Core 6 items are Kat-verified (from her guide); the 3 optional toggles are common industry
+   pieces not yet confirmed for Puff, badged Needs Review until Ops signs off. */
+const PLACESET_ITEMS={
+  charger:{cat:"Dinnerware",label:"Charger Plate",status:["review","Needs Review"],placement:"Sits beneath the dinner plate, framing the setting.",tip:"Optional — confirm with your Event Supervisor whether this event calls for one."},
+  dplate:{cat:"Dinnerware",label:"Dinner Plate",status:["verified","Verified"],placement:"Centered in the cover, with room left between the forks and knife to seat it.",tip:"That gap is why forks and knives sit exactly 1&quot; from the table's edge — it leaves the plate somewhere to land."},
+  bbplate:{cat:"Dinnerware",label:"B&amp;B Plate",status:["verified","Verified"],placement:"Above the forks — or above the napkin if space is tight.",tip:""},
+  bbknife:{cat:"Flatware",label:"B&amp;B Knife",status:["verified","Verified"],placement:"Laid horizontally across the B&amp;B plate, handle facing right.",tip:""},
+  fork:{cat:"Flatware",label:"Dinner Fork",status:["verified","Verified"],placement:"1&quot; from the table's bottom edge, not touching the knife.",tip:""},
+  saladfork:{cat:"Flatware",label:"Salad Fork",status:["review","Needs Review"],placement:"Outside the dinner fork — used first, farthest from the plate.",tip:"Optional — confirm with your Event Supervisor if a salad course is served."},
+  knife:{cat:"Flatware",label:"Dinner Knife",status:["verified","Verified"],placement:"1&quot; from the table's bottom edge, not touching the fork.",tip:""},
+  water:{cat:"Glassware",label:"Water Glass",status:["verified","Verified"],placement:"Just above the knife, not touching it — filled ½&quot; from the top.",tip:""},
+  wine:{cat:"Glassware",label:"Wine Glass",status:["review","Needs Review"],placement:"To the right of the water glass, in the order it will be poured.",tip:"Optional — confirm with your Event Supervisor if wine service is included."}
+};
+let PSB={charger:false,saladfork:false,wine:false,sel:null};
+function psbSvg(){
+  const cls=k=>'psbpc'+(PSB.sel===k?' sel':'');
+  return `<svg viewBox="0 0 380 300" class="psbsvg" aria-label="Place setting diagram">
+    ${PSB.charger?`<circle class="${cls('charger')}" data-key="charger" onclick="selectPSB('charger')" cx="195" cy="195" r="80"/>`:''}
+    <circle class="${cls('dplate')}" data-key="dplate" onclick="selectPSB('dplate')" cx="195" cy="195" r="66"/>
+    <circle class="psbring" cx="195" cy="195" r="40"/>
+    <circle class="${cls('bbplate')}" data-key="bbplate" onclick="selectPSB('bbplate')" cx="108" cy="68" r="28"/>
+    <rect class="${cls('bbknife')}" data-key="bbknife" onclick="selectPSB('bbknife')" x="88" y="62" width="38" height="7" rx="3.5"/>
+    <circle class="psbknob" cx="122" cy="65.5" r="5"/>
+    ${PSB.saladfork?`<rect class="${cls('saladfork')}" data-key="saladfork" onclick="selectPSB('saladfork')" x="68" y="115" width="15" height="150" rx="6"/>`:''}
+    <rect class="${cls('fork')}" data-key="fork" onclick="selectPSB('fork')" x="92" y="108" width="17" height="160" rx="6"/>
+    <rect class="${cls('knife')}" data-key="knife" onclick="selectPSB('knife')" x="278" y="108" width="17" height="160" rx="7"/>
+    <circle class="${cls('water')}" data-key="water" onclick="selectPSB('water')" cx="305" cy="85" r="15"/>
+    ${PSB.wine?`<circle class="${cls('wine')}" data-key="wine" onclick="selectPSB('wine')" cx="335" cy="92" r="12"/>`:''}
+  </svg>`;
+}
+function psbPanel(){
+  const k=PSB.sel;
+  if(!k)return `<div class="psbhint">Tap any piece on the diagram to see its placement.</div>`;
+  const it=PLACESET_ITEMS[k];
+  return `<div class="psbdetail">
+    <div class="psbdetcat">${it.cat}</div>
+    <div class="psbdetname">${it.label}${badge(it.status[0],it.status[1])}</div>
+    <div class="psbdetplace">${it.placement}</div>
+    ${it.tip?`<div class="psbdettip"><b>Tip:</b> ${it.tip}</div>`:''}
+  </div>`;
+}
+function psbChecklist(){
+  const items=[['dplate','Dinner Plate'],['bbplate','B&amp;B Plate'],['fork','Dinner Fork'],['bbknife','B&amp;B Knife'],['knife','Dinner Knife'],['water','Water Glass']];
+  if(PSB.charger)items.unshift(['charger','Charger Plate']);
+  if(PSB.saladfork)items.push(['saladfork','Salad Fork']);
+  if(PSB.wine)items.push(['wine','Wine Glass']);
+  return `<ul class="psbcheck">${items.map(([k,label])=>`<li onclick="this.classList.toggle('on')">${label}</li>`).join('')}</ul>`;
+}
+function renderPSB(){
+  return `<div class="bh" style="margin-bottom:9px"><span class="bt">Place Setting Builder</span>${badge('verified','Core · Verified')}</div>
+    <div class="stsintro">Tap any piece for its placement rule. Toggle the optional pieces on for events that call for them.</div>
+    <div class="psbtoggles">
+      <button class="psbtog${PSB.charger?' on':''}" onclick="togglePSB('charger')">Charger Plate${PSB.charger?' ✓':''}</button>
+      <button class="psbtog${PSB.saladfork?' on':''}" onclick="togglePSB('saladfork')">Salad Fork${PSB.saladfork?' ✓':''}</button>
+      <button class="psbtog${PSB.wine?' on':''}" onclick="togglePSB('wine')">Wine Glass${PSB.wine?' ✓':''}</button>
+    </div>
+    <div class="psbstage">${psbSvg()}</div>
+    <div id="psbpanel">${psbPanel()}</div>
+    <div class="psbchecklabel">Setup checklist</div>
+    <div id="psbchecklist">${psbChecklist()}</div>`;
+}
+function refreshPSB(){const c=document.getElementById('psbcontainer'); if(c)c.innerHTML=renderPSB();}
+function togglePSB(k){PSB[k]=!PSB[k]; if(!PSB[k]&&PSB.sel===k)PSB.sel=null; refreshPSB();}
+function selectPSB(k){PSB.sel=(PSB.sel===k)?null:k; refreshPSB();}
+/* Say This, Not That — hospitality role-play. Scenarios drafted from existing Tone of Voice traits,
+   On the Floor cues, and Glossary terms; needs Kat/ops sign-off before badging Verified. */
+const SAYTHIS=[
+  {sit:"A guest asks if a dish contains a specific allergen and you're not 100% sure.", a:"“Let me confirm that with the kitchen right now so I can give you a sure answer.”", b:"“I think it's probably fine — I don't think it's in there.”", correct:'a', why:"Never guess on allergens. Confirming shows guests they can trust what you tell them — confidence means being sure, not sounding sure."},
+  {sit:"A guest mentions the food is taking longer than expected.", a:"“Thanks for your patience — let me check on that for you right now.”", b:"“That's not my station, you'll have to ask someone else.”", correct:'a', why:"Own the moment even if it isn't your task. Find the answer instead of passing the guest along."},
+  {sit:"A guest accidentally spills a drink on the linen.", a:"“No problem at all — let me get that taken care of right away.”", b:"“Oh no! You'll want to be more careful with that.”", correct:'a', why:"Stay calm and in control. A mishap should never leave a guest feeling blamed."},
+  {sit:"A buffet item is running low and a guest points it out.", a:"“I'll have more brought out right away — thank you for the heads up.”", b:"“Sorry, that's all we have left.”", correct:'a', why:"Solve it, don't just deliver the bad news. A quick fix beats an apology."},
+  {sit:"A guest asks to take a plate home.", a:"“Let me check with our event captain on that for you.”", b:"“No, we're not allowed to do that.”", correct:'a', why:"Same answer, warmer delivery — defer to the standard instead of a flat no."},
+  {sit:"A guest shares, “It's my daughter's wedding today!”", a:"“Congratulations! We're so glad to be part of the celebration.”", b:"“Okay, cool.”", correct:'a', why:"Joyful & Celebratory is a brand voice trait for a reason — meet the moment."},
+  {sit:"A guest asks what's in a dish, just out of curiosity.", a:"“That's a herb and caper remoulade with fresh dill — bright, citrusy, really cuts through the richness.”", b:"“Not sure, just some sauce.”", correct:'a', why:"Descriptive & Sensory language — words should evoke taste and texture, not shrug it off."},
+  {sit:"You need to move past a guest while carrying a full tray.", a:"“Behind you” — said clearly before passing.", b:"Quietly slip past without saying anything.", correct:'a', why:"A simple heads-up prevents collisions and keeps the floor calm — straight from the Glossary."},
+  {sit:"A guest asks a logistics question you genuinely don't know the answer to.", a:"“Great question — let me find out and come right back to you.”", b:"Give your best guess so you have something to say.", correct:'a', why:"Confident & Reassuring means being honest when you don't know — not sounding sure when you're not."},
+  {sit:"Your phone buzzes in your pocket while a guest is mid-conversation with you.", a:"Let it go, and stay fully present with the guest in front of you.", b:"Glance at it or answer while they're still talking.", correct:'a', why:"Phone away and out of sight, always — it's one of the four cues for how we carry ourselves on the floor."},
+  {sit:"A guest says a dish isn't what they expected.", a:"“I'm sorry that's not what you expected — let me see what we can do.”", b:"“That's actually exactly how it's supposed to be.”", correct:'a', why:"Listen and solve first. Explaining the menu can come after the guest feels heard."},
+  {sit:"A guest stops you to say how much they're enjoying the event.", a:"“Thank you so much — I'll be sure to share that with the whole team.”", b:"A quick nod, and keep walking.", correct:'a', why:"Warm & Welcoming — accept the compliment graciously, and pass the moment on to the team that earned it."}
+];
+let STS={order:[],i:0,score:0,answered:false};
+function startSayThis(){
+  STS={order:SAYTHIS.map((_,i)=>i).sort(()=>Math.random()-0.5),i:0,score:0,answered:false};
+  renderSayThisRound();
+}
+function renderSayThisRound(){
+  const box=document.getElementById('saythisbox'); if(!box)return;
+  if(STS.i>=STS.order.length){
+    box.innerHTML=`<div class="stsdone">Round complete — <b>${STS.score} / ${SAYTHIS.length}</b> ✦<div style="margin-top:10px"><button class="stsstart" onclick="startSayThis()">Play again ↻</button></div></div>`;
+    return;
+  }
+  const q=SAYTHIS[STS.order[STS.i]];
+  const swap=Math.random()<0.5;
+  const opts=swap?[{key:'b',text:q.b},{key:'a',text:q.a}]:[{key:'a',text:q.a},{key:'b',text:q.b}];
+  STS.answered=false;
+  box.innerHTML=`
+    <div class="stsprog">Scenario ${STS.i+1} of ${SAYTHIS.length} · Score ${STS.score}</div>
+    <div class="stssit">${q.sit}</div>
+    <div class="stsopts">${opts.map(o=>`<button class="stsopt" data-key="${o.key}" onclick="pickSayThis('${o.key}')">${o.text}</button>`).join('')}</div>
+    <div class="stsfb" id="stsfb" style="display:none"></div>`;
+}
+function pickSayThis(key){
+  if(STS.answered)return; STS.answered=true;
+  const q=SAYTHIS[STS.order[STS.i]];
+  const correct=key===q.correct;
+  if(correct){STS.score++;bump('quiz');}
+  document.querySelectorAll('.stsopt').forEach(btn=>{
+    btn.disabled=true;
+    if(btn.dataset.key===q.correct)btn.classList.add('ok');
+    else if(btn.dataset.key===key)btn.classList.add('bad');
+  });
+  const fb=document.getElementById('stsfb');
+  fb.style.display='block';
+  fb.innerHTML=`<div class="stsfbhead">${correct?'✓ Say this':'✦ Better to say this'}</div><div class="stsfbwhy">${q.why}</div><button class="stsnext" onclick="STS.i++;renderSayThisRound()">Next ›</button>`;
+  if(correct){const r=fb.getBoundingClientRect();confettiBurst(r.left+r.width/2, r.top);}
+}
 /* ---------- Site-wide search ---------- */
 let SIDX=null, SRES=[];
 function buildSearchIndex(){
@@ -1994,6 +2152,8 @@ function buildSearchIndex(){
   add('Event Supervisor Post-Event Report','Service · Tools · JotForm, Tampa, Orlando','postreport','supervisor');
   add('Lead Event Chef Post-Event Report','Service · Tools · JotForm, Tampa, Orlando','postreport','leadchef');
   add('Leadership Brief &amp; Culture Calendar','Elevate · Weekly Rhythm, Let\'s Talk, Safety Spotlight','leadbrief',null);
+  add('Say This, Not That · Guest role-play','Know · Communication','communication',null);
+  add('Place Setting Builder · Interactive diagram','Station · Place Settings','station','place-setting');
   STATIONS.forEach(s=>add(s.name,'Station · '+CATS[s.cat].name,'station',s.id));
   PLAYBOOK.forEach((m,mi)=>m.topics.forEach((t,ti)=>add(t,'Service · '+m.title,'pblesson',mi+'-'+ti)));
   CULPB.forEach((m,mi)=>m.topics.forEach((t,ti)=>add(t,(mi===6?'Kitchen · Service · ':'Service · ')+m.title,'pblesson','cul-'+mi+'-'+ti)));
@@ -2104,6 +2264,8 @@ function renderStation(id){
 
     ${setupBlock}
 
+    ${s.id==='place-setting'?`<div class="block" id="psbcontainer">${renderPSB()}</div>`:''}
+
     ${pointer}
 
     <div class="guest" data-stamp="${badgeEmoji(s.id)} ${s.name} badge!"><div class="gh">Is the station GUEST ready?</div>
@@ -2160,6 +2322,12 @@ function renderCommunication(){
     <p class="kicker">Know · Professional Standards</p>
     <h1 class="disp">Communication</h1>
     <p class="lead">How we carry ourselves on the floor — calm, clear, and guest-first.</p>
+    <div class="stshero">
+      <div class="stsheroTop"><span class="stsnew">New ✦</span>${badge('review','Needs Review')}</div>
+      <div class="stsheroTitle">Say This, Not That</div>
+      <div class="stsintro">A guest situation, two ways to respond — pick the one that fits the Puff standard. ${SAYTHIS.length} scenarios, shuffled every round.</div>
+      <div id="saythisbox"><button class="stsstart" onclick="startSayThis()">Start round ▸</button></div>
+    </div>
     <div class="titleblock" style="--tbcolor:var(--charcoal)"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="color:#fff">On the Floor<small style="color:#e6e4df">Four cues</small></span></div>
     <div class="block"><div class="bh"><span class="bt">How we communicate</span>${badge('verified','From Playbook')}</div><ul class="stdlist">${pts.map(p=>`<li><b>${p[0]}.</b> ${p[1]}</li>`).join('')}</ul></div>
     <div class="note-inline">For written &amp; client communication, see the brand <b>Tone of Voice</b>. <button class="relchip" onclick="go('brandguide','voice')">Tone of Voice ›</button></div>
