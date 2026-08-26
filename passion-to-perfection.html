@@ -741,7 +741,7 @@ const QUIZ=[
 // Fully-written lessons (keyed by topic name). Everything else stays TBD.
 const LESSONS={
   "Unload & Reload a Truck":{
-    philosophy:"Loading and unloading is everyone's responsibility. Every item leaves the warehouse in usable condition. And it's on all of us to keep it that way through load-in, service, and load-out.",
+    philosophy:"Loading and unloading is everyone's responsibility. Every item leaves the warehouse in usable condition, and it's on all of us to keep it that way through load-in, service, and load-out.",
     standards:[
       "If something's too heavy to lift safely, ask a teammate for help.",
       "Respect the venue: mind walls and floors, never drag equipment, and never lean items against walls.",
@@ -862,7 +862,7 @@ const LESSONS={
         "Sweep the room afterward to collect all empty glass racks; stack and organize them at the breakdown station."]]],
     tips:[
       ["eff","Polish As You Go","With hot water and a polishing cloth, spot-polish flatware and glassware as you set. Always wear gloves handling flatware or glassware. It keeps every piece spotless and smudge-free."],
-      ["team","Sweep the Room","Set the room from the wall closest to the public entrance and work toward the back of house. So tables nearest the guests are ready first if doors open early."],
+      ["team","Sweep the Room","Set the room from the wall closest to the public entrance and work toward the back of house, so tables nearest the guests are ready first if doors open early."],
       ["gloss","12 O'clock Position","The first position at the table. Always the center chair from where guests enter. With each table's guide chair at 12 o'clock, you can evenly space every setting with precision."]],
     pointer:"Gloves on for flatware &amp; glassware. Spotless, smudge-free service ware every time.",
     quiz:{q:"What's the order of a place setting?",a:["Flatware → Coffee → Glassware","Glassware → Flatware → Coffee","Coffee → Glassware → Flatware"],c:0}
@@ -882,7 +882,7 @@ const LESSONS={
       "For plated service, set jacks in groupings of three. One for water / wine / clean serviceware, two dedicated to serving and clearing."]]],
     tips:[
       ["eff","The 5×5 Rule","Stack scraped plates no more than 5 high and in no more than 2 stacks side by side per tray."],
-      ["team","The Tray","Never rest your bussing tray on a chair or a guest table. It stays on top of your side stand unless you're carrying it. And never lean it against a wall."]],
+      ["team","The Tray","Never rest your bussing tray on a chair or a guest table. It stays on top of your side stand unless you're carrying it, and never lean it against a wall."]],
     pointer:"Clean with clean, dirty with dirty. Beverages never share a tray with dirty plates.",
     quiz:{q:"Where do the heaviest items go on a tray?",a:["In the middle","Along the edge","Wherever they fit"],c:0}
   },
@@ -943,7 +943,7 @@ const LESSONS={
       "Set a sample plate in each plate crate for reference.",
       "Stage linen bags at either end to collect napkins.",
       "Set the dump bucket with strainer immediately before the glass racks."]]],
-    tips:[["gloss","Dump Bucket","An empty container for pouring leftover liquid from used glasses, covered with a strainer to catch stir sticks, bar fruit, napkins, and picks. Never pour liquid into garbage cans. And never clear trash into dump buckets."]],
+    tips:[["gloss","Dump Bucket","An empty container for pouring leftover liquid from used glasses, covered with a strainer to catch stir sticks, bar fruit, napkins, and picks. Never pour liquid into garbage cans, and never clear trash into dump buckets."]],
     pointer:"Set up in the order you bus. Trash, flatware, serviceware, plates, dump bucket, glass.",
     quiz:{q:"How many bags line each breakdown trash can?",a:["Two, with the corners tied together","One","As many as fit"],c:0}
   },
@@ -1294,7 +1294,7 @@ const LESSONS={
     quiz:{q:"Before you can lock a butane canister into place, the ignition knob must be…",a:["Fully in the off position","Turned to high","Removed"],c:0}
   },
   "Fryers":{
-    philosophy:"Tabletop and large fryers fry or boil to order for the best-quality product. And you're responsible for safely draining and transporting the oil.",
+    philosophy:"Tabletop and large fryers fry or boil to order for the best-quality product, and you're responsible for safely draining and transporting the oil.",
     standards:[
       "Tabletop: fill oil/water to the max line, plug in, and set to about 350°F: the unit won't run until liquid is added.",
       "Large propane fryer: connect the hose, fill to the max line, open the propane valve, hold the gas valve in for at least 60 seconds to light the pilot, then set your temperature.",
@@ -1340,11 +1340,11 @@ const LESSONS={
       "Set refrigeration or ice, then the hot box and sterno.",
       "Set the heat lamp last, right before plate-up begins."]]],
     tips:[["eff","Mini Kitchen","You're building a self-contained kitchen with no other resources nearby. Plan strategically before you start."]],
-    pointer:"One tray per item, garnished with floral or fresh herbs. Plus backup, always.",
+    pointer:"One tray per item, garnished with floral or fresh herbs, plus backup, always.",
     quiz:{q:"About how far ahead do you light sterno for a butler pass hot box?",a:["About 1 hour before","Right as guests arrive","The night before"],c:0}
   },
   "Food Preparation":{
-    philosophy:"Guest count, pace, and the length of the tray-pass window all determine how much of each HOD item to heat at a time. And freshness always wins over volume.",
+    philosophy:"Guest count, pace, and the length of the tray-pass window all determine how much of each HOD item to heat at a time, and freshness always wins over volume.",
     standards:[
       "Have a portion of every item ready at least 15 minutes before service begins.",
       "Heat food in stages if tray-pass service runs over a long window. No one wants a 3-hour-old crab cake.",
@@ -1938,7 +1938,7 @@ function renderStations(){
    Sourced across the Service craft's different training modules: Station Standards, P2P Playbook, Culinary Playbook, Event Supervisor Playbook. */
 const JEO=[
   {cat:"Table Ninja",clues:[
-    [100,"Forks and knives sit this far from the table's bottom edge. And never touching each other.","What is one inch?","station","place-setting"],
+    [100,"Forks and knives sit this far from the table's bottom edge, and never touching each other.","What is one inch?","station","place-setting"],
     [200,"The B&amp;B knife always lays horizontally across the B&amp;B plate with the handle facing this direction.","What is right?","station","place-setting"],
     [300,"This is how full the water glass is filled, set just above the knives without touching them.","What is half an inch from the top?","station","place-setting"]]},
   {cat:"Plate Patrol",clues:[
@@ -2016,7 +2016,7 @@ function closeJeo(){const o=document.getElementById('jov'); if(o)o.classList.rem
 const PLACESET_ITEMS={
   charger:{cat:"Dinnerware",label:"Charger Plate",status:["review","Needs Review"],placement:"Sits beneath the dinner plate, framing the setting.",tip:"Optional. Confirm with your Event Supervisor whether this event calls for one."},
   dplate:{cat:"Dinnerware",label:"Dinner Plate",status:["verified","Verified"],placement:"Centered in the cover, with room left between the forks and knife to seat it.",tip:"That gap is why forks and knives sit exactly 1&quot; from the table's edge. It leaves the plate somewhere to land."},
-  bbplate:{cat:"Dinnerware",label:"B&amp;B Plate",status:["verified","Verified"],placement:"Above the forks. Or above the napkin if space is tight.",tip:""},
+  bbplate:{cat:"Dinnerware",label:"B&amp;B Plate",status:["verified","Verified"],placement:"Above the forks, or above the napkin if space is tight.",tip:""},
   bbknife:{cat:"Flatware",label:"B&amp;B Knife",status:["verified","Verified"],placement:"Laid horizontally across the B&amp;B plate, handle facing right.",tip:""},
   fork:{cat:"Flatware",label:"Dinner Fork",status:["verified","Verified"],placement:"1&quot; from the table's bottom edge, not touching the knife.",tip:""},
   saladfork:{cat:"Flatware",label:"Salad Fork",status:["review","Needs Review"],placement:"Outside the dinner fork. Used first, farthest from the plate.",tip:"Optional. Confirm with your Event Supervisor if a salad course is served."},
@@ -2485,7 +2485,7 @@ function renderBarGlass(){
       <ul><li><b>Never</b> keep an empty or full rack of glassware at your bar. Ever.</li>
       <li>Need more? <b>Flag down your supervisor or a server</b> to bring it out <b>on a tray</b>. <b>Never</b> carry glass racks out once the event has started.</li></ul>
     </div>
-    <div class="pointer" style="--pc:var(--bar)"><div class="pl"><span class="star">✦</span> Perfecting Pointer ${badge('verified','Verified')}</div><div class="pv">Always set your bar for <b>two stations</b>. So if someone jumps in to help, everything's already doubled and in reach, and service never slows.</div></div>
+    <div class="pointer" style="--pc:var(--bar)"><div class="pl"><span class="star">✦</span> Perfecting Pointer ${badge('verified','Verified')}</div><div class="pv">Always set your bar for <b>two stations</b>, so if someone jumps in to help, everything's already doubled and in reach, and service never slows.</div></div>
     <div class="note-inline">Planning the order? The <b>Bar Program Calculator</b> turns guest count into bottles per brand. <button class="relchip" onclick="go('barcalc')">Bar Program Calculator ›</button></div>
     <div class="guest" style="margin-top:16px"><div class="gh">Is it GUEST ready?</div><div class="gsub"><span>Before doors open</span>${badge('verified','Verified framework')}</div>${guestItems}</div>
     <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
@@ -2738,7 +2738,7 @@ function sopBody(tab){
   if(tab==='process') return `
     ${sopBlock('The event lifecycle',src,sopUL([
       'Inquiry → initial call → email → build proposal → tasting (if needed) → client confirms → send SEO to client → receive final info ~14 days prior → update &amp; send + payment link → maintain contact → post to Kitchen, Service &amp; Warehouse (10–14 days out).',
-      'Add <b>every</b> inquiry to Prospect Manager with full contact info (email, phone, initial details), forecasted menu pricing and required staffing. So it shows in SEP forecasting reports.'
+      'Add <b>every</b> inquiry to Prospect Manager with full contact info (email, phone, initial details), forecasted menu pricing and required staffing, so it shows in SEP forecasting reports.'
     ]))}
     ${sopBlock('Weekly rhythm',src,
       `<div class="sday"><span class="sdd">Mon</span><div>Cost summary (prior week) · note planner re: expense receipts · thank-you emails to weekend clients · check weekend-prior &amp; upcoming-week balances · run booked-events query. Run 14-day query (tentative vs definite). Compare to what&#39;s posted, reach out for finals due in 14 days, flag outstanding payments.</div></div>
@@ -3102,7 +3102,7 @@ function renderPresentation(){
     {n:"Elevated",img:"tiers-elevated-mobile-new.webp?v=1778170165",time:"",
      intro:"When every detail matters, our Elevated Delivery brings the full Puff 'n Stuff experience to you. Refined, polished, and completely effortless.",
      pts:[["Signature Presentation","Reusable heating equipment and elegant platters for cold dishes: a sophisticated, event-ready display."],["Delivered and Retrieved","Our team coordinates setup and later returns to collect reusable pieces. No cleanup required."],["Elevated Ease","The flavor, care, and presentation of full-service catering, with the simplicity of delivery."]],
-     kn:"Reusable equipment goes out. And comes back. Warehouse coordinates the retrieval run."}
+     kn:"Reusable equipment goes out, and comes back. Warehouse coordinates the retrieval run."}
   ];
   screen.innerHTML=`
     <p class="kicker">Kitchen · Delivery</p>
@@ -3130,7 +3130,7 @@ function renderPackaging(){
       <ul class="stdlist">
         <li><b>Standard.</b> Pack exactly per this guide. Pop-up boxes, foil pans, labels, disposable service.</li>
         <li><b>Enhanced.</b> Same packaging as Standard, plus hot items ride in wire chafer racks. HQ packs the racks, sterno, and aluminum liner pans with the order, so foil half pans must be rack-ready.</li>
-        <li><b>Elevated.</b> Reusable heating equipment and elegant platters for cold dishes <i>replace</i> select disposables. And the pieces come back to us. <span style="color:var(--review);font-weight:600">Exact pack-out specifics: confirm with Operations.</span></li>
+        <li><b>Elevated.</b> Reusable heating equipment and elegant platters for cold dishes <i>replace</i> select disposables, and the pieces come back to us. <span style="color:var(--review);font-weight:600">Exact pack-out specifics: confirm with Operations.</span></li>
       </ul>
       <div style="margin-top:9px"><button class="relchip" onclick="go('presentation')">See the presentation styles ›</button></div></div>
     ${cats}
