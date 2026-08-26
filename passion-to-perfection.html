@@ -2265,7 +2265,7 @@ function renderStation(id){
       <span class="diamond" style="--dc:var(--paper)"></span>
       <span class="tbtext">${s.name}<small>${c.name}</small></span>
     </div>
-    ${galleryHTML(s)}
+    ${s.id==='place-setting'?`<div class="block" id="psbcontainer">${renderPSB()}</div>`:galleryHTML(s)}
     <div class="statusrow">${badge(s.status[0],s.status[1])}${badge('tbd','Legacy source')}</div>
 
     ${s.concept?`<div class="block"><div class="bh"><span class="bt">Concept / Menu</span>${badge('verified','From deck')}</div><div class="concept">${s.concept.replace(/^([^—]+)—/,'<span class="dish">$1</span> — ')}</div></div>`:''}
@@ -2278,7 +2278,7 @@ function renderStation(id){
 
     ${setupBlock}
 
-    ${s.id==='place-setting'?`<div class="block" id="psbcontainer">${renderPSB()}</div>`:''}
+    ${s.id==='place-setting'?`<div class="block"><div class="bh"><span class="bt">Reference Photo</span>${badge('verified','From Kat\'s guide')}</div>${galleryHTML(s)}</div>`:''}
 
     ${pointer}
 
