@@ -2018,10 +2018,18 @@ const PLACESET_ITEMS={
   fork:{cat:"Flatware",label:"Dinner Fork",status:["verified","Verified"],placement:"1&quot; from the table's bottom edge, not touching the knife.",tip:""},
   saladfork:{cat:"Flatware",label:"Salad Fork",status:["review","Needs Review"],placement:"Outside the dinner fork — used first, farthest from the plate.",tip:"Optional — confirm with your Event Supervisor if a salad course is served."},
   knife:{cat:"Flatware",label:"Dinner Knife",status:["verified","Verified"],placement:"1&quot; from the table's bottom edge, not touching the fork.",tip:""},
+  steakknife:{cat:"Flatware",label:"Steak Knife",status:["review","Needs Review"],placement:"Outside the dinner knife, blade facing the plate.",tip:"Optional — confirm with your Event Supervisor if the entrée calls for one."},
+  dessertspoon:{cat:"Flatware",label:"Dessert Spoon",status:["review","Needs Review"],placement:"Laid horizontally above the plate, handle facing right.",tip:"Optional — confirm with your Event Supervisor if dessert is served at the seat."},
   water:{cat:"Glassware",label:"Water Glass",status:["verified","Verified"],placement:"Just above the knife, not touching it — filled ½&quot; from the top.",tip:""},
   wine:{cat:"Glassware",label:"Wine Glass",status:["review","Needs Review"],placement:"To the right of the water glass, in the order it will be poured.",tip:"Optional — confirm with your Event Supervisor if wine service is included."}
 };
-let PSB={charger:false,saladfork:false,wine:false,sel:null};
+let PSB={charger:false,saladfork:false,wine:false,steakknife:false,dessertspoon:false,sel:null};
+/* Utensil silhouettes — plain shapes with no own fill/stroke so they inherit the parent <g>'s
+   .psbpc styling (and its .sel state) as a single piece. */
+function psbFork(){return `<rect x="0" y="0" width="3.2" height="46" rx="1.6"/><rect x="4.6" y="0" width="3.2" height="52" rx="1.6"/><rect x="9.2" y="0" width="3.2" height="52" rx="1.6"/><rect x="13.8" y="0" width="3.2" height="46" rx="1.6"/><rect x="5" y="44" width="7" height="116" rx="3.5"/>`;}
+function psbKnife(){return `<polygon points="8.5,0 13.5,14 13.5,96 3.5,96 3.5,14"/><rect x="4" y="94" width="9" height="66" rx="4"/>`;}
+function psbSteakKnife(){return `<polygon points="7.5,0 12,18 12,72 3,72 3,18"/><rect x="3.5" y="70" width="8" height="50" rx="4"/>`;}
+function psbDessertSpoonH(){return `<ellipse cx="13" cy="8" rx="12" ry="7.5"/><rect x="24" y="4.5" width="62" height="6" rx="3"/>`;}
 function psbSvg(){
   const cls=k=>'psbpc'+(PSB.sel===k?' sel':'');
   return `<svg viewBox="0 0 380 300" class="psbsvg" aria-label="Place setting diagram">
@@ -2031,9 +2039,11 @@ function psbSvg(){
     <circle class="${cls('bbplate')}" data-key="bbplate" onclick="selectPSB('bbplate')" cx="108" cy="68" r="28"/>
     <rect class="${cls('bbknife')}" data-key="bbknife" onclick="selectPSB('bbknife')" x="88" y="62" width="38" height="7" rx="3.5"/>
     <circle class="psbknob" cx="122" cy="65.5" r="5"/>
-    ${PSB.saladfork?`<rect class="${cls('saladfork')}" data-key="saladfork" onclick="selectPSB('saladfork')" x="68" y="115" width="15" height="150" rx="6"/>`:''}
-    <rect class="${cls('fork')}" data-key="fork" onclick="selectPSB('fork')" x="92" y="108" width="17" height="160" rx="6"/>
-    <rect class="${cls('knife')}" data-key="knife" onclick="selectPSB('knife')" x="278" y="108" width="17" height="160" rx="7"/>
+    ${PSB.dessertspoon?`<g class="${cls('dessertspoon')}" data-key="dessertspoon" onclick="selectPSB('dessertspoon')" transform="translate(152,97)">${psbDessertSpoonH()}</g>`:''}
+    ${PSB.saladfork?`<g class="${cls('saladfork')}" data-key="saladfork" onclick="selectPSB('saladfork')" transform="translate(68,115)">${psbFork()}</g>`:''}
+    <g class="${cls('fork')}" data-key="fork" onclick="selectPSB('fork')" transform="translate(92,108)">${psbFork()}</g>
+    <g class="${cls('knife')}" data-key="knife" onclick="selectPSB('knife')" transform="translate(278,108)">${psbKnife()}</g>
+    ${PSB.steakknife?`<g class="${cls('steakknife')}" data-key="steakknife" onclick="selectPSB('steakknife')" transform="translate(300,138)">${psbSteakKnife()}</g>`:''}
     <circle class="${cls('water')}" data-key="water" onclick="selectPSB('water')" cx="305" cy="85" r="15"/>
     ${PSB.wine?`<circle class="${cls('wine')}" data-key="wine" onclick="selectPSB('wine')" cx="335" cy="92" r="12"/>`:''}
   </svg>`;
@@ -2053,6 +2063,8 @@ function psbChecklist(){
   const items=[['dplate','Dinner Plate'],['bbplate','B&amp;B Plate'],['fork','Dinner Fork'],['bbknife','B&amp;B Knife'],['knife','Dinner Knife'],['water','Water Glass']];
   if(PSB.charger)items.unshift(['charger','Charger Plate']);
   if(PSB.saladfork)items.push(['saladfork','Salad Fork']);
+  if(PSB.steakknife)items.push(['steakknife','Steak Knife']);
+  if(PSB.dessertspoon)items.push(['dessertspoon','Dessert Spoon']);
   if(PSB.wine)items.push(['wine','Wine Glass']);
   return `<ul class="psbcheck">${items.map(([k,label])=>`<li onclick="this.classList.toggle('on')">${label}</li>`).join('')}</ul>`;
 }
@@ -2062,6 +2074,8 @@ function renderPSB(){
     <div class="psbtoggles">
       <button class="psbtog${PSB.charger?' on':''}" onclick="togglePSB('charger')">Charger Plate${PSB.charger?' ✓':''}</button>
       <button class="psbtog${PSB.saladfork?' on':''}" onclick="togglePSB('saladfork')">Salad Fork${PSB.saladfork?' ✓':''}</button>
+      <button class="psbtog${PSB.steakknife?' on':''}" onclick="togglePSB('steakknife')">Steak Knife${PSB.steakknife?' ✓':''}</button>
+      <button class="psbtog${PSB.dessertspoon?' on':''}" onclick="togglePSB('dessertspoon')">Dessert Spoon${PSB.dessertspoon?' ✓':''}</button>
       <button class="psbtog${PSB.wine?' on':''}" onclick="togglePSB('wine')">Wine Glass${PSB.wine?' ✓':''}</button>
     </div>
     <div class="psbstage">${psbSvg()}</div>
