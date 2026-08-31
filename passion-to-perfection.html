@@ -486,6 +486,13 @@
   .pointer.tbd .pl,.pointer.tbd .pv{color:var(--muted);}
 
   /* GUEST ready */
+  .seqhd{display:flex;gap:12px;align-items:center;}
+  .seqnum{flex:none;width:34px;height:34px;border-radius:50%;background:var(--chef);color:#fff;font-family:var(--serif);font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;}
+  .seqtitle{font-family:var(--serif);font-size:18px;font-weight:800;line-height:1.1;color:var(--ink);}
+  .seqsub{font-size:12px;color:var(--muted);margin-top:2px;}
+  .seqcrit .gT{font-weight:800;}
+  .crittag{display:inline-block;font-family:var(--sans);font-size:9px;font-weight:800;letter-spacing:.5px;text-transform:uppercase;color:#fff;background:var(--chef);padding:2px 6px;border-radius:3px;vertical-align:middle;margin-left:4px;}
+  .seqnote{display:block;font-size:11.5px;line-height:1.45;color:var(--muted);margin-top:3px;}
   .guest{border:2.5px solid var(--frame);background:#FCFCFB;padding:15px;margin-top:16px;}
   .guest .gh{font-family:var(--serif);font-size:17px;font-weight:800;text-align:center;margin-bottom:2px;}
   .guest .gsub{font-size:10.5px;color:var(--muted);text-align:center;margin-bottom:12px;
@@ -1798,9 +1805,9 @@ function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
 function render(){
   const cur=stack[stack.length-1];
   backBtn.classList.toggle('show',stack.length>1);
-  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Service · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Deliver · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Bar · Program Calculator',barlist:'Bar · Setup Checklist',bar:'Build · Bar',postreport:'Tools · Post-Event Report',leadbrief:'Elevate · Leadership Brief',labelmaker:'Service · Label Maker'};
+  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Service · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Deliver · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Bar · Program Calculator',barlist:'Bar · Setup Checklist',bar:'Build · Bar &amp; Beverage',postreport:'Tools · Post-Event Report',leadbrief:'Elevate · Leadership Brief',labelmaker:'Service · Label Maker',setupseq:'Service · Setup Sequence'};
   crumb.textContent=map[cur.view]||'';
-  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:renderPlaybook,pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:renderCulPlaybook,culmod:()=>renderCulModule(cur.arg),leadership:renderLeadership,leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg),bar:renderBarHub,postreport:()=>renderPostReport(cur.arg),leadbrief:()=>renderLeadershipBrief(cur.arg),labelmaker:renderLabelMaker})[cur.view]();
+  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:()=>renderPlaybook(cur.arg),pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:()=>renderCulPlaybook(cur.arg),culmod:()=>renderCulModule(cur.arg),leadership:()=>renderLeadership(cur.arg),leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg),bar:renderBarHub,postreport:()=>renderPostReport(cur.arg),leadbrief:()=>renderLeadershipBrief(cur.arg),labelmaker:renderLabelMaker,setupseq:renderSetupSeq})[cur.view]();
   if(cur.view==='home'){fillHomeFocus();fillHomeRec();}
 }
 
@@ -1834,7 +1841,7 @@ function renderHome(){
 function renderBuild(){
   const crafts=[
     ["Service","Stations, service &amp; setup standards","service","service","var(--chef)"],
-    ["Bar","Calculators &amp; checklists for the bar","bar","all","var(--bar)"],
+    ["Bar &amp; Beverage","Bar, coffee &amp; beverage standards, tools &amp; checklists","bar","all","var(--bar)"],
     ["Kitchen","Culinary standards &amp; packaging","kitchen","kitchen","var(--displayed)"],
     ["Warehouse","Linen, laundry &amp; equipment","warehouse","warehouse","var(--coffee)"],
     ["Sales / Marketing","Brand &amp; client standards","salesmkt","salesmkt","var(--bar)"],
@@ -1858,19 +1865,29 @@ function renderBuild(){
 
 function renderBarHub(){
   const tiles=[
-    ["Bar Program Calculator","Bottles per brand by guest count &amp; hours","barcalc"],
-    ["Bar Glassware Setup","Racks by bar type &amp; guest count","barglass"],
-    ["Bar Setup Checklist","Full bar vs beer &amp; wine. What to pull","barlist"]
+    ["Bar Program Calculator","Bottles per brand by guest count &amp; hours","barcalc",1],
+    ["Bar Glassware Setup","Racks by bar type &amp; guest count","barglass",1],
+    ["Bar Setup Checklist","Full bar vs beer &amp; wine. What to pull","barlist",1],
+    ["Beverage Quantity Calculator","Lemonade, coffee, OJ, cider by guest count","",0]
   ];
+  const stds=[
+    ["Coffee Station","Setup, Regular on the Right, GUEST Ready","go('station','coffee-station')"],
+    ["Beverage Station","Dispensers, glasses &amp; replenishment","go('pblesson','5-0')"],
+    ["Bar Station","Bar setup &amp; standards","go('pblesson','5-2')"]
+  ];
+  const toolTile=r=>r[3]
+    ? `<div class="tile active" style="--tc:var(--bar);grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
+    : `<div class="tile planned" style="grid-column:1/3;min-height:auto"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
+  const stdTile=r=>`<div class="tile active" style="--tc:var(--bar);grid-column:1/3;min-height:auto" onclick="${r[2]}"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Standard')}</div>`;
   screen.innerHTML=`
-    <p class="kicker">Build · Bar</p>
-    <h1 class="disp">Bar</h1>
-    <p class="lead">Everything for planning and setting the bar, in one place. Order the right bottles, set the glassware, and pull the checklist.</p>
+    <p class="kicker">Build · Bar &amp; Beverage</p>
+    <h1 class="disp">Bar &amp; Beverage</h1>
+    <p class="lead">One home for everything that pours. Bar, coffee, and beverage standards, plus the tools to plan and set them.</p>
     <div class="titleblock" style="--tbcolor:var(--bar);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Tools</span></div>
-    <div class="grid" style="margin-top:12px">
-      ${tiles.map(r=>`<div class="tile active" style="--tc:var(--bar);grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`).join('')}
-    </div>
-    <div class="note-inline">Bar standards &amp; the AIS inventory check live in the <button class="relchip" onclick="go('playbook')">P2P Playbook ›</button></div>`;
+    <div class="grid" style="margin-top:12px">${tiles.map(toolTile).join('')}</div>
+    <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Station Standards</span></div>
+    <div class="grid" style="margin-top:12px">${stds.map(stdTile).join('')}</div>
+    <div class="note-inline">Bar standards &amp; the AIS inventory check also live in the <button class="relchip" onclick="go('playbook')">P2P Playbook ›</button></div>`;
 }
 const POST_REPORTS={
   supervisor:{title:"Event Supervisor Post-Event Report",note:"Completed at the end of every event by the event supervisor.",
@@ -1890,7 +1907,7 @@ function renderPostReport(kind){
     </div>`;
 }
 function renderService(){
-  const tools=[["Event Supervisor Post-Event Report","Submit after every event. Pick your market","postreport","supervisor"],["Lead Event Chef Post-Event Report","Submit after every event. Pick your market","postreport","leadchef"],["On-Site Label Maker","Menu tent cards. Name, description, allergens, print-ready","labelmaker"]];
+  const tools=[["Supervisor Setup Sequence","5 phases from arrival to open doors","setupseq"],["Event Supervisor Post-Event Report","Submit after every event. Pick your market","postreport","supervisor"],["Lead Event Chef Post-Event Report","Submit after every event. Pick your market","postreport","leadchef"],["On-Site Label Maker","Menu tent cards. Name, description, allergens, print-ready","labelmaker"]];
   const resources=[
     ["Station Standards","Equipment, setup &amp; GUEST Ready","stations"],
     ["P2P Playbook","Guided training · 6 modules","playbook"],
@@ -1902,7 +1919,7 @@ function renderService(){
     ["P2P Academy","Assessments &amp; sign-off",""]
   ];
   const tile=r=>r[2]
-    ? `<div class="tile active" onclick="go('${r[2]}'${r[3]?`,'${r[3]}'`:''})"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active',r[2]==='stations'?STATIONS.length+' standards':'Live')}</div>`
+    ? `<div class="tile active" onclick="go('${r[2]}'${r[3]?`,'${r[3]}'`:''})"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active',r[2]==='stations'?STATIONS.filter(s=>s.cat!=='coffee').length+' standards':'Live')}</div>`
     : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
   screen.innerHTML=`
     <p class="kicker">Build · Service</p>
@@ -1915,7 +1932,9 @@ function renderService(){
     <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('service')">Service ›</button> <button class="relchip" onclick="openManual('bartender')">Bartender ›</button> <button class="relchip" onclick="openManual('culinary')">Culinary ›</button> <button class="relchip" onclick="openManual('leadculinary')">Lead Culinary ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
 }
 function renderStations(){
-  const byCat={};STATIONS.forEach(s=>{(byCat[s.cat]=byCat[s.cat]||[]).push(s);});
+  // Coffee/beverage/bar standards live in the Bar & Beverage section, not the general library.
+  const libStations=STATIONS.filter(s=>s.cat!=='coffee');
+  const byCat={};libStations.forEach(s=>{(byCat[s.cat]=byCat[s.cat]||[]).push(s);});
   let stationHTML='';
   Object.keys(byCat).forEach(catId=>{
     const c=CATS[catId];
@@ -1931,8 +1950,9 @@ function renderStations(){
   screen.innerHTML=`
     <p class="kicker">Service · Standards</p>
     <h1 class="disp">Station Standards</h1>
-    <p class="lead">${STATIONS.length} station standards. Equipment, setup, and the GUEST Ready check. Tap one.</p>
-    ${stationHTML}`;
+    <p class="lead">${libStations.length} station standards. Equipment, setup, and the GUEST Ready check. Tap one.</p>
+    ${stationHTML}
+    <div class="note-inline">Coffee, beverage &amp; bar standards now live in <button class="relchip" onclick="go('bar')">Bar &amp; Beverage ›</button></div>`;
 }
 /* Jeopardy-style training game: clue = [value, clue statement, correct response (question form), view, arg]
    Sourced across the Service craft's different training modules: Station Standards, P2P Playbook, Culinary Playbook, Event Supervisor Playbook. */
@@ -2155,7 +2175,10 @@ function buildSearchIndex(){
    ['Culinary Playbook','Service','culpb'],['Event Supervisor Playbook','Service','leadership'],
    ['Weekly Focus & Recognition','Elevate','elevate'],['Training Checklists','Deliver','deliver']
   ].forEach(p=>add(p[0],p[1],p[2],null));
-  add('Bar. Tools &amp; Checklists','Build · calculator, glassware, checklist','bar',null);
+  add('Bar &amp; Beverage. Tools &amp; Standards','Build · calculator, glassware, checklist, coffee, beverage','bar',null);
+  add('Coffee Station','Bar &amp; Beverage · standard, setup, GUEST Ready','station','coffee-station');
+  add('Beverage Station','Bar &amp; Beverage · standard, dispensers, glasses','pblesson','5-0');
+  add('Bar Station','Bar &amp; Beverage · standard, setup','pblesson','5-2');
   add('Bar Glassware Setup · Calculator','Bar · rocks, wine, flutes, racks','barglass',null);
   add('Bar Setup Checklist','Bar · mixers, kit, fruit, tools, liquor','barlist',null);
   add('SEC / Sales Operations','Sales · SEO, proposals, payments, staffing','salesops','process');
@@ -2165,6 +2188,7 @@ function buildSearchIndex(){
   add('Delivery Quote Calculator','Sales · delivery, quote, pricing, fee','quotecalc',null);
   add('Bar Program Calculator','Bar · bottles, liquor, wine, quantities','barcalc',null);
   add('On-Site Label Maker','Service · Event Supervisor · tent cards, menu labels, allergens','labelmaker',null);
+  add('Supervisor Setup Sequence','Service · Event Supervisor · arrive, foundation, service, details, deliver','setupseq',null);
   add('Brand. How We Sound (Voice)','Sales','brandguide','voice');
   add('Brand Guidelines. Look & Foundations','Sales','brandguide','look');
   add('Event Supervisor Post-Event Report','Service · Tools · JotForm, Tampa, Orlando','postreport','supervisor');
@@ -2379,14 +2403,13 @@ function renderGlossary(pre){
     <input class="gsearch" id="gsearch" type="search" value="${pre.replace(/"/g,'&quot;')}" placeholder="Search. E.g. Cambro, BEO, Queen Mary" oninput="filterGloss(this.value)" autocomplete="off">
     <div id="glist">${glossItems(pre?GLOSSARY.filter(g=>glossHaystack(g).includes(pre.toLowerCase())):GLOSSARY)}</div>`;
 }
-function renderPlaybook(){
-  const mods=PLAYBOOK.map((m,i)=>`<div class="node active" onclick="go('pbmodule',${i})"><div class="num">${m.m}</div><div><div class="nt">${m.title}</div><div class="ns">${m.topics.length} lessons</div></div><span class="go">›</span></div>`).join('');
-  screen.innerHTML=`
-    <p class="kicker">Build · Service</p>
-    <h1 class="disp">P2P Playbook</h1>
-    <p class="lead">Guided training in six modules. Each lesson pairs a short video with the Puff standard and a quick knowledge check.</p>
-    <div class="arc">${mods}</div>
-  `;
+function renderPlaybook(arg){
+  pbTabbed({
+    pb:PLAYBOOK, arg, route:'playbook',
+    kicker:'Build · Service', title:'P2P Playbook',
+    lead:'Guided training, by module. Pick a module tab; each lesson carries the Puff standard and a quick knowledge check.',
+    modref:m=>{const mm=MODMAP[m.title];return mm?`<div class="modref"><div class="modrefh">Manual reference</div><div class="modrefn">${mm.note}</div><div class="grel">${mm.manuals.map(k=>`<button class="relchip" onclick="openManual('${k}')">${MANUAL_NAME[k]} manual ›</button>`).join('')}</div></div>`:'';}
+  });
 }
 function renderPbModule(mi){
   mi=+mi; const m=PLAYBOOK[mi];
@@ -2401,12 +2424,9 @@ function renderPbModule(mi){
     ${rows}
   `;
 }
-function renderPbLesson(key){
-  const parts=String(key).split('-');
-  const pfx=(parts[0]==='cul'||parts[0]==='lead')?parts[0]:null;
-  const pb=pfx==='cul'?CULPB:pfx==='lead'?LEADPB:PLAYBOOK;
-  const off=pfx?1:0;
-  const mi=+parts[off], ti=+parts[off+1];
+/* Inner blocks for a single lesson (reused by the tabbed playbooks and the single-lesson deep link) */
+function lessonInner(pb,mi,ti,opts2){
+  const o=opts2||{};
   const m=pb[mi]; const topic=m.topics[ti]; const L=LESSONS[topic];
   const guestItems=GUEST.map(g=>`<label class="gitem" onclick="toggle(this)"><input type="checkbox"><span class="gL" style="color:var(--charcoal)">${g[0]}</span><span><span class="gT">${g[1]}</span><span class="gD">${g[2]}</span></span></label>`).join('');
   const Q=(L&&L.quiz)?L.quiz:QUIZ[(mi*10+ti)%QUIZ.length];
@@ -2424,24 +2444,52 @@ function renderPbLesson(key){
   const tipsBlock=(L&&L.tips)?`<div class="mtips">${L.tips.map(t=>`<div class="mtip mtip-${t[0]}"><span class="mtl">${(tipIco[t[0]]||['✦','Tip'])[0]} ${(tipIco[t[0]]||['','Tip'])[1]} · ${t[1]}</span>${t[2]}</div>`).join('')}</div>`:'';
   const sopBlock=(L&&L.sop)?`<details class="sop"><summary>Full washing &amp; pressing SOP</summary>${L.sop.map(x=>`<div class="sopsec"><div class="soph">${x[0]}</div><div class="sopb">${x[1]}</div></div>`).join('')}</details>`:'';
   const barCTA=(topic==='Bar Station')?`<div class="ctaband" onclick="go('barglass')"><div><div class="ctat">🍷 Glassware Setup Calculator</div><div class="ctas">Pick the bar type + guest count → exact rack counts</div></div><span class="go">›</span></div>`:'';
+  const video=o.video?`<div class="vslot"><div class="vic">▶</div><div class="vt">Video Lesson</div><div class="vs">Lights, camera… coming soon 🎬</div></div>`:'';
+  return `${video}${barCTA}${philBlock}${stdBlock}${stepsBlock}${tblBlock}${sopBlock}${tipsBlock}${ptrBlock}
+    <div class="quiz"><div class="qk">Knowledge Check ${qbadge}</div><div class="qq">${Q.q}</div><div class="qopts">${opts}</div><div class="qfb" style="display:none"></div></div>
+    <div class="guest" style="margin-top:16px"><div class="gh">Is it GUEST ready?</div><div class="gsub"><span>The five-point check applies to every lesson</span>${badge('verified','Verified framework')}</div>${guestItems}</div>`;
+}
+/* Stacked lessons for one module (each topic gets its own titleblock header) */
+function pbLessonsHTML(pb,mi){
+  const m=pb[mi];
+  return m.topics.map((t,ti)=>`
+    <div class="titleblock" style="--tbcolor:var(--displayed);margin-top:22px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext">${t}</span></div>
+    ${lessonInner(pb,mi,ti)}`).join('');
+}
+/* Generic SEC-style tabbed playbook: modules = tabs, lessons stacked inside */
+function pbTabbed(o){
+  const pb=o.pb;
+  const idxs=pb.map((m,i)=>i).filter(i=>!(o.exclude||[]).includes(i));
+  let mi=parseInt(o.arg,10); if(!idxs.includes(mi)) mi=idxs[0];
+  const m=pb[mi];
+  const tabs=idxs.map(i=>`<button class="bgtab${i===mi?' on':''}" onclick="go('${o.route}',${i})">${pb[i].m} · ${pb[i].title}</button>`).join('');
+  const modref=o.modref?o.modref(m):'';
+  screen.innerHTML=`
+    <p class="kicker">${o.kicker}</p>
+    <h1 class="disp">${o.title}</h1>
+    <p class="lead">${o.lead}</p>
+    <div class="bgtabs" style="flex-wrap:wrap;gap:5px">${tabs}</div>
+    ${modref}
+    ${pbLessonsHTML(pb,mi)}
+    ${o.foot||''}
+    <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
+  window.scrollTo(0,0);
+}
+/* Single-lesson deep link (used by Bar & Beverage hub, Jeopardy, cross-links) */
+function renderPbLesson(key){
+  const parts=String(key).split('-');
+  const pfx=(parts[0]==='cul'||parts[0]==='lead')?parts[0]:null;
+  const pb=pfx==='cul'?CULPB:pfx==='lead'?LEADPB:PLAYBOOK;
+  const off=pfx?1:0;
+  const mi=+parts[off], ti=+parts[off+1];
+  const m=pb[mi]; const topic=m.topics[ti];
   screen.innerHTML=`
     <div class="titleblock" style="--tbcolor:var(--displayed)">
       <span class="diamond" style="--dc:var(--paper)"></span>
       <span class="tbtext">${topic}<small>Module ${m.m} · ${m.title}</small></span>
     </div>
-    <div class="vslot"><div class="vic">▶</div><div class="vt">Video Lesson</div><div class="vs">Lights, camera… coming soon 🎬</div></div>
-    ${barCTA}
-    ${philBlock}
-    ${stdBlock}
-    ${stepsBlock}
-    ${tblBlock}
-    ${sopBlock}
-    ${tipsBlock}
-    ${ptrBlock}
-    <div class="quiz"><div class="qk">Knowledge Check ${qbadge}</div><div class="qq">${Q.q}</div><div class="qopts">${opts}</div><div class="qfb" style="display:none"></div></div>
-    <div class="guest" style="margin-top:16px"><div class="gh">Is it GUEST ready?</div><div class="gsub"><span>The five-point check applies to every lesson</span>${badge('verified','Verified framework')}</div>${guestItems}</div>
-    <div class="rule">Dedication ~ Quality ~ Creativity</div>
-  `;
+    ${lessonInner(pb,mi,ti,{video:true})}
+    <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
 }
 /* ---------- Bar Glassware Setup (Beverage Supervisor spec) ---------- */
 function st25(g){return Math.max(0,Math.ceil((g-50)/25));}
@@ -2513,6 +2561,62 @@ function renderLabelMaker(){
     <div class="note-inline">Every buffet &amp; delivery item should be labeled before doors open. It's part of the GUEST Ready check. <button class="relchip" onclick="go('leadership')">Event Supervisor Playbook ›</button></div>`;
   document.getElementById('lmif').src='tent-card-builder.html';
 }
+/* ---------- Supervisor Setup Sequence (Service tool, from Kat's doc) ---------- */
+const SETUPSEQ=[
+  {n:"1",title:"Arrive + Align",sub:"Know the plan before the team starts the work.",focus:"Everyone should know what we're building before we start building it.",
+   items:[
+    "Connect with the Planner / Venue Contact. Confirm access, timing, changes &amp; restrictions.",
+    "Walk the space. Understand guest flow, BOH, kitchen, bars, staging &amp; obstacles.",
+    "Huddle the team. Share the event vision, timeline, expectations &amp; initial assignments."]},
+  {n:"2",title:"Build the Foundation",sub:"Big rocks first. Details later.",focus:"Right place. Right order. Right the first time.",
+   items:[
+    "Establish BOH, equipment, culinary &amp; service staging.",
+    "Confirm the room layout and rental placement.",
+    "Build major infrastructure: tables, bars, buffets / stations, lounge &amp; specialty areas.",
+    "Keep the team moving with purpose. Avoid random setup and double work."]},
+  {n:"3",title:"Build the Service",sub:"Set the team up to deliver.",focus:"Think ahead to the moment guests arrive.",
+   items:[
+    {t:"Prioritize bars and guest-facing service areas.",crit:true,note:"Critical path. Bars drive guest perception, early service pressure, and staffing flow. Build them first."},
+    "Build buffet / station structure.",
+    "Establish service stations, water, coffee, tray-pass landing areas &amp; back-service zones.",
+    "Check that service and culinary paths actually work."]},
+  {n:"4",title:"Elevate the Details",sub:"Only once the layout is final. This is where we make it Puff.",focus:"The details turn a setup into an experience.",
+   items:[
+    "Complete table settings and linen adjustments.",
+    "Coordinate décor placement with the Planner.",
+    "Stage glassware and serviceware at the right time.",
+    "Look at the room through the guest's eyes."]},
+  {n:"5",title:"Ready to Deliver",sub:"Nothing is assumed. Everything is checked.",focus:"Ready room. Ready team. Ready to deliver.",
+   items:[
+    "Walk the entire room: cleanliness, flow, symmetry, lighting &amp; readiness.",
+    "Align final timing and pacing with the Lead Event Chef.",
+    "Gather the full team for the Pre-Service Meeting.",
+    "Confirm everyone knows their position, responsibilities, timing and expectations.",
+    "Then open the doors."]}
+];
+function renderSetupSeq(){
+  const phases=SETUPSEQ.map(p=>{
+    const items=p.items.map(it=>{
+      const t=typeof it==='string'?it:it.t;
+      const crit=it&&it.crit;
+      const note=(it&&it.note)?`<span class="seqnote">${it.note}</span>`:'';
+      return `<label class="gitem${crit?' seqcrit':''}" onclick="toggle(this)"><input type="checkbox"><span><span class="gT">${t}</span>${crit?' <span class="crittag">★ Critical path</span>':''}${note}</span></label>`;
+    }).join('');
+    return `<div class="block">
+      <div class="seqhd"><span class="seqnum">${p.n}</span><div><div class="seqtitle">${p.title}</div><div class="seqsub">${p.sub}</div></div></div>
+      <div style="margin-top:6px">${items}</div>
+      <div class="pointer" style="--pc:var(--chef);margin-top:12px"><div class="pl"><span class="star">✦</span> P2P Focus</div><div class="pv">${p.focus}</div></div>
+    </div>`;
+  }).join('');
+  screen.innerHTML=`
+    <div class="titleblock" style="--tbcolor:var(--chef)"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="color:#fff">Supervisor Setup Sequence<small style="color:#f3e0dd">Service · Event Supervisor tool</small></span></div>
+    <div class="statusrow">${badge('verified','From Kat')}</div>
+    <p class="lead" style="font-family:var(--serif);font-style:italic;font-size:17px">Lead the Setup. Build the Experience.</p>
+    <div class="concept" style="margin-bottom:4px">Five phases, in order. Each one sets up the next, so the room comes together right the first time. Tick items as you go.</div>
+    ${phases}
+    <div class="note-inline">Leading the team on-site? <button class="relchip" onclick="go('leadership')">Event Supervisor Playbook ›</button> <button class="relchip" onclick="go('labelmaker')">On-Site Label Maker ›</button></div>
+    <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
+}
 /* ---------- Puff Bar Program Calculator (ClickToTable consumption model) ---------- */
 const BARCALC_TIERS={
   premium:{name:'Premium',
@@ -2524,21 +2628,28 @@ const BARCALC_TIERS={
     wines:[["House Wine","EOS","Foley",100]],
     sparkling:["Prosecco","Ruffino","Constellation"]}
 };
-const BC={tier:'premium', guests:120, hours:5, winePct:45, toast:true};
+const BC={tier:'premium', guests:120, hours:5, beerPct:25, winePct:45, toast:true};
 function bcCompute(){
   const T=BARCALC_TIERS[BC.tier];
   const g=Math.max(0,BC.guests||0), H=Math.max(1,BC.hours||1);
   const perGuest=(1.0 + 0.75*(H-1))*1.10;            // ~1 drink/guest hr1, taper, +10%
   const totalDrinks=Math.round(g*perGuest);
-  const wineDrinks=Math.round(totalDrinks*BC.winePct/100);
-  const spiritDrinks=totalDrinks-wineDrinks;
-  const WINE_YIELD=5, SPIRIT_YIELD=16, SPARK_YIELD=6;
+  const beerDrinks=Math.round(totalDrinks*(BC.beerPct||0)/100);
+  const nonBeer=totalDrinks-beerDrinks;
+  const wineDrinks=Math.round(nonBeer*BC.winePct/100);
+  const spiritDrinks=nonBeer-wineDrinks;
+  const WINE_YIELD=5, SPIRIT_YIELD=16, SPARK_YIELD=6, CASE=24;
   const sW=T.spirits.reduce((a,s)=>a+s[3],0)||1;
   const spirits=T.spirits.map(s=>{const d=spiritDrinks*s[3]/sW;return {cat:s[0],brand:s[1],sup:s[2],btl:Math.ceil(d/SPIRIT_YIELD)};});
   const wW=T.wines.reduce((a,s)=>a+s[3],0)||1;
   const wines=T.wines.map(s=>{const d=wineDrinks*s[3]/wW;return {cat:s[0],brand:s[1],sup:s[2],btl:Math.ceil(d/WINE_YIELD)};});
   const spark=(BC.toast&&T.sparkling)?{cat:'Sparkling toast',brand:T.sparkling[1],sup:T.sparkling[2],btl:Math.ceil(g/SPARK_YIELD)}:null;
-  return {g,H,totalDrinks,spirits,wines,spark,spiritBtl:spirits.reduce((a,s)=>a+s.btl,0),wineBtl:wines.reduce((a,s)=>a+s.btl,0)};
+  const beerTypes=BARLIST.beers.filter(b=>b[1]&&b[1]!=='N/A');
+  const beerBtl=beerDrinks;                          // 1 bottle/can per beer drink
+  const beerCases=Math.ceil(beerBtl/CASE);
+  const beerEach=beerTypes.length?Math.ceil(beerBtl/beerTypes.length):0;
+  const beers=beerTypes.map(b=>({cat:b[0],brand:b[1],btl:beerEach}));
+  return {g,H,totalDrinks,beerDrinks,spirits,wines,spark,beers,beerBtl,beerCases,spiritBtl:spirits.reduce((a,s)=>a+s.btl,0),wineBtl:wines.reduce((a,s)=>a+s.btl,0)};
 }
 function bcOut(){
   const r=bcCompute();
@@ -2548,12 +2659,14 @@ function bcOut(){
      <div class="bcstat"><div class="bcnum">${r.totalDrinks}</div><div class="bcl">total drinks</div></div>
      <div class="bcstat"><div class="bcnum">${r.spiritBtl}</div><div class="bcl">spirit btls</div></div>
      <div class="bcstat"><div class="bcnum">${r.wineBtl}</div><div class="bcl">wine btls</div></div>
+     ${r.beerBtl?`<div class="bcstat"><div class="bcnum">${r.beerBtl}</div><div class="bcl">beer btls</div></div>`:''}
      ${r.spark?`<div class="bcstat"><div class="bcnum">${r.spark.btl}</div><div class="bcl">sparkling</div></div>`:''}
    </div>
    <div class="bcgrp">Spirits <span class="bcgt">${r.spiritBtl} btl</span></div>
    ${r.spirits.map(line).join('')}
    <div class="bcgrp">Wine <span class="bcgt">${r.wineBtl} btl</span></div>
    ${r.wines.map(line).join('')}
+   ${r.beerBtl?`<div class="bcgrp">Beer <span class="bcgt">${r.beerBtl} btl · ${r.beerCases} case${r.beerCases!==1?'s':''}</span></div>${r.beers.map(line).join('')}<div class="bcnote" style="margin-top:6px">Even split across the standard lineup. Adjust to the crowd.</div>`:''}
    ${r.spark?`<div class="bcgrp">Sparkling</div>${line(r.spark)}`:''}`;
 }
 function renderBarCalc(){
@@ -2569,18 +2682,23 @@ function renderBarCalc(){
        <label class="bcfield"><span>Hours</span><input type="number" min="1" value="${BC.hours}" oninput="bcNum('hours',this.value)"></label>
      </div>
      <div class="bcslider">
-       <div class="gclabel"><span>Wine vs. spirits mix</span><span class="bgcount" id="bcmix">${BC.winePct}% wine · ${100-BC.winePct}% spirits</span></div>
+       <div class="gclabel"><span>Beer share of all drinks</span><span class="bgcount" id="bcbeer">${BC.beerPct}% beer</span></div>
+       <input type="range" min="0" max="100" step="5" value="${BC.beerPct}" oninput="bcBeer(this.value)">
+     </div>
+     <div class="bcslider">
+       <div class="gclabel"><span>Wine vs. spirits (of the rest)</span><span class="bgcount" id="bcmix">${BC.winePct}% wine · ${100-BC.winePct}% spirits</span></div>
        <input type="range" min="0" max="100" step="5" value="${BC.winePct}" oninput="bcWine(this.value)">
      </div>
      <label class="bctoast"><input type="checkbox" ${BC.toast?'checked':''} onchange="bcToast(this.checked)"> Sparkling toast (1 pour/guest)${T.sparkling?` · ${T.sparkling[1]}`:': <em>none in Premium list</em>'}</label>
    </div>
    <div id="bcout">${bcOut()}</div>
-   <div class="bcnote">Yields: spirits ≈16 cocktails/750ml · wine 5 glasses/btl · sparkling 6/btl. Each brand rounds up for ordering. Slide the mix to match the crowd.</div>
+   <div class="bcnote">Yields: spirits ≈16 cocktails/750ml · wine 5 glasses/btl · beer 1 btl/drink, 24/case · sparkling 6/btl. Each brand rounds up for ordering. Slide the mix to match the crowd.</div>
    <div class="note-inline">Setting the bar itself? <b>Bar Glassware Setup</b> gives racks by guest count. <button class="relchip" onclick="go('barglass')">Bar Glassware Setup ›</button></div>
    <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
 }
 function bcNum(k,v){BC[k]=Math.max(0,parseInt(v,10)||0);document.getElementById('bcout').innerHTML=bcOut();}
 function bcWine(v){BC.winePct=parseInt(v,10)||0;const m=document.getElementById('bcmix');if(m)m.textContent=`${BC.winePct}% wine · ${100-BC.winePct}% spirits`;document.getElementById('bcout').innerHTML=bcOut();}
+function bcBeer(v){BC.beerPct=parseInt(v,10)||0;const b=document.getElementById('bcbeer');if(b)b.textContent=`${BC.beerPct}% beer`;document.getElementById('bcout').innerHTML=bcOut();}
 function bcToast(c){BC.toast=!!c;document.getElementById('bcout').innerHTML=bcOut();}
 function bcTier(k){BC.tier=k;renderBarCalc();}
 /* ---------- Bar Setup Checklist (Full Bar vs Beer & Wine) ---------- */
@@ -2635,24 +2753,25 @@ const CULPB=[
   {m:"C7",title:"HACCP",topics:["HACCP & Cooling","Proper Hand Washing","7 Principles of HACCP","How Food Becomes Unsafe","Preventing Cross-Contamination","Proper Attire & Eating Policies"]},
   {m:"C8",title:"Break Down & Load Up",topics:["Kitchen Breakdown","Venue Clean-Up & Final Walkthrough"]}
 ];
-function renderCulPlaybook(){
-  const mods=CULPB.map((m,i)=>({m,i})).filter(x=>x.i!==6).map(({m,i})=>`<div class="node active" onclick="go('culmod',${i})"><div class="num" style="font-size:15px">${m.m}</div><div><div class="nt">${m.title}</div><div class="ns">${m.topics.length} lesson${m.topics.length>1?'s':''}</div></div><span class="go">›</span></div>`).join('');
-  screen.innerHTML=`
-    <p class="kicker">Build · Service</p>
-    <h1 class="disp">Culinary Playbook</h1>
-    <p class="lead">The SET Culinary manual as interactive lessons. Hygiene, kitchen equipment, station execution, and breakdown.</p>
-    <div class="arc">${mods}</div>
-    <div class="note-inline">Food safety &amp; HACCP live under <button class="relchip" onclick="go('culmod','6')">Kitchen · Food Safety ›</button></div>`;
+function renderCulPlaybook(arg){
+  pbTabbed({
+    pb:CULPB, arg, route:'culpb', exclude:[6],
+    kicker:'Build · Service', title:'Culinary Playbook',
+    lead:'The SET Culinary manual, by module. Hygiene, kitchen equipment, station execution, and breakdown.',
+    modref:m=>`<div class="modref"><div class="modrefh">Manual reference</div><div class="modrefn">Maps to Culinary Manual · Module ${m.m}</div><div class="grel"><button class="relchip" onclick="openManual('culinary')">Culinary manual ›</button></div></div>`,
+    foot:`<div class="note-inline">Food safety &amp; HACCP live under <button class="relchip" onclick="go('culmod','6')">Kitchen · Food Safety ›</button></div>`
+  });
 }
 function renderCulModule(mi){
   mi=+mi; const m=CULPB[mi];
-  const rows=m.topics.map((t,ti)=>`<div class="row" onclick="go('pblesson','cul-${mi}-${ti}')" style="--rc:var(--displayed)"><span class="cbar"></span><div class="rin"><div><div class="rt">${t}</div><div class="rd">Standards · steps · knowledge check</div></div><span class="go">›</span></div></div>`).join('');
   screen.innerHTML=`
     <p class="kicker">Culinary Playbook · Module ${m.m}</p>
     <h1 class="disp">${m.title}</h1>
-    <p class="lead">${m.topics.length} lesson${m.topics.length>1?'s':''}. Tap one to open its standards.</p>
+    <p class="lead">Standards, steps, and a knowledge check for each lesson.</p>
     <div class="modref"><div class="modrefh">Manual reference</div><div class="modrefn">Maps to Culinary Manual · Module ${m.m}</div><div class="grel"><button class="relchip" onclick="openManual('culinary')">Culinary manual ›</button></div></div>
-    ${rows}`;
+    ${pbLessonsHTML(CULPB,mi)}
+    <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
+  window.scrollTo(0,0);
 }
 const LEADPB=[
   {m:"S1",title:"Your Role as Event Supervisor",topics:["Role & Responsibility","In Case of Emergency"]},
@@ -2663,15 +2782,15 @@ const LEADPB=[
   {m:"S7",title:"Managing Breakdown",topics:["Breakdown Leadership"]},
   {m:"S9",title:"Post-Event Responsibilities",topics:["Post-Event Wrap-Up"]}
 ];
-function renderLeadership(){
-  const mods=LEADPB.map((m,i)=>`<div class="node active" onclick="go('leadmod',${i})"><div class="num" style="font-size:15px">${m.m}</div><div><div class="nt">${m.title}</div><div class="ns">${m.topics.length} lesson${m.topics.length>1?'s':''}</div></div><span class="go">›</span></div>`).join('');
-  screen.innerHTML=`
-    <p class="kicker">Build · Service</p>
-    <h1 class="disp">Event Supervisor Playbook</h1>
-    <p class="lead">Event Supervisors are senior service staff. The SET Event Supervisor manual as interactive lessons. Leading the team, pre-shift, execution, and emergencies.</p>
-    <div class="arc">${mods}</div>
-    <div class="note-inline">Missing a printed label on-site? Build one on the spot. <button class="relchip" onclick="go('labelmaker')">On-Site Label Maker ›</button></div>
-    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('supervisor')">Event Supervisor ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
+function renderLeadership(arg){
+  pbTabbed({
+    pb:LEADPB, arg, route:'leadership',
+    kicker:'Build · Service', title:'Event Supervisor Playbook',
+    lead:'Event Supervisors are senior service staff. The SET Event Supervisor manual, by module. Leading the team, pre-shift, execution, and emergencies.',
+    modref:m=>`<div class="modref"><div class="modrefh">Manual reference</div><div class="modrefn">Maps to Event Supervisor Manual · Module ${m.m}</div><div class="grel"><button class="relchip" onclick="openManual('supervisor')">Event Supervisor manual ›</button></div></div>`,
+    foot:`<div class="note-inline">Setting up the room? <button class="relchip" onclick="go('setupseq')">Supervisor Setup Sequence ›</button> Missing a printed label on-site? <button class="relchip" onclick="go('labelmaker')">On-Site Label Maker ›</button></div>
+    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('supervisor')">Event Supervisor ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`
+  });
 }
 function renderLeadModule(mi){
   mi=+mi; const m=LEADPB[mi];
@@ -3073,15 +3192,13 @@ function renderKitchen(){
   const tile=r=>r[2]
     ? `<div class="tile active" onclick="go('${r[2]}'${r[3]?`,'${r[3]}'`:''})"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
     : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
-  const tools=[["Beverage Quantity Calculator","Lemonade, Half &amp; Half, Hot Chocolate, OJ, Apple Cider. By guest count",""]];
   const delivery=[["Menu Lookbook","What every item should look like","lookbook"],["Packaging Guide","How every item is packed &amp; labeled","packaging"],["Presentation Styles","Standard · Enhanced · Elevated","presentation"]];
   const culinary=[["Kitchen Set-Up","Onsite kitchen &amp; equipment",""],["Food Safety","HACCP, cooling &amp; hand-washing","culmod","6"]];
   screen.innerHTML=`
     <p class="kicker">Build · Kitchen</p>
     <h1 class="disp">Kitchen Craft</h1>
     <p class="lead">Culinary standards, and everything the kitchen sends out the door for <b>Delivery</b>.</p>
-    <div class="titleblock" style="--tbcolor:var(--displayed);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Tools</span></div>
-    <div class="grid" style="margin-top:12px">${tools.map(tile).join('')}</div>
+    <div class="note-inline">Beverage &amp; coffee quantities now live in <button class="relchip" onclick="go('bar')">Bar &amp; Beverage ›</button></div>
     <div class="titleblock" style="--tbcolor:var(--displayed);margin-top:22px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Delivery</span></div>
     <div class="grid" style="margin-top:12px">${delivery.map(tile).join('')}</div>
     <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Culinary Standards</span></div>
