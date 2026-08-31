@@ -1805,9 +1805,9 @@ function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
 function render(){
   const cur=stack[stack.length-1];
   backBtn.classList.toggle('show',stack.length>1);
-  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Service · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Deliver · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Bar · Program Calculator',barlist:'Bar · Setup Checklist',bar:'Build · Bar &amp; Beverage',postreport:'Tools · Post-Event Report',leadbrief:'Elevate · Leadership Brief',labelmaker:'Service · Label Maker',setupseq:'Service · Setup Sequence'};
+  const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',presence:'Know · Presence &amp; Presentation',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Service · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Deliver · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Bar · Program Calculator',barlist:'Bar · Setup Checklist',bar:'Build · Bar &amp; Beverage',postreport:'Tools · Post-Event Report',leadbrief:'Elevate · Leadership Brief',labelmaker:'Service · Label Maker',setupseq:'Service · Setup Sequence'};
   crumb.textContent=map[cur.view]||'';
-  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:()=>renderPlaybook(cur.arg),pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:()=>renderCulPlaybook(cur.arg),culmod:()=>renderCulModule(cur.arg),leadership:()=>renderLeadership(cur.arg),leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg),bar:renderBarHub,postreport:()=>renderPostReport(cur.arg),leadbrief:()=>renderLeadershipBrief(cur.arg),labelmaker:renderLabelMaker,setupseq:renderSetupSeq})[cur.view]();
+  ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,presence:renderPresence,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:()=>renderPlaybook(cur.arg),pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:()=>renderCulPlaybook(cur.arg),culmod:()=>renderCulModule(cur.arg),leadership:()=>renderLeadership(cur.arg),leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg),bar:renderBarHub,postreport:()=>renderPostReport(cur.arg),leadbrief:()=>renderLeadershipBrief(cur.arg),labelmaker:renderLabelMaker,setupseq:renderSetupSeq})[cur.view]();
   if(cur.view==='home'){fillHomeFocus();fillHomeRec();}
 }
 
@@ -2428,7 +2428,6 @@ function renderPbModule(mi){
 function lessonInner(pb,mi,ti,opts2){
   const o=opts2||{};
   const m=pb[mi]; const topic=m.topics[ti]; const L=LESSONS[topic];
-  const guestItems=GUEST.map(g=>`<label class="gitem" onclick="toggle(this)"><input type="checkbox"><span class="gL" style="color:var(--charcoal)">${g[0]}</span><span><span class="gT">${g[1]}</span><span class="gD">${g[2]}</span></span></label>`).join('');
   const Q=(L&&L.quiz)?L.quiz:QUIZ[(mi*10+ti)%QUIZ.length];
   const qbadge=(L&&L.quiz)?badge('verified','From manual'):badge('review','Sample');
   const opts=quizOpts(Q);
@@ -2446,8 +2445,7 @@ function lessonInner(pb,mi,ti,opts2){
   const barCTA=(topic==='Bar Station')?`<div class="ctaband" onclick="go('barglass')"><div><div class="ctat">🍷 Glassware Setup Calculator</div><div class="ctas">Pick the bar type + guest count → exact rack counts</div></div><span class="go">›</span></div>`:'';
   const video=o.video?`<div class="vslot"><div class="vic">▶</div><div class="vt">Video Lesson</div><div class="vs">Lights, camera… coming soon 🎬</div></div>`:'';
   return `${video}${barCTA}${philBlock}${stdBlock}${stepsBlock}${tblBlock}${sopBlock}${tipsBlock}${ptrBlock}
-    <div class="quiz"><div class="qk">Knowledge Check ${qbadge}</div><div class="qq">${Q.q}</div><div class="qopts">${opts}</div><div class="qfb" style="display:none"></div></div>
-    <div class="guest" style="margin-top:16px"><div class="gh">Is it GUEST ready?</div><div class="gsub"><span>The five-point check applies to every lesson</span>${badge('verified','Verified framework')}</div>${guestItems}</div>`;
+    <div class="quiz"><div class="qk">Knowledge Check ${qbadge}</div><div class="qq">${Q.q}</div><div class="qopts">${opts}</div><div class="qfb" style="display:none"></div></div>`;
 }
 /* Stacked lessons for one module (each topic gets its own titleblock header) */
 function pbLessonsHTML(pb,mi){
@@ -2511,7 +2509,6 @@ function bgRows(t,g){return t.lines.map(l=>`<div class="bgline"><span class="bgn
 function renderBarGlass(){
   const t=BARGLASS.find(x=>x.k===BGS.k)||BARGLASS[1];const g=BGS.g;
   const chips=BARGLASS.map(x=>`<button class="bgtab${x.k===BGS.k?' on':''}" onclick="bgType('${x.k}')">${x.name}</button>`).join('');
-  const guestItems=GUEST.map(x=>`<label class="gitem" onclick="toggle(this)"><input type="checkbox"><span class="gL" style="color:var(--bar)">${x[0]}</span><span><span class="gT">${x[1]}</span><span class="gD">${x[2]}</span></span></label>`).join('');
   screen.innerHTML=`
     <div class="titleblock" style="--tbcolor:var(--bar)"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext">Bar Glassware Setup<small>Bar Station · Beverage Supervisor spec</small></span></div>
     <p class="lead">Pick the bar type and slide the guest count: the glassware pull recalculates live, in racks, the way you'd pull them.</p>
@@ -2535,7 +2532,6 @@ function renderBarGlass(){
     </div>
     <div class="pointer" style="--pc:var(--bar)"><div class="pl"><span class="star">✦</span> Perfecting Pointer ${badge('verified','Verified')}</div><div class="pv">Always set your bar for <b>two stations</b>, so if someone jumps in to help, everything's already doubled and in reach, and service never slows.</div></div>
     <div class="note-inline">Planning the order? The <b>Bar Program Calculator</b> turns guest count into bottles per brand. <button class="relchip" onclick="go('barcalc')">Bar Program Calculator ›</button></div>
-    <div class="guest" style="margin-top:16px"><div class="gh">Is it GUEST ready?</div><div class="gsub"><span>Before doors open</span>${badge('verified','Verified framework')}</div>${guestItems}</div>
     <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
 }
 function bgType(k){BGS.k=k;renderBarGlass();}
@@ -2558,6 +2554,15 @@ function renderLabelMaker(){
     <p class="lead">Forgot the printed labels, or need one on the fly? Build menu tent cards right here. Name, description, and allergen codes, with the Delivery or Events | Catering logo. Prints one card per page on a 4×6 Oxford index card, ready to fold.</p>
     <div class="qcframe" style="background:#111"><iframe id="lmif" title="On-Site Label Maker" loading="lazy" style="height:760px"></iframe></div>
     <p class="note-inline">Tip: this opens best in its own tab for printing. <a href="tent-card-builder.html" target="_blank" rel="noopener" class="relchip" style="text-decoration:none;display:inline-block">Open full screen ↗</a></p>
+    <div class="block"><div class="bh"><span class="bt">No printer on site? In a pinch</span>${badge('review','Field tips')}</div>
+      <ul class="stdlist">
+        <li><b>Plain paper is fine.</b> No Oxford index cards on hand? Print on regular paper, trim to size, and fold. It still stands in front of the dish and reads clean.</li>
+        <li><b>Track down a printer.</b> Ask the venue coordinator or your on-site contact whether there's an office, business center, or back-office printer you can use. Most venues have one.</li>
+        <li><b>Email it to someone with access.</b> Open full screen, use your device's <b>Print → Save as PDF</b> to save the file, then email it to a client or venue contact who can print it for you. Ask them for plain paper if that's all they have.</li>
+        <li><b>Print from your phone.</b> If the venue's printer supports AirPrint or wireless printing, open the file on your phone and send it straight to the printer.</li>
+        <li><b>Absolute last resort: hand-letter it.</b> A neat handwritten tent card beats an unlabeled dish. Match the format. Item name on top, a short description below.</li>
+      </ul>
+      <div class="concept muted" style="margin-top:8px">The goal is simple: every item labeled before doors open. Clean and printed is best, but presentable and handwritten still keeps the station Guest Ready.</div></div>
     <div class="note-inline">Every buffet &amp; delivery item should be labeled before doors open. It's part of the GUEST Ready check. <button class="relchip" onclick="go('leadership')">Event Supervisor Playbook ›</button></div>`;
   document.getElementById('lmif').src='tent-card-builder.html';
 }
@@ -2755,9 +2760,9 @@ const CULPB=[
 ];
 function renderCulPlaybook(arg){
   pbTabbed({
-    pb:CULPB, arg, route:'culpb', exclude:[6],
+    pb:CULPB, arg, route:'culpb', exclude:[0,6],
     kicker:'Build · Service', title:'Culinary Playbook',
-    lead:'The SET Culinary manual, by module. Hygiene, kitchen equipment, station execution, and breakdown.',
+    lead:'The SET Culinary manual, by module. Sanitation, kitchen equipment, station execution, and breakdown.',
     modref:m=>`<div class="modref"><div class="modrefh">Manual reference</div><div class="modrefn">Maps to Culinary Manual · Module ${m.m}</div><div class="grel"><button class="relchip" onclick="openManual('culinary')">Culinary manual ›</button></div></div>`,
     foot:`<div class="note-inline">Food safety &amp; HACCP live under <button class="relchip" onclick="go('culmod','6')">Kitchen · Food Safety ›</button></div>`
   });
@@ -3365,6 +3370,7 @@ function renderKnow(){
     ["GUEST Ready","The five-point readiness standard",true,"guest"],
     ["Event-Ready Attire","Uniform standard · do's &amp; don'ts",true,"attire"],
     ["Communication","How we speak &amp; carry ourselves",true,"communication"],
+    ["Presence &amp; Presentation","Uniforms, hygiene, body language",true,"presence"],
     ["Glossary","Puff terms A–Z · searchable",true,"glossary"],
     ["Company Standards","Overall · Service · Kitchen · Warehouse · Sales/Marketing · Admin · Leadership",false,null]
   ];
@@ -3381,6 +3387,17 @@ function renderKnow(){
   `;
 }
 
+function renderPresence(){
+  screen.innerHTML=`
+    <p class="kicker">Know the Standard</p>
+    <h1 class="disp">Presence &amp; Presentation</h1>
+    <p class="lead">How we show up on every event: uniforms, hygiene, body language, and communication. Presenting yourself well is the first thing a guest notices.</p>
+    <div class="modref"><div class="modrefh">Manual reference</div><div class="modrefn">From the SET Culinary Manual</div><div class="grel"><button class="relchip" onclick="openManual('culinary')">Culinary manual ›</button></div></div>
+    ${pbLessonsHTML(CULPB,0)}
+    <div class="note-inline">Related standards: <button class="relchip" onclick="go('attire')">Event-Ready Attire ›</button> <button class="relchip" onclick="go('communication')">Communication ›</button></div>
+    <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
+  window.scrollTo(0,0);
+}
 function renderGuest(){
   const cards=GUEST_DETAIL.map(g=>`
     <div class="guestcard">
