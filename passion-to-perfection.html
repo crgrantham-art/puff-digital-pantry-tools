@@ -2405,10 +2405,11 @@ function renderGlossary(pre){
 }
 function renderPlaybook(arg){
   pbTabbed({
-    pb:PLAYBOOK, arg, route:'playbook',
+    pb:PLAYBOOK, arg, route:'playbook', exclude:[5,6],
     kicker:'Build · Service', title:'P2P Playbook',
     lead:'Guided training, by module. Pick a module tab; each lesson carries the Puff standard and a quick knowledge check.',
-    modref:m=>{const mm=MODMAP[m.title];return mm?`<div class="modref"><div class="modrefh">Manual reference</div><div class="modrefn">${mm.note}</div><div class="grel">${mm.manuals.map(k=>`<button class="relchip" onclick="openManual('${k}')">${MANUAL_NAME[k]} manual ›</button>`).join('')}</div></div>`:'';}
+    modref:m=>{const mm=MODMAP[m.title];return mm?`<div class="modref"><div class="modrefh">Manual reference</div><div class="modrefn">${mm.note}</div><div class="grel">${mm.manuals.map(k=>`<button class="relchip" onclick="openManual('${k}')">${MANUAL_NAME[k]} manual ›</button>`).join('')}</div></div>`:'';},
+    foot:`<div class="note-inline">Bar, coffee &amp; beverage standards live in <button class="relchip" onclick="go('bar')">Bar &amp; Beverage ›</button> Station setup guides live in <button class="relchip" onclick="go('stations')">Station Standards ›</button></div>`
   });
 }
 function renderPbModule(mi){
