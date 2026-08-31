@@ -1825,10 +1825,10 @@ function renderHome(){
     <div id="homerec"></div>
     <div id="homefocus"></div>
     <div class="arc">
-      <div class="node active" style="--nc:var(--beverage)" onclick="go('know')"><div class="num">I</div><div><div class="nt">Know the Standard</div><div class="ns">Philosophy · Core Values · GUEST Ready · Company Standards</div></div><span class="go">›</span></div>
+      <div class="node active" style="--nc:var(--beverage)" onclick="go('know')"><div class="num">I</div><div><div class="nt">Know the Standard</div><div class="ns">Philosophy · Core Values · GUEST Ready · Presence &amp; Presentation</div></div><span class="go">›</span></div>
       <div class="node active" style="--nc:var(--chef)" onclick="go('build')"><div class="num">II</div><div><div class="nt">Build the Skill</div><div class="ns">Choose your craft · Playbooks, guides &amp; standards</div></div><span class="go">›</span></div>
       <div class="node active" style="--nc:var(--displayed)" onclick="go('elevate')"><div class="num">III</div><div><div class="nt">Elevate the Experience</div><div class="ns">Weekly Focus · Recognition Feed · Perfecting Pointers</div></div><span class="go">›</span></div>
-      <div class="node active" style="--nc:var(--bar)" onclick="go('deliver')"><div class="num">IV</div><div><div class="nt">Deliver Perfection</div><div class="ns">Training Checklists · Progress · Performance · Resources</div></div><span class="go">›</span></div>
+      <div class="node active" style="--nc:var(--bar)" onclick="go('deliver')"><div class="num">IV</div><div><div class="nt">Deliver Perfection</div><div class="ns">Training Checklists · Progress · Setup Badges</div></div><span class="go">›</span></div>
     </div>
     <div class="daily" id="dailyptr">${dailyPointerHTML(null)}</div>
     ${(()=>{if(!GLOSSARY.length)return '';const G=GLOSSARY[Math.floor(Math.random()*GLOSSARY.length)];
@@ -1844,8 +1844,7 @@ function renderBuild(){
     ["Bar &amp; Beverage","Bar, coffee &amp; beverage standards, tools &amp; checklists","bar","all","var(--bar)"],
     ["Kitchen","Culinary standards &amp; packaging","kitchen","kitchen","var(--displayed)"],
     ["Warehouse","Linen, laundry &amp; equipment","warehouse","warehouse","var(--coffee)"],
-    ["Sales / Marketing","Brand &amp; client standards","salesmkt","salesmkt","var(--bar)"],
-    ["Admin","Office &amp; process standards","","admin","var(--place)"]
+    ["Sales / Marketing","Brand &amp; client standards","salesmkt","salesmkt","var(--bar)"]
   ];
   const lead=VIEWAS==='exec'?`Pick your department to reach its standards.`:`Showing standards for <b>${DEPTS[VIEWAS].label}</b>. Other departments are locked to your role.`;
   screen.innerHTML=`
@@ -1867,8 +1866,7 @@ function renderBarHub(){
   const tiles=[
     ["Bar Program Calculator","Bottles per brand by guest count &amp; hours","barcalc",1],
     ["Bar Glassware Setup","Racks by bar type &amp; guest count","barglass",1],
-    ["Bar Setup Checklist","Full bar vs beer &amp; wine. What to pull","barlist",1],
-    ["Beverage Quantity Calculator","Lemonade, coffee, OJ, cider by guest count","",0]
+    ["Bar Setup Checklist","Full bar vs beer &amp; wine. What to pull","barlist",1]
   ];
   const stds=[
     ["Coffee Station","Setup, Regular on the Right, GUEST Ready","go('station','coffee-station')"],
@@ -1910,13 +1908,11 @@ function renderService(){
   const tools=[["Supervisor Setup Sequence","5 phases from arrival to open doors","setupseq"],["Event Supervisor Post-Event Report","Submit after every event. Pick your market","postreport","supervisor"],["Lead Event Chef Post-Event Report","Submit after every event. Pick your market","postreport","leadchef"],["On-Site Label Maker","Menu tent cards. Name, description, allergens, print-ready","labelmaker"]];
   const resources=[
     ["Station Standards","Equipment, setup &amp; GUEST Ready","stations"],
-    ["P2P Playbook","Guided training · 6 modules","playbook"],
+    ["P2P Playbook","Guided training · by module","playbook"],
     ["Culinary Playbook","Prep, stations &amp; execution","culpb"],
     ["P2P Jeopardy","Test yourself · study game","cards"],
     ["Event Supervisor Playbook","Leading the team on-site","leadership"],
-    ["Food Safety","HACCP, cooling &amp; hand-washing","culmod","6"],
-    ["Videos","Setup walkthroughs",""],
-    ["P2P Academy","Assessments &amp; sign-off",""]
+    ["Food Safety","HACCP, cooling &amp; hand-washing","culmod","6"]
   ];
   const tile=r=>r[2]
     ? `<div class="tile active" onclick="go('${r[2]}'${r[3]?`,'${r[3]}'`:''})"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active',r[2]==='stations'?STATIONS.filter(s=>s.cat!=='coffee').length+' standards':'Live')}</div>`
@@ -1926,7 +1922,7 @@ function renderService(){
     <h1 class="disp">Service Craft</h1>
     <p class="lead">Everything the service team needs on the floor.</p>
     <div class="titleblock" style="--tbcolor:var(--chef);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Tools</span></div>
-    <div class="grid" style="margin-top:12px">${(tools.length?tools:[["More Tools","Coming soon",""]]).map(tile).join('')}</div>
+    <div class="grid" style="margin-top:12px">${tools.map(tile).join('')}</div>
     <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Training &amp; Reference</span></div>
     <div class="grid" style="margin-top:12px">${resources.map(tile).join('')}</div>
     <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('service')">Service ›</button> <button class="relchip" onclick="openManual('bartender')">Bartender ›</button> <button class="relchip" onclick="openManual('culinary')">Culinary ›</button> <button class="relchip" onclick="openManual('leadculinary')">Lead Culinary ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
@@ -2238,11 +2234,9 @@ function onGuest(input){
 }
 const PHOTO_VIEWS=["Full station view","Detail / placement","Guest-facing angle"];
 function galleryHTML(s){
-  const photos=(s.photos&&s.photos.length)?s.photos:PHOTO_VIEWS.map(v=>({label:v}));
-  const slides=photos.map(p=>p.src
-    ? `<div class="gslide"><img src="${p.src}" alt="${p.label||''}">${p.label?`<div class="gcap">${p.label}</div>`:''}</div>`
-    : `<div class="gslide gph"><div class="ic">◈</div><div class="t1">What Good Looks Like</div><div class="t2">${p.label}. Photo shoot pending 📸</div></div>`
-  ).join('');
+  const photos=(s.photos&&s.photos.length)?s.photos.filter(p=>p.src):[];
+  if(!photos.length) return '';
+  const slides=photos.map(p=>`<div class="gslide"><img src="${p.src}" alt="${p.label||''}" loading="lazy">${p.label?`<div class="gcap">${p.label}</div>`:''}</div>`).join('');
   const multi=photos.length>1;
   const dots=photos.map((p,i)=>`<span class="gdot${i===0?' on':''}"></span>`).join('');
   return `<div class="gallery">
@@ -2274,7 +2268,7 @@ function renderStation(id){
   }).join('');
   const setupBlock=(s.setup&&s.setup.length)
     ? `<div class="block"><div class="bh"><span class="bt">Setup Steps</span>${badge('verified','From guide')}</div><ol class="steps">${s.setup.map(x=>`<li>${x}</li>`).join('')}</ol></div>`
-    : `<div class="block"><div class="bh"><span class="bt">Setup Steps</span>${badge('tbd','TBD')}</div><div class="concept muted">Setup steps are still cooking 🔧. Operations is writing the official ones now.</div></div>`;
+    : '';
   const guestCtrl=dyn?`<div class="gcbar">
       <div class="gclabel"><span>Scale to guest count</span>${badge('review','Draft rules')}</div>
       <div class="gcrow"><input type="range" min="10" max="300" step="5" value="50" oninput="onGuest(this)" aria-label="Guest count"><span class="gcval">50 guests</span></div>
@@ -2284,10 +2278,11 @@ function renderStation(id){
     <label class="gitem" onclick="toggle(this)"><input type="checkbox">
       <span class="gL" style="color:${c.color}">${g[0]}</span>
       <span><span class="gT">${g[1]}</span><span class="gD">${g[2]}</span></span></label>`).join('');
-  const equipContent=s.equip.length?(guestCtrl+equipItems):`<div class="concept muted">Pull list still in the works. Operations is confirming the official list. 📋</div>`;
+  const equipContent=s.equip.length?(guestCtrl+equipItems):'';
+  const equipBlock=s.equip.length?`<div class="block"><div class="bh"><span class="bt">Equipment / Pull List</span>${badge(s.equipStatus[0],s.equipStatus[1])}</div>${equipContent}</div>`:'';
   const pointer=s.pointer.v
     ? `<div class="pointer" style="--pc:${c.color}"><div class="pl"><span class="star">✦</span> Perfecting Pointer ${badge('verified','Verified')}</div><div class="pv">${s.pointer.text}</div></div>`
-    : `<div class="pointer tbd"><div class="pl"><span class="star">✦</span> Perfecting Pointer ${badge('tbd','TBD')}</div><div class="pv">No verified pointer for this one yet. Know a trick that makes this station sing? Tell your Event Supervisor. It could live right here. ✦</div></div>`;
+    : '';
   screen.innerHTML=`
     <div class="titleblock" style="--tbcolor:${c.color}">
       <span class="diamond" style="--dc:var(--paper)"></span>
@@ -2299,10 +2294,7 @@ function renderStation(id){
     ${s.concept?`<div class="block"><div class="bh"><span class="bt">Concept / Menu</span>${badge('verified','From deck')}</div><div class="concept">${s.concept.replace(/^([^:]+):/,'<span class="dish">$1</span>: ')}</div></div>`:''}
     ${s.family?`<div class="famnote">${s.family}</div>`:''}
 
-    <div class="block"><div class="bh"><span class="bt">Purpose</span>${badge('tbd','TBD')}</div>
-      <div class="concept muted">Coming soon. Ops is putting this one into words.</div></div>
-
-    <div class="block"><div class="bh"><span class="bt">Equipment / Pull List</span>${badge(s.equipStatus[0],s.equipStatus[1])}</div>${equipContent}</div>
+    ${equipBlock}
 
     ${setupBlock}
 
@@ -2312,7 +2304,6 @@ function renderStation(id){
       <div class="gsub"><span>${hasBadge(s.id)?`${badgeEmoji(s.id)} You earned the ${s.name} badge. Nice work`:`Tick all five to earn the ${badgeEmoji(s.id)} ${s.name} badge`}</span>${badge('verified','Verified framework')}</div>
       ${guestItems}</div>
 
-    <div class="tbdbox"><b>During Service &amp; Breakdown:</b> not written up yet. Check back soon.</div>
     <div class="rule">Dedication ~ Quality ~ Creativity</div>
   `;
   initGallery();
@@ -2444,21 +2435,21 @@ function lessonInner(pb,mi,ti,opts2){
   const tipsBlock=(L&&L.tips)?`<div class="mtips">${L.tips.map(t=>`<div class="mtip mtip-${t[0]}"><span class="mtl">${(tipIco[t[0]]||['✦','Tip'])[0]} ${(tipIco[t[0]]||['','Tip'])[1]} · ${t[1]}</span>${t[2]}</div>`).join('')}</div>`:'';
   const sopBlock=(L&&L.sop)?`<details class="sop"><summary>Full washing &amp; pressing SOP</summary>${L.sop.map(x=>`<div class="sopsec"><div class="soph">${x[0]}</div><div class="sopb">${x[1]}</div></div>`).join('')}</details>`:'';
   const barCTA=(topic==='Bar Station')?`<div class="ctaband" onclick="go('barglass')"><div><div class="ctat">🍷 Glassware Setup Calculator</div><div class="ctas">Pick the bar type + guest count → exact rack counts</div></div><span class="go">›</span></div>`:'';
-  const video=o.video?`<div class="vslot"><div class="vic">▶</div><div class="vt">Video Lesson</div><div class="vs">Lights, camera… coming soon 🎬</div></div>`:'';
-  return `${video}${barCTA}${philBlock}${stdBlock}${stepsBlock}${tblBlock}${sopBlock}${tipsBlock}${ptrBlock}
+  return `${barCTA}${philBlock}${stdBlock}${stepsBlock}${tblBlock}${sopBlock}${tipsBlock}${ptrBlock}
     <div class="quiz"><div class="qk">Knowledge Check ${qbadge}</div><div class="qq">${Q.q}</div><div class="qopts">${opts}</div><div class="qfb" style="display:none"></div></div>`;
 }
 /* Stacked lessons for one module (each topic gets its own titleblock header) */
 function pbLessonsHTML(pb,mi){
   const m=pb[mi];
-  return m.topics.map((t,ti)=>`
+  return m.topics.map((t,ti)=>({t,ti})).filter(x=>LESSONS[x.t]).map(({t,ti})=>`
     <div class="titleblock" style="--tbcolor:var(--displayed);margin-top:22px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext">${t}</span></div>
     ${lessonInner(pb,mi,ti)}`).join('');
 }
+function moduleHasContent(pb,i){return pb[i].topics.some(t=>LESSONS[t]);}
 /* Generic SEC-style tabbed playbook: modules = tabs, lessons stacked inside */
 function pbTabbed(o){
   const pb=o.pb;
-  const idxs=pb.map((m,i)=>i).filter(i=>!(o.exclude||[]).includes(i));
+  const idxs=pb.map((m,i)=>i).filter(i=>!(o.exclude||[]).includes(i)&&moduleHasContent(pb,i));
   let mi=parseInt(o.arg,10); if(!idxs.includes(mi)) mi=idxs[0];
   const m=pb[mi];
   const tabs=idxs.map(i=>`<button class="bgtab${i===mi?' on':''}" onclick="go('${o.route}',${i})">${pb[i].m} · ${pb[i].title}</button>`).join('');
@@ -2810,17 +2801,13 @@ function renderLeadModule(mi){
 }
 function renderWarehouse(){
   const tools=[];
-  const res=[["Linen &amp; Laundry SOP","Washing, pressing &amp; napkins","linensop"],["Delivery Driver Guide","Standard &amp; Enhanced deliveries","driverguide"],["Truck Loading &amp; Care","Load-in / load-out",""],["Equipment Handling","Pull, pack &amp; repair",""],["Inventory Controls","Counts &amp; par levels",""]];
-  const tile=r=>r[2]
-    ? `<div class="tile active" style="grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
-    : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
+  const res=[["Linen &amp; Laundry SOP","Washing, pressing &amp; napkins","linensop"],["Delivery Driver Guide","Standard &amp; Enhanced deliveries","driverguide"]];
+  const tile=r=>`<div class="tile active" style="grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`;
   screen.innerHTML=`
     <p class="kicker">Build · Warehouse</p>
     <h1 class="disp">Warehouse Craft</h1>
     <p class="lead">Behind-the-scenes standards.</p>
-    <div class="titleblock" style="--tbcolor:var(--coffee);margin-top:16px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Tools</span></div>
-    <div class="grid" style="margin-top:12px">${(tools.length?tools:[["More Tools","Coming soon",""]]).map(tile).join('')}</div>
-    <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Standards &amp; Reference</span></div>
+    <div class="titleblock" style="--tbcolor:var(--paper);margin-top:16px;border-width:2px"><span class="tbtext" style="font-size:16px">Standards &amp; Reference</span></div>
     <div class="grid" style="margin-top:12px">${res.map(tile).join('')}</div>`;
 }
 function renderLinenSOP(){
@@ -2839,10 +2826,8 @@ function renderLinenSOP(){
 }
 function renderSalesMkt(){
   const tools=[["Delivery Quote Calculator","Confirm the flat rate or recommend a quote","quotecalc"]];
-  const res=[["Brand Guidelines","Purpose, voice, color, type &amp; logo","brandguide"],["SEC / Sales Operations","Process, SEO build, money &amp; venues","salesops"],["Proposal Standards","Client-facing decks",""],["Client Communication","Email &amp; tone",""],["Social &amp; Marketing","Channels &amp; assets",""]];
-  const tile=r=>r[2]
-    ? `<div class="tile active" style="grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
-    : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
+  const res=[["Brand Guidelines","Purpose, voice, color, type &amp; logo","brandguide"],["SEC / Sales Operations","Process, SEO build, money &amp; venues","salesops"]];
+  const tile=r=>`<div class="tile active" style="grid-column:1/3;min-height:auto" onclick="go('${r[2]}')"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`;
   screen.innerHTML=`
     <p class="kicker">Build · Sales &amp; Marketing</p>
     <h1 class="disp">Sales &amp; Marketing</h1>
@@ -3199,12 +3184,11 @@ function renderKitchen(){
     ? `<div class="tile active" onclick="go('${r[2]}'${r[3]?`,'${r[3]}'`:''})"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('active','Live')}</div>`
     : `<div class="tile planned"><div><div class="tt">${r[0]}</div><div class="td">${r[1]}</div></div>${badge('plan','Planned')}</div>`;
   const delivery=[["Menu Lookbook","What every item should look like","lookbook"],["Packaging Guide","How every item is packed &amp; labeled","packaging"],["Presentation Styles","Standard · Enhanced · Elevated","presentation"]];
-  const culinary=[["Kitchen Set-Up","Onsite kitchen &amp; equipment",""],["Food Safety","HACCP, cooling &amp; hand-washing","culmod","6"]];
+  const culinary=[["Food Safety","HACCP, cooling &amp; hand-washing","culmod","6"]];
   screen.innerHTML=`
     <p class="kicker">Build · Kitchen</p>
     <h1 class="disp">Kitchen Craft</h1>
     <p class="lead">Culinary standards, and everything the kitchen sends out the door for <b>Delivery</b>.</p>
-    <div class="note-inline">Beverage &amp; coffee quantities now live in <button class="relchip" onclick="go('bar')">Bar &amp; Beverage ›</button></div>
     <div class="titleblock" style="--tbcolor:var(--displayed);margin-top:22px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="font-size:16px">Delivery</span></div>
     <div class="grid" style="margin-top:12px">${delivery.map(tile).join('')}</div>
     <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Culinary Standards</span></div>
@@ -3372,8 +3356,7 @@ function renderKnow(){
     ["Event-Ready Attire","Uniform standard · do's &amp; don'ts",true,"attire"],
     ["Communication","How we speak &amp; carry ourselves",true,"communication"],
     ["Presence &amp; Presentation","Uniforms, hygiene, body language",true,"presence"],
-    ["Glossary","Puff terms A–Z · searchable",true,"glossary"],
-    ["Company Standards","Overall · Service · Kitchen · Warehouse · Sales/Marketing · Admin · Leadership",false,null]
+    ["Glossary","Puff terms A–Z · searchable",true,"glossary"]
   ];
   screen.innerHTML=`
     <p class="kicker">Know the Standard</p>
@@ -3665,8 +3648,6 @@ function renderDeliver(){
     ${cards}
     <div class="grid" style="margin-top:16px">
       <div class="tile active" onclick="go('badges')"><div><div class="tt">Setup Badges</div><div class="td">A badge for every station setup</div></div>${badge('active',badgeCount()+'/'+STATIONS.length)}</div>
-      <div class="tile planned"><div><div class="tt">Performance</div><div class="td">Goals &amp; feedback</div></div>${badge('plan','Planned')}</div>
-      <div class="tile planned"><div><div class="tt">Resources</div><div class="td">Handbook · PTO · uniform</div></div>${badge('plan','Planned')}</div>
     </div>
     <div class="tbdbox">Personal <b>login &amp; certification sign-off</b> are a later phase. For now, progress is remembered on this device only.</div>
     <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
