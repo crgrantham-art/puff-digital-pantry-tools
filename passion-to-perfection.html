@@ -3524,7 +3524,7 @@ function paintElevate(d){
   const linkHTML=f.link?`<div class="wflink${lk?' tap':''}"${lk?` onclick="goLink('${lk.view}','${lk.arg||''}')"`:''}>Focus: ${f.link}${lk?' &rsaquo;':''}</div>`:'';
   const src=d.live
     ? `<div class="rsrc">Live from <b>recognition.xlsx</b> · updated whenever you re-upload the sheet</div>`
-    : `<div class="rsrc">Showing sample data: the live <b>recognition.xlsx</b> feed loads once the site is hosted</div>`;
+    : `<div class="rsrc">Showing sample data. The live feed loads once <b>recognition.xlsx</b> is uploaded to the site.</div>`;
   screen.innerHTML=`
     <p class="kicker">Elevate the Experience</p>
     <h1 class="disp">Elevate the Experience</h1>
@@ -3544,7 +3544,7 @@ function paintElevate(d){
     ${src}
     <div class="rchips">${chips}</div>
     <div id="rfeed">${feedHTML(d.entries)}</div>
-    <div class="tbdbox">Team <b>submissions &amp; approvals</b> and <b>Legacy Lessons</b> are a later phase. For now, recognition is curated in the weekly spreadsheet.</div>
+    <div class="tbdbox">Recognition is curated each week by your Event Supervisor.</div>
     <div class="rule">Dedication ~ Quality ~ Creativity</div>
   `;
 }
@@ -3649,7 +3649,7 @@ function renderDeliver(){
     <div class="grid" style="margin-top:16px">
       <div class="tile active" onclick="go('badges')"><div><div class="tt">Setup Badges</div><div class="td">A badge for every station setup</div></div>${badge('active',badgeCount()+'/'+STATIONS.length)}</div>
     </div>
-    <div class="tbdbox">Personal <b>login &amp; certification sign-off</b> are a later phase. For now, progress is remembered on this device only.</div>
+    <div class="tbdbox">Progress is remembered on this device.${TRAINING_LOG_FORM?' Finish a role or collect every badge, then log it to record your completion with your supervisor.':''}</div>
     <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
 }
 function renderRole(k){
@@ -3666,6 +3666,7 @@ function renderRole(k){
     <div class="pmeta" id="rolemeta">${p}/${r.n} complete · ${pct}%</div>
     <div class="statusrow">${badge('verified','From checklist')}${badge('tbd','Saved on device')}</div>
     ${secHTML}
+    <div id="rolecta">${pct===100?completionLogBtn('Log this certification with your supervisor',roleName(k)+' certified'):''}</div>
     <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
 }
 function tkToggle(k,id,el){
@@ -3676,6 +3677,7 @@ function tkToggle(k,id,el){
   if(el.checked&&c===r.n&&r.n&&m&&!document.getElementById('certstamp')){
     const rc=(f||m).getBoundingClientRect();confettiBurst(rc.left+rc.width/2,rc.top);
     const st=document.createElement('div');st.id='certstamp';st.className='stamp';st.textContent='Certified ✦';m.after(st);
+    const cta=document.getElementById('rolecta');if(cta)cta.innerHTML=completionLogBtn('Log this certification with your supervisor',roleName(k)+' certified');
   }
 }
 /* ---------- Celebrations, streaks & daily rotation ---------- */
@@ -3698,6 +3700,15 @@ const STATION_BADGE={
 function badgeEmoji(id){return STATION_BADGE[id]||'🏅';}
 function hasBadge(id){const s=stLoad();return !!(s.badges&&s.badges[id]);}
 function badgeCount(){const s=stLoad();return s.badges?Object.keys(s.badges).length:0;}
+/* Training completion log. Set TRAINING_LOG_FORM to the JotForm URL to switch on "log my completion" buttons. */
+const TRAINING_LOG_FORM='';
+function completionLogBtn(label,item){
+  if(!TRAINING_LOG_FORM)return '';
+  const nm=(stLoad().name||'').trim();
+  const sep=TRAINING_LOG_FORM.includes('?')?'&':'?';
+  const url=TRAINING_LOG_FORM+sep+'name='+encodeURIComponent(nm)+'&item='+encodeURIComponent(item)+'&date='+new Date().toISOString().slice(0,10);
+  return `<div class="note-inline"><b>Make it official.</b> <button class="relchip" onclick="window.open('${url}','_blank')">📋 ${label} ›</button></div>`;
+}
 function renderBadges(){
   const earned=(stLoad().badges)||{};
   const all=STATIONS, got=all.filter(x=>earned[x.id]).length, pct=all.length?Math.round(got/all.length*100):0;
@@ -3710,8 +3721,9 @@ function renderBadges(){
    <p class="lead">Earn a badge each time you complete a station setup. ${allDone?'You collected them all. Legend. 🏆':`Collect all ${all.length}.`}</p>
    <div class="bdgtop">${ringSVG(pct, allDone?'var(--displayed)':'var(--bar)')}<div><div class="bdgbig">${got} / ${all.length}</div><div class="bdgsub">stations completed</div></div></div>
    ${allDone?'<div class="famnote" style="border-color:var(--displayed)">🏆 Every station collected. You\'re a Puff setup master!</div>':''}
+   ${allDone?completionLogBtn('Log your station badges','All station badges'):''}
    <div class="bdggrid">${grid}</div>
-   <div class="bcnote">Earn a station's badge by opening it and completing the <b>GUEST Ready check</b>. Tick all five points. Badges save on this device (they'll follow your login once accounts are live).</div>
+   <div class="bcnote">Earn a station's badge by opening it and completing the <b>GUEST Ready check</b>. Tick all five points. Badges save on this device.${TRAINING_LOG_FORM?' Log your completion to record it with your supervisor.':''}</div>
    <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
   if(allDone){const s2=stLoad();if(!s2.badgeAllCel){s2.badgeAllCel=1;stSave(s2);setTimeout(()=>{const el=screen.querySelector('.bdgtop');if(el)celebrate(el,'ALL BADGES!');},250);}}
 }
