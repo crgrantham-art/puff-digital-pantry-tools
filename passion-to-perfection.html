@@ -481,6 +481,7 @@
     display:flex;align-items:center;gap:8px;margin-bottom:6px;color:#141310;}
   .pointer .star{color:var(--gold);font-style:normal;font-size:16px;}
   .pointer .pv{font-size:13px;line-height:1.5;color:#171512;}
+  .pointer .pby{font-family:var(--serif);font-style:italic;font-size:12.5px;color:#3c3830;margin-top:6px;text-align:right;}
   .pointer .pv u{text-underline-offset:3px;}
   .pointer.tbd{background:var(--soft);border-style:dashed;}
   .pointer.tbd .pl,.pointer.tbd .pv{color:var(--muted);}
@@ -1831,6 +1832,7 @@ function renderHome(){
     <h1 class="disp">Know it. Build it.<br>Elevate it. Deliver it.</h1>
     <p class="lead">Your field guide to the Puff 'n Stuff standard.</p>
     ${momentumHTML()}
+    ${nextBadgeHTML()}
     <div id="homerec"></div>
     <div id="homefocus"></div>
     <div class="arc">
@@ -2290,8 +2292,8 @@ function renderStation(id){
   const equipContent=s.equip.length?(guestCtrl+equipItems):'';
   const equipBlock=s.equip.length?`<div class="block"><div class="bh"><span class="bt">Equipment / Pull List</span>${badge(s.equipStatus[0],s.equipStatus[1])}</div>${equipContent}</div>`:'';
   const pointer=s.pointer.v
-    ? `<div class="pointer" style="--pc:${c.color}"><div class="pl"><span class="star">✦</span> Perfecting Pointer ${badge('verified','Verified')}</div><div class="pv">${s.pointer.text}</div></div>`
-    : '';
+    ? `<div class="pointer" style="--pc:${c.color}"><div class="pl"><span class="star">✦</span> Perfecting Pointer ${badge('verified','Verified')}</div><div class="pv">${s.pointer.text}</div>${s.pointer.by?`<div class="pby">~ ${s.pointer.by}</div>`:''}</div>`
+    : `<div class="pointer tbd"><div class="pl"><span class="star">✦</span> Perfecting Pointer</div><div class="pv">This one's still up for grabs. Know a trick that makes this station sing? Tell your Event Supervisor. It could live right here with <b>your name on it</b>. ✦</div></div>`;
   screen.innerHTML=`
     <div class="titleblock" style="--tbcolor:${c.color}">
       <span class="diamond" style="--dc:var(--paper)"></span>
@@ -2444,8 +2446,8 @@ function lessonInner(pb,mi,ti,opts2){
     :`<div class="block"><div class="bh"><span class="bt">P2P Philosophy</span>${badge('tbd','TBD')}</div><div class="concept muted">This lesson's still cooking 🔧. It rolls out with the training videos.</div></div>`;
   const stdBlock=L?`<div class="block"><div class="bh"><span class="bt">Quality Standards</span>${badge('verified','From manual')}</div><ul class="stdlist">${L.standards.map(x=>`<li>${x}</li>`).join('')}</ul></div>`
     :`<div class="block"><div class="bh"><span class="bt">Quality Standards</span>${badge('tbd','TBD')}</div><div class="concept muted">The official standards for “${topic}” land here with the training rollout. Stay tuned.</div></div>`;
-  const ptrBlock=(L&&L.pointer)?`<div class="pointer" style="--pc:var(--displayed)"><div class="pl"><span class="star">✦</span> Perfecting Pointer ${badge('verified','Verified')}</div><div class="pv">${L.pointer}</div></div>`
-    :`<div class="pointer tbd"><div class="pl"><span class="star">✦</span> Perfecting Pointer ${badge('tbd','TBD')}</div><div class="pv">A pointer worth remembering goes here soon. ✦</div></div>`;
+  const ptrBlock=(L&&L.pointer)?`<div class="pointer" style="--pc:var(--displayed)"><div class="pl"><span class="star">✦</span> Perfecting Pointer ${badge('verified','Verified')}</div><div class="pv">${L.pointer}</div>${L.pointerBy?`<div class="pby">~ ${L.pointerBy}</div>`:''}</div>`
+    :`<div class="pointer tbd"><div class="pl"><span class="star">✦</span> Perfecting Pointer</div><div class="pv">This one's still up for grabs. Know a trick worth remembering? Tell your Event Supervisor. It could live right here with <b>your name on it</b>. ✦</div></div>`;
   const tblBlock=(L&&L.table)?`<div class="block"><div class="bh"><span class="bt">Linen Sizing</span>${badge('verified','From chart')}</div><table class="ltbl"><thead><tr><th>Table</th><th>Linen</th><th></th></tr></thead><tbody>${L.table.map(r=>`<tr><td>${r[0]}</td><td>${r[1]}</td><td class="lnote">${r[2]}</td></tr>`).join('')}</tbody></table></div>`:'';
   const stepsBlock=(L&&L.steps)?`<div class="block"><div class="bh"><span class="bt">${L.stepsTitle||'Steps of Set-Up'}</span>${badge('verified','From manual')}</div>${L.steps.map(s=>Array.isArray(s)?`<div class="soph" style="margin:10px 0 5px">${s[0]}</div><ol class="steps">${s[1].map(x=>`<li>${x}</li>`).join('')}</ol>`:`<ol class="steps"><li>${s}</li></ol>`).join('')}</div>`:'';
   const tipIco={team:['👥','Team Work Tip'],eff:['⚡','Efficiency Tip'],safe:['⚠️','Safety Tip'],gloss:['📖','Glossary']};
@@ -3802,6 +3804,14 @@ function momentumHTML(){
   }else{card=`<div class="prog start" onclick="go('deliver')">${ringSVG(0,'var(--muted)')}<div class="progtext"><div class="pk">Your progress</div><div class="pn">Start your training</div><div class="ps">Pick your role in Deliver →</div></div></div>`;}
   return card+chipsHTML;
 }
+/* Personal "up next" nudge: the next station badge to earn (rotates daily). */
+function nextBadgeHTML(){
+  const earned=(stLoad().badges)||{};
+  const todo=STATIONS.filter(x=>!earned[x.id]);
+  if(!todo.length)return '';
+  const pick=todo[Math.floor(Date.now()/864e5)%todo.length];
+  return `<div class="daily tap" onclick="go('station','${pick.id}')"><div class="dk">🎯 Up next for you</div><div class="dn">${badgeEmoji(pick.id)} Earn the ${pick.name} badge</div><div class="dv">Open the station, set it right, and run the GUEST Ready check. Tick all five and it's yours.</div></div>`;
+}
 function fillHomeRec(){
   loadRecognition().then(d=>{const el=document.getElementById('homerec');
     if(!el||!d.entries||!d.entries.length)return;
@@ -3850,7 +3860,8 @@ function toggle(el){const box=el.querySelector('input');setTimeout(()=>{
     let all=true;inputs.forEach(i=>{if(!i.checked)all=false;});
     if(all){g.dataset.done='1';celebrate(g,g.dataset.stamp||'GUEST Ready ✦');
       const cur=stack[stack.length-1];
-      if(cur&&cur.view==='station'&&cur.arg)markPerfect(cur.arg);}
+      if(cur&&cur.view==='station'&&cur.arg){markPerfect(cur.arg);
+        if(!document.getElementById('contribnote'))g.insertAdjacentHTML('afterend',`<div class="note-inline" id="contribnote">🏅 Badge earned! Got a trick that makes this station sing? Tell your Event Supervisor. It could become a Perfecting Pointer with <b>your name on it</b>.</div>`);}}
   }
 },0);}
 
