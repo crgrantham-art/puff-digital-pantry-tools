@@ -416,6 +416,9 @@
   .ctaband .ctat{font-family:var(--serif);font-weight:800;font-size:15px;}
   .ctaband .ctas{font-size:12px;opacity:.93;margin-top:2px;}
   .ctaband .go{color:#fff;font-size:20px;}
+  .vidwrap{max-width:340px;margin:12px 0 16px;border:2.5px solid var(--frame);box-shadow:3px 3px 0 var(--frame);background:#000;}
+  .vidwrap iframe{display:block;width:100%;aspect-ratio:9/16;border:0;}
+  .vidcap{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.4px;color:var(--muted);text-transform:uppercase;margin:-8px 0 14px;}
   .qcframe{border:2.5px solid var(--frame);background:#f5f6f8;margin:8px 0 12px;box-shadow:3px 3px 0 var(--frame);}
   .qcframe iframe{width:100%;height:640px;border:0;display:block;}
   /* Bar program calculator */
@@ -1811,6 +1814,7 @@ function goHome(){if(stack.length===1&&stack[0].view==='home')return;stack=[{vie
 homeLogo.onclick=goHome;
 homeLogo.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();goHome();}};
 function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
+function ytEmbed(id,label){return `<div class="vidwrap"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${label}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="vidcap">▶ ${label} · Puff 'n Stuff training</div>`;}
 
 function render(){
   const cur=stack[stack.length-1];
@@ -2395,6 +2399,7 @@ function renderAttire(){
     <p class="kicker">Know · Professional Appearance</p>
     <h1 class="disp">Event-Ready Attire</h1>
     <p class="lead">Guest First starts before you reach the floor. Here's the standard, and the common misses.</p>
+    ${ytEmbed('-gT4yo9Qnm0','Event Ready Attire')}
     <div class="titleblock" style="--tbcolor:var(--displayed)"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext">Event-Ready<small>The standard</small></span></div>
     <div class="attirehero"><img src="img/9c2d6e3041.jpg" alt="Event-ready attire"><div class="acap ok">✓ Event-Ready</div></div>
     <div class="block"><div class="bh"><span class="bt">The Standard</span>${badge('verified','From Kat\'s guide')}</div><ul class="stdlist">${doPts.map(x=>`<li>${x}</li>`).join('')}</ul></div>
@@ -3234,6 +3239,7 @@ function renderPresentation(){
     <p class="kicker">Kitchen · Delivery</p>
     <h1 class="disp">Presentation Styles</h1>
     <p class="lead">Three levels of delivery presentation. Clients choose one per order, and the kitchen packs to match. These are the exact cards clients see when ordering.</p>
+    ${ytEmbed('_Lhu9iKXAKk','Event Presentation')}
     ${tiers.map(t=>`
       <div class="titleblock" style="--tbcolor:${t.n==='Standard'?'var(--paper)':t.n==='Enhanced'?'var(--displayed)':'var(--charcoal)'};margin-top:18px"><span class="diamond" style="--dc:${t.n==='Elevated'?'var(--paper)':'var(--charcoal)'}"></span><span class="tbtext" style="${t.n==='Elevated'?'color:#fff;':''}font-size:17px">${t.n}${t.time?`<small style="${t.n==='Elevated'?'color:#e6e4df':''}">${t.time}</small>`:''}</span></div>
       <div class="attirehero" style="margin-top:0;border-top:none"><img src="${T}${t.img}" alt="${t.n} presentation" loading="lazy"></div>
