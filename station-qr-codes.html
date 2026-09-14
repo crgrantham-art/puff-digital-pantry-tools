@@ -24,9 +24,11 @@
   .card .nm{font-family:var(--serif);font-weight:800;font-size:15px;line-height:1.2;margin-bottom:3px;}
   .card .cat{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);}
   .card .lk{font-size:9px;color:#a8a29a;word-break:break-all;margin-top:6px;}
+  .dl{margin-top:9px;}
+  .dl button{border:1.5px solid var(--frame);background:#fff;color:var(--ink);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:6px 12px;cursor:pointer;}
   @media print{
     body{padding:0;background:#fff;}
-    .controls,.sub{display:none !important;}
+    .controls,.sub,.dl{display:none !important;}
     h1{margin:8px 12px;}
     .grid{grid-template-columns:repeat(3,1fr);gap:10px;padding:0 10px;max-width:none;}
     .card{border:1.5px solid #000;}
@@ -42,9 +44,10 @@
   <input id="base" type="text" value="https://crgrantham-art.github.io/puff-digital-pantry-tools/passion-to-perfection.html">
   <div class="btnrow">
     <button class="btn" onclick="build()">Regenerate codes</button>
-    <button class="btn alt" onclick="window.print()">Print</button>
+    <button class="btn alt" onclick="dlAll()">Download all (PNG)</button>
+    <button class="btn alt" onclick="window.print()">Print / Save as PDF</button>
   </div>
-  <div class="note">Each code opens that station directly. When the site moves to its final address, paste the new address above, click <b>Regenerate codes</b>, and reprint — no other changes needed. (For codes you want to print once and repoint later without reprinting, use a dynamic/editable QR service pointed at these same links.)</div>
+  <div class="note"><b>To use a code:</b> click <b>PNG</b> under any station to download that one code (drop it into a sign, tent card, or doc), or use <b>Print / Save as PDF</b> for the whole set on one sheet. When the site moves to its final address, paste the new address above, click <b>Regenerate codes</b>, and download again — nothing else changes.</div>
 </div>
 
 <div class="grid" id="grid"></div>
@@ -73,17 +76,35 @@ var STATIONS=[
   ["place-setting","Standard Place Setting","Place Settings"]
 ];
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function baseUrl(){return document.getElementById('base').value.trim().replace(/#.*$/,'');}
+function stationUrl(id){return baseUrl()+'#station/'+id;}
+function qrCanvas(url,size){
+  var qr=qrcode(0,'M'); qr.addData(url); qr.make();
+  var n=qr.getModuleCount(), margin=4, total=n+margin*2;
+  var cell=Math.max(2,Math.floor(size/total)), dim=cell*total;
+  var c=document.createElement('canvas'); c.width=dim; c.height=dim;
+  var ctx=c.getContext('2d'); ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,dim,dim); ctx.fillStyle='#171512';
+  for(var r=0;r<n;r++)for(var col=0;col<n;col++){ if(qr.isDark(r,col)) ctx.fillRect((col+margin)*cell,(r+margin)*cell,cell,cell); }
+  return c;
+}
+function dlPng(id){
+  var c=qrCanvas(stationUrl(id),720);
+  var a=document.createElement('a'); a.href=c.toDataURL('image/png'); a.download='qr-'+id+'.png';
+  document.body.appendChild(a); a.click(); a.remove();
+}
+function dlAll(){
+  STATIONS.forEach(function(s,i){ setTimeout(function(){ dlPng(s[0]); }, i*350); });
+}
 function build(){
-  var base=document.getElementById('base').value.trim().replace(/#.*$/,'');
   var grid=document.getElementById('grid');
   grid.innerHTML='';
   STATIONS.forEach(function(s){
-    var url=base+'#station/'+s[0];
+    var url=stationUrl(s[0]);
     var qr=qrcode(0,'M'); qr.addData(url); qr.make();
     var svg=qr.createSvgTag({cellSize:4,margin:2});
     var card=document.createElement('div');
     card.className='card';
-    card.innerHTML='<div class="qr">'+svg+'</div><div class="nm">'+esc(s[1])+'</div><div class="cat">'+esc(s[2])+'</div><div class="lk">'+esc(url)+'</div>';
+    card.innerHTML='<div class="qr">'+svg+'</div><div class="nm">'+esc(s[1])+'</div><div class="cat">'+esc(s[2])+'</div><div class="lk">'+esc(url)+'</div><div class="dl"><button onclick="dlPng(\''+s[0]+'\')">PNG</button></div>';
     grid.appendChild(card);
   });
 }
