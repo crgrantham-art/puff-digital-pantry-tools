@@ -1815,6 +1815,10 @@ homeLogo.onclick=goHome;
 homeLogo.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();goHome();}};
 function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
 function ytEmbed(id,label){return `<div class="vidwrap"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${label}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="vidcap">▶ ${label} · Puff 'n Stuff training</div>`;}
+/* ---------- Deep links: mirror current view to the URL so any page (incl. a station) is shareable / QR-able ---------- */
+function syncHash(cur){try{if(!cur||cur.view==='home'){if(location.hash)history.replaceState(null,'',location.pathname+location.search);}else{const h='#'+cur.view+(cur.arg!=null&&cur.arg!==''?'/'+encodeURIComponent(String(cur.arg)):'');if(location.hash!==h)history.replaceState(null,'',h);}}catch(e){}}
+function parseHash(){const raw=(location.hash||'').replace(/^#\/?/,'');if(!raw)return null;const i=raw.indexOf('/');let view,arg;try{view=decodeURIComponent(i<0?raw:raw.slice(0,i));arg=i<0?undefined:decodeURIComponent(raw.slice(i+1));}catch(e){return null;}return {view,arg};}
+function bootFromHash(){const h=parseHash();if(h&&h.view&&h.view!=='home'){stack=[{view:'home'},{view:h.view,arg:h.arg}];try{render();return;}catch(e){}}stack=[{view:'home'}];render();}
 
 function render(){
   const cur=stack[stack.length-1];
@@ -1823,6 +1827,7 @@ function render(){
   crumb.textContent=map[cur.view]||'';
   ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,presence:renderPresence,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:()=>renderPlaybook(cur.arg),pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:()=>renderCulPlaybook(cur.arg),culmod:()=>renderCulModule(cur.arg),leadership:()=>renderLeadership(cur.arg),leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg),bar:renderBarHub,postreport:()=>renderPostReport(cur.arg),leadbrief:()=>renderLeadershipBrief(cur.arg),labelmaker:renderLabelMaker,setupseq:renderSetupSeq})[cur.view]();
   if(cur.view==='home'){fillHomeFocus();fillHomeRec();}
+  syncHash(cur);
 }
 
 function lockup(){return `<div class="lockup"><img class="lklogo" alt="Passion to Perfection: The Puff 'n Stuff Standard" src="img/b55f1597ff.png"></div>`;}
@@ -3872,7 +3877,8 @@ function toggle(el){const box=el.querySelector('input');setTimeout(()=>{
 },0);}
 
 document.getElementById('viewas').innerHTML=Object.keys(DEPTS).map(k=>`<option value="${k}">${DEPTS[k].label}</option>`).join('');
-stack=[{view:'home'}];render();
+bootFromHash();
+window.addEventListener('hashchange',function(){const h=parseHash(),cur=stack[stack.length-1];if(h&&(h.view!==cur.view||String(h.arg||'')!==String(cur.arg||'')))bootFromHash();});
 </script>
 </body>
 </html>

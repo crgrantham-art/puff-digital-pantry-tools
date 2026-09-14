@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Puff 'n Stuff — Station QR Codes</title>
+<style>
+  :root{--ink:#171512;--paper:#f7f5ef;--frame:#171512;--muted:#8a857c;--sans:Arial,Helvetica,sans-serif;--serif:Georgia,'Times New Roman',serif;}
+  *{box-sizing:border-box;}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);padding:24px;}
+  h1{font-family:var(--serif);font-size:26px;font-weight:800;margin:0 0 4px;}
+  .sub{font-size:13px;color:var(--muted);margin-bottom:18px;}
+  .controls{border:2px solid var(--frame);background:#fff;padding:14px 16px;margin-bottom:22px;max-width:760px;}
+  .controls label{display:block;font-size:11px;font-weight:700;letter-spacing:.4px;text-transform:uppercase;color:var(--muted);margin-bottom:5px;}
+  .controls input{width:100%;padding:9px 11px;border:1.5px solid #cbc7bd;font-size:14px;font-family:var(--sans);}
+  .btnrow{display:flex;gap:10px;margin-top:12px;flex-wrap:wrap;}
+  .btn{border:2px solid var(--frame);background:var(--ink);color:#fff;padding:9px 18px;font-size:12px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;cursor:pointer;}
+  .btn.alt{background:#fff;color:var(--ink);}
+  .note{font-size:12px;color:#555;line-height:1.5;margin-top:11px;}
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(210px,1fr));gap:16px;max-width:1100px;}
+  .card{border:2px solid var(--frame);background:#fff;padding:14px 12px 12px;text-align:center;break-inside:avoid;}
+  .card .qr{width:150px;height:150px;margin:0 auto 8px;}
+  .card .qr svg,.card .qr img{width:150px;height:150px;display:block;}
+  .card .nm{font-family:var(--serif);font-weight:800;font-size:15px;line-height:1.2;margin-bottom:3px;}
+  .card .cat{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);}
+  .card .lk{font-size:9px;color:#a8a29a;word-break:break-all;margin-top:6px;}
+  @media print{
+    body{padding:0;background:#fff;}
+    .controls,.sub{display:none !important;}
+    h1{margin:8px 12px;}
+    .grid{grid-template-columns:repeat(3,1fr);gap:10px;padding:0 10px;max-width:none;}
+    .card{border:1.5px solid #000;}
+  }
+</style>
+</head>
+<body>
+<h1>Station QR Codes</h1>
+<div class="sub">Passion to Perfection · Digital Stations</div>
+
+<div class="controls">
+  <label for="base">Site address (the live Passion to Perfection page)</label>
+  <input id="base" type="text" value="https://crgrantham-art.github.io/puff-digital-pantry-tools/passion-to-perfection.html">
+  <div class="btnrow">
+    <button class="btn" onclick="build()">Regenerate codes</button>
+    <button class="btn alt" onclick="window.print()">Print</button>
+  </div>
+  <div class="note">Each code opens that station directly. When the site moves to its final address, paste the new address above, click <b>Regenerate codes</b>, and reprint — no other changes needed. (For codes you want to print once and repoint later without reprinting, use a dynamic/editable QR service pointed at these same links.)</div>
+</div>
+
+<div class="grid" id="grid"></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+var STATIONS=[
+  ["coffee-station","Coffee Station","Coffee"],
+  ["carved-turkey","Chef Carved Turkey Breast","Chef Action"],
+  ["carved-ham","Chef Carved Ham","Chef Action"],
+  ["carved-flank","Chef Carved Flank Steak","Chef Action"],
+  ["carved-chicken","Chef Carved Brick Chicken","Chef Action"],
+  ["hot-dog-bar","Hot Dog Bar","Displayed"],
+  ["omelet","Omelet Station","Chef Action"],
+  ["eggs-benedict","Eggs Benedict","Chef Action"],
+  ["sundae-bar","Sundae Bar","Chef Action"],
+  ["walking-cannoli","Walking Cannoli","Chef Action"],
+  ["byo-bowl","Build Your Own Bowl","Displayed"],
+  ["pasta-bowl","Pasta Bowl","Displayed"],
+  ["rice-krispy","Rice Krispy Bar","Displayed"],
+  ["sweet-savory","Sweet & Savory","Displayed"],
+  ["hot-mess-bar","Hot Mess Bar","Displayed"],
+  ["blazing-donuts-latin","Blazing Donuts – Latin Inspired","Chef Action"],
+  ["blazing-donuts-coffee","Blazing Donuts – Coffee","Chef Action"],
+  ["blazing-donuts-berries","Blazing Donuts – Berries & Cream","Chef Action"],
+  ["place-setting","Standard Place Setting","Place Settings"]
+];
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
+function build(){
+  var base=document.getElementById('base').value.trim().replace(/#.*$/,'');
+  var grid=document.getElementById('grid');
+  grid.innerHTML='';
+  STATIONS.forEach(function(s){
+    var url=base+'#station/'+s[0];
+    var qr=qrcode(0,'M'); qr.addData(url); qr.make();
+    var svg=qr.createSvgTag({cellSize:4,margin:2});
+    var card=document.createElement('div');
+    card.className='card';
+    card.innerHTML='<div class="qr">'+svg+'</div><div class="nm">'+esc(s[1])+'</div><div class="cat">'+esc(s[2])+'</div><div class="lk">'+esc(url)+'</div>';
+    grid.appendChild(card);
+  });
+}
+build();
+</script>
+</body>
+</html>
