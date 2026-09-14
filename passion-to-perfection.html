@@ -1710,6 +1710,10 @@ function carved(knife){return [
   ["2","Sets of (3) votive candles"],["1","Slim Jim with Cover"],["2","Garbage Bags"]
 ];}
 
+/* ADDING A STATION? Keep it in sync in THREE places:
+   1) this STATIONS array
+   2) STATION_BADGE below (its emoji, used on the badge AND the printed QR code)
+   3) the STATIONS list in station-qr-codes.html (the QR-code sheet) */
 const STATIONS = [
   { id:"coffee-station", cat:"coffee", name:"Coffee Station", status:["review","Needs Review"], concept:null, dynamic:true,
     equip:[
@@ -3721,6 +3725,7 @@ function streak(){const s=stLoad();if(!s.days)return 0;let n=0,d=new Date();
   for(;;){const k=d.toISOString().slice(0,10);if(s.days[k]){n++;d.setDate(d.getDate()-1);}else break;}
   return n;}
 /* ---- Setup badges (earned by completing a station's GUEST Ready check) ---- */
+/* One emoji per station id, shown on the earned badge and printed on the station's QR code. New station = add it here AND in station-qr-codes.html. */
 const STATION_BADGE={
   "coffee-station":"☕","carved-turkey":"🦃","carved-ham":"🍖","carved-flank":"🥩","carved-chicken":"🍗",
   "hot-dog-bar":"🌭","omelet":"🍳","eggs-benedict":"🥚","sundae-bar":"🍨","walking-cannoli":"🧁",

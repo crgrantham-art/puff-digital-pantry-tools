@@ -21,6 +21,7 @@
   .card{border:2px solid var(--frame);background:#fff;padding:14px 12px 12px;text-align:center;break-inside:avoid;}
   .card .qr{width:150px;height:150px;margin:0 auto 8px;}
   .card .qr svg,.card .qr img{width:150px;height:150px;display:block;}
+  .card .em{font-size:26px;line-height:1;margin:2px 0 3px;}
   .card .nm{font-family:var(--serif);font-weight:800;font-size:15px;line-height:1.2;margin-bottom:3px;}
   .card .cat{font-size:10px;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);}
   .card .lk{font-size:9px;color:#a8a29a;word-break:break-all;margin-top:6px;}
@@ -54,55 +55,60 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
 <script>
+/* [id, name, category, badge-emoji] — MUST match the STATIONS + STATION_BADGE lists in passion-to-perfection.html.
+   Adding a station in the app? Add the same row here (same id + emoji) so it gets a QR code. */
 var STATIONS=[
-  ["coffee-station","Coffee Station","Coffee"],
-  ["carved-turkey","Chef Carved Turkey Breast","Chef Action"],
-  ["carved-ham","Chef Carved Ham","Chef Action"],
-  ["carved-flank","Chef Carved Flank Steak","Chef Action"],
-  ["carved-chicken","Chef Carved Brick Chicken","Chef Action"],
-  ["hot-dog-bar","Hot Dog Bar","Displayed"],
-  ["omelet","Omelet Station","Chef Action"],
-  ["eggs-benedict","Eggs Benedict","Chef Action"],
-  ["sundae-bar","Sundae Bar","Chef Action"],
-  ["walking-cannoli","Walking Cannoli","Chef Action"],
-  ["byo-bowl","Build Your Own Bowl","Displayed"],
-  ["pasta-bowl","Pasta Bowl","Displayed"],
-  ["rice-krispy","Rice Krispy Bar","Displayed"],
-  ["sweet-savory","Sweet & Savory","Displayed"],
-  ["hot-mess-bar","Hot Mess Bar","Displayed"],
-  ["blazing-donuts-latin","Blazing Donuts – Latin Inspired","Chef Action"],
-  ["blazing-donuts-coffee","Blazing Donuts – Coffee","Chef Action"],
-  ["blazing-donuts-berries","Blazing Donuts – Berries & Cream","Chef Action"],
-  ["place-setting","Standard Place Setting","Place Settings"]
+  ["coffee-station","Coffee Station","Coffee","☕"],
+  ["carved-turkey","Chef Carved Turkey Breast","Chef Action","🦃"],
+  ["carved-ham","Chef Carved Ham","Chef Action","🍖"],
+  ["carved-flank","Chef Carved Flank Steak","Chef Action","🥩"],
+  ["carved-chicken","Chef Carved Brick Chicken","Chef Action","🍗"],
+  ["hot-dog-bar","Hot Dog Bar","Displayed","🌭"],
+  ["omelet","Omelet Station","Chef Action","🍳"],
+  ["eggs-benedict","Eggs Benedict","Chef Action","🥚"],
+  ["sundae-bar","Sundae Bar","Chef Action","🍨"],
+  ["walking-cannoli","Walking Cannoli","Chef Action","🧁"],
+  ["byo-bowl","Build Your Own Bowl","Displayed","🥣"],
+  ["pasta-bowl","Pasta Bowl","Displayed","🍝"],
+  ["rice-krispy","Rice Krispy Bar","Displayed","🍡"],
+  ["sweet-savory","Sweet & Savory","Displayed","🍫"],
+  ["hot-mess-bar","Hot Mess Bar","Displayed","🫕"],
+  ["blazing-donuts-latin","Blazing Donuts – Latin Inspired","Chef Action","🍩"],
+  ["blazing-donuts-coffee","Blazing Donuts – Coffee","Chef Action","🔥"],
+  ["blazing-donuts-berries","Blazing Donuts – Berries & Cream","Chef Action","🍓"],
+  ["place-setting","Standard Place Setting","Place Settings","🍽️"]
 ];
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function baseUrl(){return document.getElementById('base').value.trim().replace(/#.*$/,'');}
 function stationUrl(id){return baseUrl()+'#station/'+id;}
 function findStation(id){for(var i=0;i<STATIONS.length;i++){if(STATIONS[i][0]===id)return STATIONS[i];}return null;}
-function qrPngCanvas(url,label,size){
+function qrPngCanvas(url,label,emoji,size){
   var qr=qrcode(0,'M'); qr.addData(url); qr.make();
   var n=qr.getModuleCount(), margin=4, total=n+margin*2;
   var cell=Math.max(2,Math.floor(size/total)), dim=cell*total;
-  var pad=Math.round(dim*0.06), fontSize=Math.round(dim*0.075), lineH=Math.round(fontSize*1.25);
+  var pad=Math.round(dim*0.05), emSize=Math.round(dim*0.15), fontSize=Math.round(dim*0.072), lineH=Math.round(fontSize*1.25);
   var tmp=document.createElement('canvas').getContext('2d');
   tmp.font='bold '+fontSize+'px Georgia, serif';
   var words=String(label).split(' '), lines=[], line='', maxW=dim-pad*2;
   words.forEach(function(w){ var t=line?line+' '+w:w; if(tmp.measureText(t).width>maxW && line){ lines.push(line); line=w; } else { line=t; } });
   if(line)lines.push(line);
-  var labelH=pad + lines.length*lineH + pad;
+  var emH=emoji?(emSize+Math.round(pad*0.6)):0;
+  var labelH=pad + emH + lines.length*lineH + pad;
   var c=document.createElement('canvas'); c.width=dim; c.height=dim+labelH;
   var ctx=c.getContext('2d');
   ctx.fillStyle='#ffffff'; ctx.fillRect(0,0,c.width,c.height);
   ctx.fillStyle='#171512';
   for(var r=0;r<n;r++)for(var col=0;col<n;col++){ if(qr.isDark(r,col)) ctx.fillRect((col+margin)*cell,(r+margin)*cell,cell,cell); }
-  ctx.fillStyle='#171512'; ctx.font='bold '+fontSize+'px Georgia, serif'; ctx.textAlign='center'; ctx.textBaseline='top';
+  ctx.textAlign='center'; ctx.textBaseline='top';
   var y=dim+pad;
+  if(emoji){ ctx.font=emSize+'px "Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif'; ctx.fillText(emoji,dim/2,y); y+=emH; }
+  ctx.fillStyle='#171512'; ctx.font='bold '+fontSize+'px Georgia, serif';
   lines.forEach(function(ln){ ctx.fillText(ln,dim/2,y); y+=lineH; });
   return c;
 }
 function dlPng(id){
   var s=findStation(id); if(!s)return;
-  var c=qrPngCanvas(stationUrl(id),s[1],720);
+  var c=qrPngCanvas(stationUrl(id),s[1],s[3]||'',720);
   var fname=s[1].replace(/[^A-Za-z0-9]+/g,'-').replace(/^-+|-+$/g,'')+'-QR.png';
   var a=document.createElement('a'); a.href=c.toDataURL('image/png'); a.download=fname;
   document.body.appendChild(a); a.click(); a.remove();
@@ -119,7 +125,7 @@ function build(){
     var svg=qr.createSvgTag({cellSize:4,margin:2});
     var card=document.createElement('div');
     card.className='card';
-    card.innerHTML='<div class="qr">'+svg+'</div><div class="nm">'+esc(s[1])+'</div><div class="cat">'+esc(s[2])+'</div><div class="lk">'+esc(url)+'</div><div class="dl"><button onclick="dlPng(\''+s[0]+'\')">PNG</button></div>';
+    card.innerHTML='<div class="qr">'+svg+'</div><div class="em">'+(s[3]||'')+'</div><div class="nm">'+esc(s[1])+'</div><div class="cat">'+esc(s[2])+'</div><div class="lk">'+esc(url)+'</div><div class="dl"><button onclick="dlPng(\''+s[0]+'\')">PNG</button></div>';
     grid.appendChild(card);
   });
 }
