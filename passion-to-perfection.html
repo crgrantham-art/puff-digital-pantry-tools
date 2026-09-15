@@ -2480,20 +2480,27 @@ function lessonInner(pb,mi,ti,opts2){
     <div class="quiz"><div class="qk">Knowledge Check ${qbadge}</div><div class="qq">${Q.q}</div><div class="qopts">${opts}</div><div class="qfb" style="display:none"></div></div>`;
 }
 /* Stacked lessons for one module (each topic gets its own titleblock header) */
-function pbLessonsHTML(pb,mi){
-  const m=pb[mi];
+function pbLessonsHTML(pb,mi,col){
+  const m=pb[mi]; const c=col||['--displayed','#141310'];
   return m.topics.map((t,ti)=>({t,ti})).filter(x=>LESSONS[x.t]).map(({t,ti})=>`
-    <div class="titleblock" style="--tbcolor:var(--displayed);margin-top:22px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext">${t}</span></div>
+    <div class="titleblock" style="--tbcolor:var(${c[0]});margin-top:22px"><span class="diamond" style="--dc:var(--paper)"></span><span class="tbtext" style="color:${c[1]}">${t}</span></div>
     ${lessonInner(pb,mi,ti)}`).join('');
 }
 function moduleHasContent(pb,i){return pb[i].topics.some(t=>LESSONS[t]);}
 /* Generic SEC-style tabbed playbook: modules = tabs, lessons stacked inside */
+/* Per-module colors: each module (tab) gets its own brand color. The active
+   tab fills with it and the lesson section banners match. [bg-var, text-color] */
+const PB_PALETTE=[['--bar','#fff'],['--beverage','#fff'],['--displayed','#141310'],['--chef','#fff'],['--dessert','#141310'],['--coffee','#141310'],['--buffet','#fff']];
 function pbTabbed(o){
   const pb=o.pb;
   const idxs=pb.map((m,i)=>i).filter(i=>!(o.exclude||[]).includes(i)&&moduleHasContent(pb,i));
   let mi=parseInt(o.arg,10); if(!idxs.includes(mi)) mi=idxs[0];
   const m=pb[mi];
-  const tabs=idxs.map(i=>`<button class="bgtab${i===mi?' on':''}" onclick="go('${o.route}',${i})">${pb[i].m} · ${pb[i].title}</button>`).join('');
+  const colOf=pos=>PB_PALETTE[pos%PB_PALETTE.length];
+  const activePos=idxs.indexOf(mi), active=colOf(activePos);
+  const tabs=idxs.map((i,pos)=>{const p=colOf(pos),on=i===mi;
+    const st=on?`background:var(${p[0]});border-color:var(${p[0]});color:${p[1]}`:`border-color:var(${p[0]})`;
+    return `<button class="bgtab${on?' on':''}" style="${st}" onclick="go('${o.route}',${i})">${pb[i].m} · ${pb[i].title}</button>`;}).join('');
   const modref=o.modref?o.modref(m):'';
   screen.innerHTML=`
     <p class="kicker">${o.kicker}</p>
@@ -2501,7 +2508,7 @@ function pbTabbed(o){
     <p class="lead">${o.lead}</p>
     <div class="bgtabs" style="flex-wrap:wrap;gap:5px">${tabs}</div>
     ${modref}
-    ${pbLessonsHTML(pb,mi)}
+    ${pbLessonsHTML(pb,mi,active)}
     ${o.foot||''}
     <div class="rule">Dedication ~ Quality ~ Creativity</div>`;
   window.scrollTo(0,0);
