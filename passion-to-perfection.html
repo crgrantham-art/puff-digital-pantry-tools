@@ -3795,6 +3795,9 @@ const DAILY_POINTERS=[
   ["Menu order = buffet order","The SEO item sequence is the buffet sequence, every time."]
 ];
 function milestoneHTML(){
+  /* V1: no hire-date/anniversary data (no accounts, not self-entered), so the
+     milestone shout-out is off. Code kept for when real tenure data exists. */
+  return '';
   const s=stLoad();if(!s.name)return '';
   return `<div class="milecard"><span class="mie">🎉</span><div class="miletext"><div class="mit">Happy 1 year with Puff, ${s.name}!</div><div class="mis">Thanks for a year of making events unforgettable.</div></div><span class="milesample">sample</span></div>`;
 }
