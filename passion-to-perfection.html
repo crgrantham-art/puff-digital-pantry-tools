@@ -689,7 +689,6 @@
 <body>
 <div class="frame"><span class="corner c-tl"><i></i></span><span class="corner c-tr"><i></i></span><span class="corner c-bl"><i></i></span><span class="corner c-br"><i></i></span></div>
 <div class="phone">
-  <div class="viewbar"><span>Preview as</span><select id="viewas" onchange="setViewAs(this.value)"></select><span class="vbnote">demo only: the real app scopes to each person's login</span></div>
   <div class="topbar">
     <button class="back" id="backBtn" aria-label="Back">‹</button>
     <img class="wmimg" alt="Passion to Perfection. Home" src="img/b55f1597ff.png" id="homeLogo" role="button" tabindex="0" aria-label="Home">
@@ -1857,7 +1856,7 @@ function renderHome(){
     <div class="daily" id="dailyptr">${dailyPointerHTML(null)}</div>
     ${(()=>{if(!GLOSSARY.length)return '';const G=GLOSSARY[Math.floor(Math.random()*GLOSSARY.length)];
       return `<div class="daily"><div class="dk">Puff lingo</div><div class="dn">${G[0]}</div><div class="dv dvhide" id="ghide">${G[1]}</div><div style="margin-top:8px;display:flex;gap:7px"><button class="relchip" onclick="document.getElementById('ghide').classList.add('show');this.style.display='none'">See what it means</button><button class="relchip" onclick="go('glossary')">Glossary ›</button></div></div>`;})()}
-    <div style="text-align:center;margin-top:16px"><a href="#" onclick="openAdmin();return false;" style="font-family:var(--sans);font-size:12px;font-weight:700;letter-spacing:.5px;color:var(--muted);border:1.5px solid var(--hair);padding:8px 15px;text-decoration:none;display:inline-block">⚙ Admin dashboard →</a></div>
+    <div style="text-align:center;margin-top:18px"><span onclick="openAdmin();return false;" title="Leadership" style="cursor:pointer;font-size:13px;color:var(--hair);opacity:.5;padding:6px 10px;display:inline-block;user-select:none">⚙</span></div>
     <div class="logoblock"><img class="pflogo" alt="Puff 'n Stuff. Events | Catering" src="img/df30ebd195.png"></div>
   `;
 }
@@ -3610,7 +3609,7 @@ const LEADERSHIP_BRIEF={
   months:[
     { key:"august", name:"August", theme:"Building Trust", philosophy:"Great Events Happen When Great Teams Trust One Another.",
       seasonalTheme:"Sun, Sand, &amp; Celebrations",
-      companyFocus:["Q4 Hiring Underway","Implementation of Scheduling Efficiency","Employee Reviews","Francis has joined our team as Vice President of Experience, Culinary &amp; Operations","4th Quarter Inquiries at all time high","Intro to Passion to Perfection","Team Hub Preview","Training Cards","P2P Focus Moments"],
+      companyFocus:["Q4 Hiring Underway","Implementation of Scheduling Efficiency","Employee Reviews","Francis has joined our team as Vice President of Experience, Culinary &amp; Operations","4th Quarter Inquiries at all time high","Intro to Passion to Perfection","Team Hub","Training Cards","P2P Focus Moments"],
       weeks:[
         {n:1,stage:"Inspire",title:"Trust Your Team",letsTalk:"What does TRUST look like on your team?",challenge:"Ask one team member “How can I help you succeed today?”",recognition:"Recognize someone who supported another Department, without being asked.",hero:"Guests feel teamwork even if they never see it.",safety:"Safe teams communicate before acting."},
         {n:2,stage:"Develop",title:"The Power of Communication",letsTalk:"How has a communication breakdown affected an event?",challenge:"Lead Event Chef reviews menu with Executive Chef before departure.",recognition:"Recognize someone who has shown exceptional communication.",hero:"Confidence grows when information is shared.",safety:"Review loading and departure communication."},
@@ -3855,7 +3854,27 @@ function fillHomeFocus(){
 }
 
 
+/* ── Admin access ──────────────────────────────────────────────────────
+   This is a public web page, so this PIN is a deterrent that keeps ordinary
+   staff out of the leadership dashboard. It is NOT real security (a technical
+   person can read it in the page source). To change the code, edit ADMIN_PIN
+   below. Once someone enters it correctly, it is remembered on that device
+   until they close the browser tab. */
+const ADMIN_PIN='2001';
 function openAdmin(){
+  if(sessionStorage.getItem('padm')!=='ok'){
+    const tries=(+sessionStorage.getItem('padmtries')||0);
+    if(tries>=5){alert('Too many attempts. Close and reopen the page to try again.');return;}
+    const entry=prompt('Leadership access code:');
+    if(entry===null)return;
+    if(entry.trim()!==ADMIN_PIN){
+      sessionStorage.setItem('padmtries',tries+1);
+      alert('That code is not correct.');
+      return;
+    }
+    sessionStorage.setItem('padm','ok');
+    sessionStorage.removeItem('padmtries');
+  }
   let ov=document.getElementById('adminov');
   if(!ov){
     ov=document.createElement('div');ov.id='adminov';
@@ -3881,7 +3900,6 @@ function toggle(el){const box=el.querySelector('input');setTimeout(()=>{
   }
 },0);}
 
-document.getElementById('viewas').innerHTML=Object.keys(DEPTS).map(k=>`<option value="${k}">${DEPTS[k].label}</option>`).join('');
 bootFromHash();
 window.addEventListener('hashchange',function(){const h=parseHash(),cur=stack[stack.length-1];if(h&&(h.view!==cur.view||String(h.arg||'')!==String(cur.arg||'')))bootFromHash();});
 </script>
