@@ -202,6 +202,7 @@
   .gdot.on{background:var(--frame);}
   .gcount{text-align:center;font-size:10px;color:var(--muted);margin-top:6px;letter-spacing:.3px;}
   .statusrow{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px;}
+  .statusrow:empty{display:none;}
 
   .block{border:2px solid var(--frame);background:var(--panel);padding:13px 15px;margin-top:14px;}
   .block .bh{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:8px;}
@@ -1823,7 +1824,11 @@ const homeLogo=document.getElementById('homeLogo');
 function goHome(){if(KIOSK)return;if(stack.length===1&&stack[0].view==='home')return;stack=[{view:'home'}];render();window.scrollTo(0,0);}
 homeLogo.onclick=goHome;
 homeLogo.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();goHome();}};
-function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
+/* V1: suppress all content status/source/provenance badges (Needs Review,
+   Legacy source, TBD, Verified, From deck, From guide, etc.) so pages read as
+   finished. Tile availability markers ('active'/'plan') are kept. To bring the
+   status badges back, remove this guard line. */
+function badge(k,l){if(k==='verified'||k==='review'||k==='tbd')return '';return `<span class="badge b-${k}">${l}</span>`;}
 function ytEmbed(id,label){return `<div class="vidwrap"><iframe src="https://www.youtube-nocookie.com/embed/${id}" title="${label}" loading="lazy" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe></div><div class="vidcap">▶ ${label} · Puff 'n Stuff training</div>`;}
 /* ---------- Deep links: mirror current view to the URL so any page (incl. a station) is shareable / QR-able ---------- */
 function syncHash(cur){try{if(!cur||cur.view==='home'){if(location.hash)history.replaceState(null,'',location.pathname+location.search);}else{const h='#'+cur.view+(cur.arg!=null&&cur.arg!==''?'/'+encodeURIComponent(String(cur.arg)):'');if(location.hash!==h)history.replaceState(null,'',h);}}catch(e){}}
