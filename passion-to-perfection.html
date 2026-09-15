@@ -1809,7 +1809,14 @@ const screen=document.getElementById('screen');
 const backBtn=document.getElementById('backBtn');
 const crumb=document.getElementById('crumb');
 let stack=[];let KIOSK=false;
-function go(view,arg){if(KIOSK&&view!=='station')return;stack.push({view,arg});render();window.scrollTo(0,0);}
+/* ── V1 SCOPE ───────────────────────────────────────────────────────────
+   V1 launches with only: Know the Standard (all of it), Build ▸ Service,
+   Build ▸ Bar & Beverage, plus station badges + Puff lingo on home.
+   Everything below stays in the code (nothing deleted) but is hidden from
+   navigation, deep links and search. To launch a piece later, just remove
+   its view id from this set. */
+const V1_HIDE=new Set(['elevate','deliver','role','kitchen','packaging','lookbook','presentation','warehouse','linensop','driverguide','salesmkt','brandguide','salesops','quotecalc','manuals','leadbrief']);
+function go(view,arg){if(KIOSK&&view!=='station')return;if(V1_HIDE.has(view))return;stack.push({view,arg});render();window.scrollTo(0,0);}
 function back(){if(KIOSK)return;if(stack.length>1){stack.pop();render();window.scrollTo(0,0);}}
 backBtn.onclick=back;
 const homeLogo=document.getElementById('homeLogo');
@@ -1824,12 +1831,12 @@ function parseHash(){const raw=(location.hash||'').replace(/^#\/?/,'');if(!raw)r
 function bootFromHash(){const h=parseHash();if(h&&h.view&&h.view!=='home'){stack=[{view:'home'},{view:h.view,arg:h.arg}];try{render();return;}catch(e){}}stack=[{view:'home'}];render();}
 
 function render(){
-  const cur=stack[stack.length-1];
+  let cur=stack[stack.length-1];
+  if(V1_HIDE.has(cur.view)){stack=[{view:'home'}];cur=stack[0];}
   backBtn.classList.toggle('show',stack.length>1);
   const map={home:'',build:'Build',service:'Build · Service',station:'Service · Standard',stations:'Service · Standards',cards:'Service · Jeopardy',know:'Know',guest:'Know · GUEST Ready',presence:'Know · Presence &amp; Presentation',philosophy:'Know · Philosophy',values:'Know · Core Values',elevate:'Elevate',playbook:'Build · Playbook',pbmodule:'Build · Playbook',pblesson:'Build · Playbook',deliver:'Deliver',role:'Deliver · Checklist',glossary:'Know · Glossary',manuals:'Reference · Manuals',attire:'Know · Attire',warehouse:'Build · Warehouse',linensop:'Warehouse · Linen SOP',salesmkt:'Build · Sales &amp; Mktg',brandguide:'Sales · Brand Guide',salesops:'Sales · SEC Operations',communication:'Know · Communication',driverguide:'Warehouse · Driver Guide',kitchen:'Build · Kitchen',packaging:'Kitchen · Delivery',lookbook:'Kitchen · Delivery',presentation:'Kitchen · Delivery',culpb:'Service · Culinary',culmod:'Culinary Playbook',leadership:'Service · Event Supervisor',leadmod:'Event Supervisor',badges:'Deliver · Badges',barglass:'Bar · Glassware Setup',quotecalc:'Sales · Quote Calculator',barcalc:'Bar · Program Calculator',barlist:'Bar · Setup Checklist',bar:'Build · Bar &amp; Beverage',postreport:'Tools · Post-Event Report',leadbrief:'Elevate · Leadership Brief',labelmaker:'Service · Label Maker',setupseq:'Service · Setup Sequence'};
   crumb.textContent=map[cur.view]||'';
   ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,presence:renderPresence,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:()=>renderPlaybook(cur.arg),pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:()=>renderCulPlaybook(cur.arg),culmod:()=>renderCulModule(cur.arg),leadership:()=>renderLeadership(cur.arg),leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg),bar:renderBarHub,postreport:()=>renderPostReport(cur.arg),leadbrief:()=>renderLeadershipBrief(cur.arg),labelmaker:renderLabelMaker,setupseq:renderSetupSeq})[cur.view]();
-  if(cur.view==='home'){fillHomeFocus();fillHomeRec();}
   if(KIOSK)screen.insertAdjacentHTML('beforeend',kioskFooterHTML());
   syncHash(cur);
 }
@@ -1846,13 +1853,9 @@ function renderHome(){
     <p class="lead">Your field guide to the Puff 'n Stuff standard.</p>
     ${momentumHTML()}
     ${nextBadgeHTML()}
-    <div id="homerec"></div>
-    <div id="homefocus"></div>
     <div class="arc">
       <div class="node active" style="--nc:var(--beverage)" onclick="go('know')"><div class="num">I</div><div><div class="nt">Know the Standard</div><div class="ns">Philosophy · Core Values · GUEST Ready · Presence &amp; Presentation</div></div><span class="go">›</span></div>
-      <div class="node active" style="--nc:var(--chef)" onclick="go('build')"><div class="num">II</div><div><div class="nt">Build the Skill</div><div class="ns">Choose your craft · Playbooks, guides &amp; standards</div></div><span class="go">›</span></div>
-      <div class="node active" style="--nc:var(--displayed)" onclick="go('elevate')"><div class="num">III</div><div><div class="nt">Elevate the Experience</div><div class="ns">Weekly Focus · Recognition Feed · Perfecting Pointers</div></div><span class="go">›</span></div>
-      <div class="node active" style="--nc:var(--bar)" onclick="go('deliver')"><div class="num">IV</div><div><div class="nt">Deliver Perfection</div><div class="ns">Training Checklists · Progress · Setup Badges</div></div><span class="go">›</span></div>
+      <div class="node active" style="--nc:var(--chef)" onclick="go('build')"><div class="num">II</div><div><div class="nt">Build the Skill</div><div class="ns">Service &amp; Bar &amp; Beverage · Playbooks, guides &amp; standards</div></div><span class="go">›</span></div>
     </div>
     <div class="daily" id="dailyptr">${dailyPointerHTML(null)}</div>
     ${(()=>{if(!GLOSSARY.length)return '';const G=GLOSSARY[Math.floor(Math.random()*GLOSSARY.length)];
@@ -1869,7 +1872,7 @@ function renderBuild(){
     ["Kitchen","Culinary standards &amp; packaging","kitchen","kitchen","var(--displayed)"],
     ["Warehouse","Linen, laundry &amp; equipment","warehouse","warehouse","var(--coffee)"],
     ["Sales / Marketing","Brand &amp; client standards","salesmkt","salesmkt","var(--bar)"]
-  ];
+  ].filter(c=>!V1_HIDE.has(c[2]));
   const lead=VIEWAS==='exec'?`Pick your department to reach its standards.`:`Showing standards for <b>${DEPTS[VIEWAS].label}</b>. Other departments are locked to your role.`;
   screen.innerHTML=`
     <p class="kicker">Build the Skill</p>
@@ -1949,7 +1952,7 @@ function renderService(){
     <div class="grid" style="margin-top:12px">${tools.map(tile).join('')}</div>
     <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Training &amp; Reference</span></div>
     <div class="grid" style="margin-top:12px">${resources.map(tile).join('')}</div>
-    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('service')">Service ›</button> <button class="relchip" onclick="openManual('bartender')">Bartender ›</button> <button class="relchip" onclick="openManual('culinary')">Culinary ›</button> <button class="relchip" onclick="openManual('leadculinary')">Lead Culinary ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
+    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('service')">Service ›</button> <button class="relchip" onclick="openManual('bartender')">Bartender ›</button> <button class="relchip" onclick="openManual('culinary')">Culinary ›</button> <button class="relchip" onclick="openManual('leadculinary')">Lead Culinary ›</button></div>`;
 }
 function renderStations(){
   // Coffee/beverage/bar standards live in the Bar & Beverage section, not the general library.
@@ -2232,7 +2235,7 @@ function runSearch(q){
   const el=document.getElementById('srchres');
   if(!q){el.innerHTML='<div class="srchhint">Search any station, lesson, guide, or glossary term.<br>Try “coffee”, “tray”, “allergen”, “breakdown”, or “AIS”.</div>';SRES=[];return;}
   const scored=[];
-  idx.forEach(e=>{const t=e.t.toLowerCase(),s=e.s.toLowerCase();let r=-1;
+  idx.forEach(e=>{if(V1_HIDE.has(e.v))return;const t=e.t.toLowerCase(),s=e.s.toLowerCase();let r=-1;
     if(t.startsWith(q))r=0;else if(t.includes(q))r=1;else if(s.includes(q))r=2;
     if(r>=0)scored.push([r,e]);});
   scored.sort((a,b)=>a[0]-b[0]||a[1].t.localeCompare(b[1].t));
@@ -2819,7 +2822,7 @@ function renderLeadership(arg){
     lead:'Event Supervisors are senior service staff. The SET Event Supervisor manual, by module. Leading the team, pre-shift, execution, and emergencies.',
     modref:m=>`<div class="modref"><div class="modrefh">Manual reference</div><div class="modrefn">Maps to Event Supervisor Manual · Module ${m.m}</div><div class="grel"><button class="relchip" onclick="openManual('supervisor')">Event Supervisor manual ›</button></div></div>`,
     foot:`<div class="note-inline">Setting up the room? <button class="relchip" onclick="go('setupseq')">Supervisor Setup Sequence ›</button> Missing a printed label on-site? <button class="relchip" onclick="go('labelmaker')">On-Site Label Maker ›</button></div>
-    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('supervisor')">Event Supervisor ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`
+    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('supervisor')">Event Supervisor ›</button></div>`
   });
 }
 function renderLeadModule(mi){
@@ -3226,7 +3229,7 @@ function renderKitchen(){
     <div class="grid" style="margin-top:12px">${delivery.map(tile).join('')}</div>
     <div class="titleblock" style="--tbcolor:var(--paper);margin-top:22px;border-width:2px"><span class="tbtext" style="font-size:16px">Culinary Standards</span></div>
     <div class="grid" style="margin-top:12px">${culinary.map(tile).join('')}</div>
-    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('culinary')">Culinary ›</button> <button class="relchip" onclick="go('manuals')">All manuals ›</button></div>`;
+    <div class="note-inline">Reference manual: <button class="relchip" onclick="openManual('culinary')">Culinary ›</button></div>`;
 }
 function renderPresentation(){
   const T="https://cdn.shopify.com/s/files/1/0754/7984/3015/files/";
@@ -3808,17 +3811,13 @@ function momentumHTML(){
   let top=null,topPct=-1,cert=0;
   ROLE_ORDER.forEach(k=>{const p=pctRole(k);if(p>=100)cert++;if(p>0&&p<100&&p>topPct){topPct=p;top=k;}});
   const chips=[];
-  if(st>=2)chips.push('🔥 '+st+'-day streak');
-  const bc=badgeCount();if(bc)chips.push('🏅 '+bc+'/'+STATIONS.length+' station badges');
-  if(cert)chips.push('🎓 '+cert+' certification'+(cert>1?'s':''));
-  if(s.quiz)chips.push('✓ '+s.quiz+' quiz wins');
-  const chipsHTML=chips.length?`<div class="momo">${chips.map(c=>`<span class="mchip">${c}</span>`).join('')}</div>`:'';
-  let card;
-  if(top){const r=TRAINING[top],left=r.n-progFor(top,r.n),close=left<=3;
-    card=`<div class="prog${close?' nudge':''}" onclick="go('role','${top}')">${ringSVG(topPct,close?'var(--bar)':'var(--displayed)')}<div class="progtext"><div class="pk">${close?'So close! 👀':'Your progress'}</div><div class="pn">${close?`${left} task${left>1?'s':''} from ${roleName(top)} certified`:`${topPct}% through ${roleName(top)} training`}</div><div class="ps">${close?'Finish it now →':`${left} tasks to certified · Continue →`}</div></div></div>`;
-  }else if(cert){card=`<div class="prog" onclick="go('deliver')">${ringSVG(100,'var(--displayed)')}<div class="progtext"><div class="pk">Your progress</div><div class="pn">${cert} role${cert>1?'s':''} certified 🎓</div><div class="ps">Train another role · Deliver →</div></div></div>`;
-  }else{card=`<div class="prog start" onclick="go('deliver')">${ringSVG(0,'var(--muted)')}<div class="progtext"><div class="pk">Your progress</div><div class="pn">Start your training</div><div class="ps">Pick your role in Deliver →</div></div></div>`;}
-  return card+chipsHTML;
+  if(st>=2)chips.push('<span class="mchip">🔥 '+st+'-day streak</span>');
+  const bc=badgeCount();chips.push('<span class="mchip" role="button" tabindex="0" title="See your station badges" style="cursor:pointer" onclick="go(\'badges\')" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();go(\'badges\')}">🏅 '+bc+'/'+STATIONS.length+' station badges ›</span>');
+  if(s.quiz)chips.push('<span class="mchip">✓ '+s.quiz+' quiz wins</span>');
+  const chipsHTML=chips.length?`<div class="momo">${chips.join('')}</div>`:'';
+  /* V1: the role-training progress ring links into the hidden Deliver section,
+     so home shows only the badge/quiz/streak chips. (Ring code kept for later.) */
+  return chipsHTML;
 }
 /* Personal "up next" nudge: the next station badge to earn (rotates daily). */
 function nextBadgeHTML(){
