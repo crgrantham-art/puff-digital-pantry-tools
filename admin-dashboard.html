@@ -157,6 +157,7 @@
     <span class="adm">Admin</span>
   </div>
   <div class="main">
+    <div style="display:none" data-v1-hidden="team-training">
     <h1>Team Training</h1>
     <div class="sub">Add team members, approve role requests, and track certification progress. People can certify in more than one role.</div>
     <div class="stats" id="stats"></div>
@@ -209,6 +210,8 @@
       <div id="rows"></div>
     </div>
 
+    </div><!-- /v1-hidden: team-training -->
+    <div style="display:none" data-v1-hidden="elevate">
     <h1 style="margin-top:36px">Elevate</h1>
     <div class="sub">Publish the weekly focus and post or approve team recognition — this powers the Elevate feed in the app.</div>
 
@@ -248,8 +251,9 @@
       <div id="milelist"></div>
     </div>
 
+    </div><!-- /v1-hidden: elevate -->
     <h1 style="margin-top:36px">Content</h1>
-    <div class="sub">Manage station photography and see exactly what content is still missing across the app.</div>
+    <div class="sub">Manage station photography.</div>
 
     <div class="card">
       <h2>Station Photos</h2>
@@ -261,7 +265,7 @@
       <div class="phgrid" id="phgrid"></div>
     </div>
 
-    <div class="card">
+    <div class="card" style="display:none" data-v1-hidden="content-status">
       <h2>Content status <span class="cnt" id="cbpct"></span></h2>
       <div class="csvhint">What each station still needs before it's fully complete in the app. ✓ = live now.</div>
       <div id="cboard"></div>
@@ -274,6 +278,7 @@
       <div style="margin-top:10px"><a href="station-qr-codes.html" target="_blank" rel="noopener">Open full screen ↗</a></div>
     </div>
 
+    <div style="display:none" data-v1-hidden="administration">
     <h1 style="margin-top:36px">Administration</h1>
     <div class="sub">Who can manage this dashboard, and a record of every change.</div>
 
@@ -293,6 +298,7 @@
       <h2>Activity log</h2>
       <div id="audit"></div>
     </div>
+    </div><!-- /v1-hidden: administration -->
   </div>
   <div class="rule">Dedication ~ Quality ~ Creativity</div>
 </div>
@@ -397,9 +403,9 @@ function renderByRole(){
 }
 function csvCell(s){s=String(s);return /[",\n]/.test(s)?'"'+s.replace(/"/g,'""')+'"':s;}
 function exportReport(){
-  const hdr=['Name','Email','Location','Role','Tasks Complete','Total Tasks','Progress %','Certified','Quiz Correct','Quiz Taken','Last Active','Account'];
+  const hdr=['Name','Email','Location','Role','Tasks Complete','Total Tasks','Progress %','Certified','Last Active','Account'];
   const lines=[hdr.join(',')];
-  USERS.forEach(u=>u.roles.forEach(ro=>{lines.push([csvCell(u.name),csvCell(u.email),u.loc,csvCell(RLABEL[ro.r]),ro.done,total(ro.r),pctOf(ro),certOf(ro)?'Yes':'No',u.quiz[0],u.quiz[1],csvCell(lastText(u)),u.active===false?'Deactivated':'Active'].join(','));}));
+  USERS.forEach(u=>u.roles.forEach(ro=>{lines.push([csvCell(u.name),csvCell(u.email),u.loc,csvCell(RLABEL[ro.r]),ro.done,total(ro.r),pctOf(ro),certOf(ro)?'Yes':'No',csvCell(lastText(u)),u.active===false?'Deactivated':'Active'].join(','));}));
   const url=URL.createObjectURL(new Blob([lines.join('\n')],{type:'text/csv'}));
   const a=document.createElement('a');a.href=url;a.download='p2p-training-report-'+new Date().toISOString().slice(0,10)+'.csv';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),4000);
   log('Exported training report (CSV)');
@@ -452,13 +458,11 @@ function openD(i){
       <div class="dsecs">${secs}</div></div>`;
   }).join('');
   const reqs=PENDING.map((p,pi)=>p.email.toLowerCase()===u.email.toLowerCase()?`<div class="pend"><div class="pw">Requested <span class="pr">${RLABEL[p.role]}</span> · ${p.when}</div><div class="pact"><button class="btn sm ok" onclick="approve(${pi});openD(${i})">Approve</button><button class="btn sm ghost" onclick="deny(${pi});openD(${i})">Deny</button></div></div>`:'').join('');
-  const quiz=u.quiz[1]>0?`<div class="dmeta">Knowledge checks: <b>${u.quiz[0]}/${u.quiz[1]} correct</b></div>`:'';
   const resend=u.lastD===null?`<button class="btn ghost" onclick="log('Resend invite to '+'${u.email}');this.textContent='✓ Invite sent';this.disabled=true">Resend invite</button>`:'';
   document.getElementById('dmodal').innerHTML=`
     <div class="dhead"><div><div class="nm">${u.name}</div><div class="em">${u.email} · ${u.loc}</div></div><button class="x" onclick="closeD()" aria-label="Close">✕</button></div>
     <div class="dbody">
       <div class="dmeta">Added ${u.added} days ago · last active ${lastText(u)}</div>
-      ${quiz}
       ${roles}
       ${reqs?'<div class="subh">Pending request</div>'+reqs:''}
       <div class="dfoot">${resend}<button class="btn ghost" onclick="removeUser(${i},false)">${u.active===false?'Reactivate':'Deactivate'}</button><button class="btn danger" onclick="removeUser(${i},true)">Remove from team</button></div>

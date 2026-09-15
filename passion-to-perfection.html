@@ -1854,8 +1854,8 @@ function renderHome(){
     ${momentumHTML()}
     ${nextBadgeHTML()}
     <div class="arc">
-      <div class="node active" style="--nc:var(--beverage)" onclick="go('know')"><div class="num">I</div><div><div class="nt">Know the Standard</div><div class="ns">Philosophy · Core Values · GUEST Ready · Presence &amp; Presentation</div></div><span class="go">›</span></div>
-      <div class="node active" style="--nc:var(--chef)" onclick="go('build')"><div class="num">II</div><div><div class="nt">Build the Skill</div><div class="ns">Service &amp; Bar &amp; Beverage · Playbooks, guides &amp; standards</div></div><span class="go">›</span></div>
+      <div class="node active" style="--nc:var(--beverage)" onclick="go('know')"><div><div class="nt">Know the Standard</div><div class="ns">Philosophy · Core Values · GUEST Ready · Presence &amp; Presentation</div></div><span class="go">›</span></div>
+      <div class="node active" style="--nc:var(--chef)" onclick="go('build')"><div><div class="nt">Build the Skill</div><div class="ns">Service &amp; Bar &amp; Beverage · Playbooks, guides &amp; standards</div></div><span class="go">›</span></div>
     </div>
     <div class="daily" id="dailyptr">${dailyPointerHTML(null)}</div>
     ${(()=>{if(!GLOSSARY.length)return '';const G=GLOSSARY[Math.floor(Math.random()*GLOSSARY.length)];
