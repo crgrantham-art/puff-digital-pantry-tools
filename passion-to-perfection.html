@@ -1808,12 +1808,12 @@ const STATIONS = [
 const screen=document.getElementById('screen');
 const backBtn=document.getElementById('backBtn');
 const crumb=document.getElementById('crumb');
-let stack=[];
-function go(view,arg){stack.push({view,arg});render();window.scrollTo(0,0);}
-function back(){if(stack.length>1){stack.pop();render();window.scrollTo(0,0);}}
+let stack=[];let KIOSK=false;
+function go(view,arg){if(KIOSK&&view!=='station')return;stack.push({view,arg});render();window.scrollTo(0,0);}
+function back(){if(KIOSK)return;if(stack.length>1){stack.pop();render();window.scrollTo(0,0);}}
 backBtn.onclick=back;
 const homeLogo=document.getElementById('homeLogo');
-function goHome(){if(stack.length===1&&stack[0].view==='home')return;stack=[{view:'home'}];render();window.scrollTo(0,0);}
+function goHome(){if(KIOSK)return;if(stack.length===1&&stack[0].view==='home')return;stack=[{view:'home'}];render();window.scrollTo(0,0);}
 homeLogo.onclick=goHome;
 homeLogo.onkeydown=function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();goHome();}};
 function badge(k,l){return `<span class="badge b-${k}">${l}</span>`;}
@@ -1830,6 +1830,7 @@ function render(){
   crumb.textContent=map[cur.view]||'';
   ({home:renderHome,build:renderBuild,service:renderService,stations:renderStations,cards:renderTrainingCards,station:()=>renderStation(cur.arg),know:renderKnow,guest:renderGuest,presence:renderPresence,philosophy:renderPhilosophy,values:renderValues,elevate:renderElevate,playbook:()=>renderPlaybook(cur.arg),pbmodule:()=>renderPbModule(cur.arg),pblesson:()=>renderPbLesson(cur.arg),deliver:renderDeliver,role:()=>renderRole(cur.arg),glossary:()=>renderGlossary(cur.arg),manuals:renderManuals,attire:renderAttire,warehouse:renderWarehouse,linensop:renderLinenSOP,salesmkt:renderSalesMkt,brandguide:()=>renderBrandGuide(cur.arg),communication:renderCommunication,driverguide:renderDriverGuide,kitchen:renderKitchen,packaging:renderPackaging,lookbook:renderLookbook,presentation:renderPresentation,culpb:()=>renderCulPlaybook(cur.arg),culmod:()=>renderCulModule(cur.arg),leadership:()=>renderLeadership(cur.arg),leadmod:()=>renderLeadModule(cur.arg),barglass:renderBarGlass,quotecalc:renderQuoteCalc,barcalc:renderBarCalc,barlist:renderBarList,badges:renderBadges,salesops:()=>renderSalesOps(cur.arg),bar:renderBarHub,postreport:()=>renderPostReport(cur.arg),leadbrief:()=>renderLeadershipBrief(cur.arg),labelmaker:renderLabelMaker,setupseq:renderSetupSeq})[cur.view]();
   if(cur.view==='home'){fillHomeFocus();fillHomeRec();}
+  if(KIOSK)screen.insertAdjacentHTML('beforeend',kioskFooterHTML());
   syncHash(cur);
 }
 
@@ -3900,8 +3901,54 @@ function toggle(el){const box=el.querySelector('input');setTimeout(()=>{
   }
 },0);}
 
-bootFromHash();
-window.addEventListener('hashchange',function(){const h=parseHash(),cur=stack[stack.length-1];if(h&&(h.view!==cur.view||String(h.arg||'')!==String(cur.arg||'')))bootFromHash();});
+/* ── Full-site access & kiosk mode ──────────────────────────────────────
+   This is a public web page, so these codes are deterrents that keep casual
+   visitors out. They are NOT real security (a technical person can read them
+   in the page source).
+   SITE_PIN = the staff code that opens the FULL training hub from the plain
+   URL. Scanning a station QR code opens ONLY that station (kiosk mode): no
+   code needed, and no way to browse the rest of the hub. To change the staff
+   code, edit SITE_PIN below. The Leadership dashboard keeps its own separate
+   code (ADMIN_PIN, higher up). */
+const SITE_PIN='PUFF';
+(function(){var s=document.createElement('style');
+ s.textContent='body.kiosk .topbar .back,body.kiosk .topbar .wmimg,body.kiosk .topbar .srchbtn,body.kiosk .topbar .crumb,body.gated .topbar .back,body.gated .topbar .wmimg,body.gated .topbar .srchbtn,body.gated .topbar .crumb{visibility:hidden}.gatewrap{max-width:340px;margin:11vh auto 0;text-align:center;padding:0 8px}.gatewrap input{width:100%;padding:12px 14px;border:1.5px solid #cbc7bd;font-size:17px;text-align:center;letter-spacing:.14em;font-family:var(--sans);margin:16px 0 10px}.gatewrap button{border:2px solid var(--ink);background:var(--ink);color:#fff;padding:11px 28px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}.gatemsg{color:#b23;font-size:13px;min-height:18px;margin-top:9px}';
+ document.head.appendChild(s);})();
+function kioskFooterHTML(){return '<div style="text-align:center;margin:30px 0 6px"><span onclick="siteGate()" style="cursor:pointer;font-size:12px;color:var(--muted);opacity:.75;text-decoration:underline;user-select:none">Staff: open full training hub</span></div>';}
+function restoreNav(){homeLogo.onclick=goHome;homeLogo.style.cursor='';homeLogo.setAttribute('tabindex','0');}
+function siteGate(){
+  KIOSK=false;document.body.classList.remove('kiosk');document.body.classList.add('gated');
+  backBtn.classList.remove('show');crumb.textContent='';
+  screen.innerHTML='<div class="gatewrap">'+lockup()+'<p class="lead" style="margin-top:18px">Enter your staff access code to open the full training hub.</p><input id="sitecode" type="text" inputmode="text" autocomplete="off" placeholder="Access code" onkeydown="if(event.key===\'Enter\')trySite()"><div><button onclick="trySite()">Enter</button></div><div class="gatemsg" id="sitemsg"></div></div>';
+  var el=document.getElementById('sitecode');if(el)el.focus();
+}
+function trySite(){
+  var v=(document.getElementById('sitecode').value||'').trim();
+  if(v!==SITE_PIN){document.getElementById('sitemsg').textContent='That code is not correct.';return;}
+  sessionStorage.setItem('psite','ok');
+  document.body.classList.remove('gated','kiosk');
+  restoreNav();bootFromHash();
+}
+function boot(){
+  var h=parseHash();
+  if(sessionStorage.getItem('psite')==='ok'){document.body.classList.remove('kiosk','gated');restoreNav();bootFromHash();return;}
+  if(h&&h.view==='station'&&h.arg){
+    KIOSK=true;document.body.classList.add('kiosk');
+    homeLogo.onclick=null;homeLogo.style.cursor='default';homeLogo.removeAttribute('tabindex');
+    stack=[{view:'station',arg:h.arg}];
+    try{render();return;}catch(e){}
+  }
+  siteGate();
+}
+boot();
+window.addEventListener('hashchange',function(){
+  if(sessionStorage.getItem('psite')!=='ok'){
+    var hh=parseHash();
+    if(KIOSK&&hh&&hh.view==='station'&&hh.arg&&hh.arg!==stack[stack.length-1].arg){stack=[{view:'station',arg:hh.arg}];render();}
+    return;
+  }
+  const h=parseHash(),cur=stack[stack.length-1];if(h&&(h.view!==cur.view||String(h.arg||'')!==String(cur.arg||'')))bootFromHash();
+});
 </script>
 </body>
 </html>
